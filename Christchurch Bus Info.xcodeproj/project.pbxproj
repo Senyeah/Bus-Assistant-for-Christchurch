@@ -8,20 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5A51BEB2D910093EB77 /* AppDelegate.swift */; };
-		042ED5A81BEB2D910093EB77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5A71BEB2D910093EB77 /* ViewController.swift */; };
 		042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5A91BEB2D910093EB77 /* Main.storyboard */; };
 		042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AC1BEB2D910093EB77 /* Assets.xcassets */; };
 		042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */; };
+		042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */; };
+		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
+		042ED5BE1BEB317F0093EB77 /* BusStopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */; };
+		042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */; };
+		042ED5C41BEB5FFC0093EB77 /* stop_information.json in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5C31BEB5FFC0093EB77 /* stop_information.json */; };
+		04FF5B351BECA2B300A69C9C /* blue location.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FF5B341BECA2B300A69C9C /* blue location.png */; };
+		04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */; };
+		04FF5B3C1BECBE7C00A69C9C /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B3B1BECBE7C00A69C9C /* TestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		042ED5A21BEB2D910093EB77 /* Christchurch Bus Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Christchurch Bus Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		042ED5A51BEB2D910093EB77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		042ED5A71BEB2D910093EB77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		042ED5AA1BEB2D910093EB77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		042ED5AC1BEB2D910093EB77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		042ED5AF1BEB2D910093EB77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		042ED5B11BEB2D910093EB77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfoTableViewController.swift; sourceTree = "<group>"; };
+		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
+		042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusStopTableViewCell.xib; sourceTree = "<group>"; };
+		042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
+		042ED5C31BEB5FFC0093EB77 /* stop_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stop_information.json; sourceTree = "<group>"; };
+		04FF5B341BECA2B300A69C9C /* blue location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue location.png"; sourceTree = "<group>"; };
+		04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusLineLabelView.swift; sourceTree = "<group>"; };
+		04FF5B3B1BECBE7C00A69C9C /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
+				04FF5B341BECA2B300A69C9C /* blue location.png */,
 				042ED5A31BEB2D910093EB77 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,14 +69,44 @@
 		042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */ = {
 			isa = PBXGroup;
 			children = (
+				04FF5B361BECA79200A69C9C /* Bus Stop Resources */,
+				042ED5C21BEB5FF20093EB77 /* Resources */,
+				042ED5BF1BEB5C500093EB77 /* Data Management */,
 				042ED5A51BEB2D910093EB77 /* AppDelegate.swift */,
-				042ED5A71BEB2D910093EB77 /* ViewController.swift */,
+				042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */,
 				042ED5A91BEB2D910093EB77 /* Main.storyboard */,
 				042ED5AC1BEB2D910093EB77 /* Assets.xcassets */,
 				042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */,
 				042ED5B11BEB2D910093EB77 /* Info.plist */,
+				04FF5B3B1BECBE7C00A69C9C /* TestViewController.swift */,
 			);
 			path = "Christchurch Bus Info";
+			sourceTree = "<group>";
+		};
+		042ED5BF1BEB5C500093EB77 /* Data Management */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */,
+			);
+			name = "Data Management";
+			sourceTree = "<group>";
+		};
+		042ED5C21BEB5FF20093EB77 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5C31BEB5FFC0093EB77 /* stop_information.json */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		04FF5B361BECA79200A69C9C /* Bus Stop Resources */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */,
+				042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */,
+				04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */,
+			);
+			name = "Bus Stop Resources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,8 +168,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				042ED5BE1BEB317F0093EB77 /* BusStopTableViewCell.xib in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
+				042ED5C41BEB5FFC0093EB77 /* stop_information.json in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
+				04FF5B351BECA2B300A69C9C /* blue location.png in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,8 +184,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				042ED5A81BEB2D910093EB77 /* ViewController.swift in Sources */,
+				042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */,
 				042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */,
+				04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */,
+				042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */,
+				04FF5B3C1BECBE7C00A69C9C /* TestViewController.swift in Sources */,
+				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +301,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.Christchurch-Bus-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -260,6 +313,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.Christchurch-Bus-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -285,6 +339,7 @@
 				042ED5B61BEB2D910093EB77 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
