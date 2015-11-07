@@ -13,7 +13,6 @@
 		042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */; };
 		042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */; };
 		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
-		042ED5BE1BEB317F0093EB77 /* BusStopTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */; };
 		042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */; };
 		042ED5C41BEB5FFC0093EB77 /* stop_information.json in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5C31BEB5FFC0093EB77 /* stop_information.json */; };
 		04FF5B351BECA2B300A69C9C /* blue location.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FF5B341BECA2B300A69C9C /* blue location.png */; };
@@ -30,7 +29,6 @@
 		042ED5B11BEB2D910093EB77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfoTableViewController.swift; sourceTree = "<group>"; };
 		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
-		042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusStopTableViewCell.xib; sourceTree = "<group>"; };
 		042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
 		042ED5C31BEB5FFC0093EB77 /* stop_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stop_information.json; sourceTree = "<group>"; };
 		04FF5B341BECA2B300A69C9C /* blue location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue location.png"; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */,
-				042ED5BC1BEB317F0093EB77 /* BusStopTableViewCell.xib */,
 				04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */,
 			);
 			name = "Bus Stop Resources";
@@ -168,7 +165,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				042ED5BE1BEB317F0093EB77 /* BusStopTableViewCell.xib in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
 				042ED5C41BEB5FFC0093EB77 /* stop_information.json in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,

@@ -36,20 +36,11 @@ enum BusLineType {
 class BusLineLabelView: UIView {
 
     var lineType: BusLineType?
-    var cellBackgroundColour: UIColor?
+    weak var cellBackgroundColour: UIColor?
     
     let label = UILabel()
     
-    /*override func drawRect(rect: CGRect) {
-        self.layer.backgroundColor = cellBackgroundColour?.CGColor
-    }*/
-    
-    init(lineType: BusLineType) {
-        
-        super.init(frame: CGRectZero)
-        
-        //Configure the colour of the label
-        
+    func setLineType(lineType: BusLineType) {
         switch lineType {
         case .PurpleLine:
             cellBackgroundColour = purple
@@ -70,11 +61,7 @@ class BusLineLabelView: UIView {
         //Configure the label
         
         self.lineType = lineType
-        self.layer.cornerRadius = LINE_LABEL_RADIUS
-        self.layer.masksToBounds = true
-        
-        label.backgroundColor = UIColor.clearColor()
-        
+
         switch lineType {
         case .Orbiter(_):
             label.textColor = UIColor.redColor()
@@ -83,9 +70,6 @@ class BusLineLabelView: UIView {
         default:
             label.textColor = UIColor.whiteColor()
         }
-        
-        label.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightMedium)
-        label.textAlignment = .Center
         
         var labelText: String
         
@@ -110,10 +94,10 @@ class BusLineLabelView: UIView {
         
         switch lineType {
         case .NumberedRoute(_):
-            self.layer.borderColor = self.tintColor.CGColor
+            
             self.layer.borderWidth = 1.0
         default:
-            break
+           self.layer.borderWidth = 0.0
         }
         
         //Compute the dimensions of the view based on the size of the text in the label
@@ -123,13 +107,36 @@ class BusLineLabelView: UIView {
         
         let width = max(LINE_LABEL_MIN_WIDTH, 2 * padding + intrinsicSize.width)
         
-        let viewDimensions = CGRectMake(frame.origin.x, frame.origin.y, width, LINE_LABEL_HEIGHT)
+        let widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
+        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: LINE_LABEL_HEIGHT)
+        
+        self.addConstraints([widthConstraint, heightConstraint])
+        
         let labelDimensions = CGRectMake(0, 0, width, LINE_LABEL_HEIGHT)
-        
         label.frame = labelDimensions
-        self.addSubview(label)
+    }
+    
+    init(lineType: BusLineType) {
         
-        self.frame = viewDimensions
+        super.init(frame: CGRectZero)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightMedium)
+        label.textAlignment = .Center
+        
+        self.layer.cornerRadius = LINE_LABEL_RADIUS
+
+        self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.mainScreen().scale
+        
+        label.backgroundColor = UIColor.clearColor()
+        
+        self.layer.borderColor = self.tintColor.CGColor
+        
+        self.setLineType(lineType)
+        
+        self.addSubview(label)
         
     }
 

@@ -9,6 +9,15 @@
 import UIKit
 import CoreLocation
 
+//"Gardiners Road": ["no": 12345, "stops": [.NumberedRoute("125")]]
+
+var routes: [Dictionary<String, Any>] = [["name": "Gardiners Road", "no": 19416, "stops": [BusLineType.NumberedRoute("125")]],
+                                         ["name": "Breens Road", "no": 42857, "stops": [BusLineType.NumberedRoute("125")]],
+                                         ["name": "Greers Road", "no": 37462, "stops": [BusLineType.Orbiter(.AntiClockwise), BusLineType.NumberedRoute("125")]],
+                                         ["name": "Fake Street", "no": 44196, "stops": [BusLineType.PurpleLine, BusLineType.OrangeLine, BusLineType.BlueLine, BusLineType.YellowLine, BusLineType.NumberedRoute("17"), BusLineType.NumberedRoute("120")]]]
+
+var currentIndex: Int = 0
+
 class RouteInfoTableViewController: UITableViewController, CLLocationManagerDelegate {
 
     var hasObtainedInitialLocation = false
@@ -40,7 +49,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             print("\n\nCurrent location: \(locationManager.location!.coordinate)")
             
             for (stop, distance) in nearestStops {
-                print("Stop: \(stop.name), distance = \(String(format: "%.2f", distance)) metres")
+                print("Stop: \(stop.name), no = \(stop.stopNo) distance = \(String(format: "%.2f", distance)) metres")
             }
             print("--------")
         }
@@ -65,16 +74,24 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Nearby Bus Stops"
+        if section == 0 {
+            return "Nearby Bus Stops"
+        }
+        
+        return nil
     }
 
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        if section == 0 {
+            return 4
+        } else {
+            return 2
+        }
     }
     
     /*
@@ -87,28 +104,49 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         cell.textLabel!.text = stopInfo.name
         cell.detailTextLabel!.text = String(format: "%.0f metres", distance)
-        
+    
         return cell
     }
     */
-    
+        
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell: UITableViewCell?
-        
         if indexPath.row == 0 {
-            cell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell")
-            cell?.textLabel?.text = "Harewood Road"
-        } else {
-            cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell")
-        }
+
+            let cell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell", forIndexPath: indexPath)
+            cell.textLabel?.text = indexPath.section == 0 ? "Harewood Road" : "Sheffield Crescent"
+            
+            return cell
         
-        return cell!
+        } else {
+    
+            let cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell", forIndexPath: indexPath) as! BusStopTableViewCell
+            
+            print("row = \(indexPath.row), section = \(indexPath.section)")
+            
+            if currentIndex + 1 > routes.count {
+                return cell
+            }
+            
+            let currentInfo: Dictionary<String, Any> = routes[currentIndex]
+            
+            let stops: [BusLineType] = currentInfo["stops"] as! [BusLineType]
+            
+            cell.stopName.text = currentInfo["name"] as? String
+            cell.stopNumber.text = String(currentInfo["no"] as! Int)
+            
+            cell.setStopLines(stops)
+            
+            currentIndex++
+            
+            return cell
+            
+        }
         
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0 {
+        if indexPath.row == 0  {
             return 50.0
         } else {
             return 103.0
