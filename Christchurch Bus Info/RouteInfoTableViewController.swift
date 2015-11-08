@@ -72,15 +72,6 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Nearby Bus Stops"
-        }
-        
-        return nil
-    }
-
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
@@ -137,7 +128,9 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             cell.setStopLines(stops)
             
-            currentIndex++
+            if ++currentIndex > routes.count {
+                currentIndex = 0
+            }
             
             return cell
             
@@ -145,12 +138,41 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.row == 0  {
-            return 50.0
-        } else {
-            return 103.0
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        struct StaticInstance {
+            static var stopInfoSizingCell: UITableViewCell?
+            static var headerSizingCell: UITableViewCell?
         }
+        
+        var cellRequired: UITableViewCell?
+        
+        if indexPath.row == 0 {
+            
+            //This means we need sizing for a header
+            
+            if StaticInstance.headerSizingCell == nil {
+                StaticInstance.headerSizingCell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell")
+            }
+            
+            cellRequired = StaticInstance.headerSizingCell
+            
+        } else {
+            
+            if StaticInstance.stopInfoSizingCell == nil {
+                StaticInstance.stopInfoSizingCell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell")
+            }
+            
+            cellRequired = StaticInstance.stopInfoSizingCell
+            
+        }
+        
+        //cellRequired!.setNeedsLayout()
+        //cellRequired!.layoutIfNeeded()
+        
+        let size = cellRequired!.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        return size.height + 1.0
+        
     }
 
     /*

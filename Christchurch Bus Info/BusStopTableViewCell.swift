@@ -50,6 +50,9 @@ class BusStopTableViewCell: UITableViewCell {
                 let topAlignmentConstraint = NSLayoutConstraint(item: lineThumbnail, attribute: .Top, relatedBy: .Equal, toItem: lineThumbnailView, attribute: .Top, multiplier: 1.0, constant: 0.0)
                 lineThumbnailView.addConstraint(topAlignmentConstraint)
                 
+                let bottomAlignmentConstraint = NSLayoutConstraint(item: lineThumbnail, attribute: .Bottom, relatedBy: .Equal, toItem: lineThumbnailView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+                lineThumbnailView.addConstraint(bottomAlignmentConstraint)
+                
             }
             
             let viewIdentifierString = "v\(viewIdentifier)"
@@ -88,6 +91,11 @@ class BusStopTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        let preferredFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
+        let pointSize = preferredFontDescriptor.pointSize
+        
+        stopName.font = UIFont.systemFontOfSize(pointSize, weight: UIFontWeightMedium)
     }
     
 }

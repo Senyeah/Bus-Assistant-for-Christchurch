@@ -8,9 +8,6 @@
 
 import UIKit
 
-let LINE_LABEL_MIN_WIDTH: CGFloat = 30.0
-let LINE_LABEL_HEIGHT: CGFloat = 30.0
-
 let LINE_LABEL_RADIUS: CGFloat = 5.0
 
 let purple = UIColor.init(red: 0.33, green: 0.27, blue: 0.53, alpha: 1.00)
@@ -36,7 +33,7 @@ enum BusLineType {
 class BusLineLabelView: UIView {
 
     var lineType: BusLineType?
-    weak var cellBackgroundColour: UIColor?
+    var cellBackgroundColour: UIColor?
     
     let label = UILabel()
     
@@ -56,7 +53,7 @@ class BusLineLabelView: UIView {
             cellBackgroundColour = UIColor.clearColor()
         }
         
-        self.backgroundColor = cellBackgroundColour
+        label.layer.backgroundColor = cellBackgroundColour?.CGColor
         
         //Configure the label
         
@@ -103,17 +100,28 @@ class BusLineLabelView: UIView {
         //Compute the dimensions of the view based on the size of the text in the label
         
         let intrinsicSize = label.intrinsicContentSize()
-        let padding = ((LINE_LABEL_HEIGHT - intrinsicSize.height) / 2)
+        let padding: CGFloat = 5.0
         
-        let width = max(LINE_LABEL_MIN_WIDTH, 2 * padding + intrinsicSize.width)
+        var width = 2 * padding + intrinsicSize.width
+        let height = 2 * padding + intrinsicSize.height
+        
+        if width < height {
+            width = height
+        }
         
         let widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
-        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: LINE_LABEL_HEIGHT)
+        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         
         self.addConstraints([widthConstraint, heightConstraint])
         
-        let labelDimensions = CGRectMake(0, 0, width, LINE_LABEL_HEIGHT)
-        label.frame = labelDimensions
+        let labelTopConstraint = NSLayoutConstraint(item: label, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0.0)
+        let labelBottomConstraint = NSLayoutConstraint(item: label, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        
+        let labelLeftConstraint = NSLayoutConstraint(item: label, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0.0)
+        let labelRightConstraint = NSLayoutConstraint(item: label, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        
+        self.addConstraints([labelTopConstraint, labelBottomConstraint, labelLeftConstraint, labelRightConstraint])
+        
     }
     
     init(lineType: BusLineType) {
@@ -121,22 +129,26 @@ class BusLineLabelView: UIView {
         super.init(frame: CGRectZero)
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        
-        label.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightMedium)
-        label.textAlignment = .Center
-        
+    
         self.layer.cornerRadius = LINE_LABEL_RADIUS
+        self.layer.borderColor = self.tintColor.CGColor
 
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.mainScreen().scale
         
+        let preferredFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
+        let pointSize = preferredFontDescriptor.pointSize
+        
+        label.font = UIFont.boldSystemFontOfSize(pointSize)
+        label.textAlignment = .Center
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.layer.cornerRadius = LINE_LABEL_RADIUS
         label.backgroundColor = UIColor.clearColor()
         
-        self.layer.borderColor = self.tintColor.CGColor
-        
-        self.setLineType(lineType)
-        
         self.addSubview(label)
+        self.setLineType(lineType)
         
     }
 
