@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 
+//Todo:
+
 let UPDATE_URL = "http://dev.miyazudesign.co.nz/bus/stop_info.php"
 let VERSION_URL = "http://dev.miyazudesign.co.nz/bus/stop_info_version.php"
 
@@ -16,7 +18,9 @@ struct StopInformation {
     var stopNo: String
     var stopTag: String
     var name: String
+    var roadName: String
     var location: CLLocation
+    var lines: [BusLineType]
 }
 
 class RouteInformationManager: NSObject {
@@ -24,9 +28,12 @@ class RouteInformationManager: NSObject {
     static let sharedInstance = RouteInformationManager()
     
     let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-    var stopInformation: [StopInformation] = []
+    var stopInformation = [String: StopInformation]()
 
+    
     override init() {
+        
+        super.init()
         
         //Check to see if we've copied the timetable from the bundle to somewhere we can modify it
         
@@ -44,52 +51,68 @@ class RouteInformationManager: NSObject {
         //todo
         
         let routeInfoData = NSData.init(contentsOfFile: expectedPath)
-        
-        do {
-            guard let stopsJSON = try NSJSONSerialization.JSONObjectWithData(routeInfoData!, options: NSJSONReadingOptions(rawValue: 0)) as? NSArray else {
-                //well shit it failed what do we do now?
-                return
+        let stopsJSON: NSDictionary = try! NSJSONSerialization.JSONObjectWithData(routeInfoData!, options: NSJSONReadingOptions(rawValue: 0)) as! NSDictionary
+
+        for (stopNumber, info) in stopsJSON {
+            
+            let stopInfo = info as! NSDictionary
+                
+            let stopName = stopInfo["name"] as! String
+            let stopTag = stopInfo["stop_tag"] as! String
+            
+            let roadName = stopInfo["road_name"] as! String
+            
+            let location = CLLocation(latitude: stopInfo["latitude"]!.doubleValue!, longitude: stopInfo["longitude"]!.doubleValue!)
+            
+            let linesStrings = stopInfo["lines"] as! NSArray
+            var lines: [BusLineType] = []
+            
+            for lineString in linesStrings {
+                lines.append(self.busLineTypeForString(lineString as! String))
             }
             
-            for stop in stopsJSON {
-                let stopInfo = stop as! NSDictionary
-                
-                var stopNo: String
-                
-                if let value = stopInfo["stop_no"] as? String {
-                    stopNo = value
-                } else {
-                    //Stop doesn't exist anymore
-                    continue
-                }
-                
-                let stopName = stopInfo["name"] as! String
-                let stopTag = stopInfo["stop_tag"] as! String
-                
-                let location = CLLocation(latitude: stopInfo["latitude"]!.doubleValue!, longitude: stopInfo["longitude"]!.doubleValue!)
-                
-                stopInformation.append(StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, location: location))
-            }
-        } catch let error as NSError {
-            //yeah something went badly wrong
-            print("\(error)")
+            stopInformation[stopNumber as! String] = StopInformation(stopNo: stopNumber as! String, stopTag: stopTag, name: stopName, roadName: roadName, location: location, lines: lines)
+            
         }
         
     }
+    
+    
+    func stopInformationForStopNumber(number: String) -> StopInformation? {
+        return stopInformation[number]
+    }
+    
+    
+    func busLineTypeForString(inString: String) -> BusLineType {
+        
+        let linesMap: [String: BusLineType] = ["P": .PurpleLine, "O": .OrangeLine, "Y": .YellowLine, "B": .BlueLine, "Oa": .Orbiter(.AntiClockwise), "Oc": .Orbiter(.Clockwise)]
+        
+        var lineType: BusLineType?
+        
+        if linesMap[inString] == nil {
+            lineType = .NumberedRoute(inString)
+        } else {
+            lineType = linesMap[inString]
+        }
+        
+        return lineType!
+        
+    }
+    
     
     func closestStopsForCoordinate(numStops: Int, coordinate: CLLocation) -> [(StopInformation, CLLocationDistance)] {
         
         var candidates: [(StopInformation, CLLocationDistance)] = []
         
-        for stop in stopInformation {
-            let distance = coordinate.distanceFromLocation(stop.location)
-            candidates.append((stop, distance))
+        for (_, stopInfo) in stopInformation {
+            let distance = coordinate.distanceFromLocation(stopInfo.location)
+            candidates.append((stopInfo, distance))
         }
         
         candidates.sortInPlace({$0.1 < $1.1})
         
         let itemsToReturn = min(numStops, candidates.count)
-        
+
         return Array(candidates[0..<itemsToReturn])
         
     }

@@ -7,14 +7,34 @@
 //
 
 import UIKit
+import CoreLocation
 
 class BusStopTableViewCell: UITableViewCell {
     
     @IBOutlet var lineThumbnailView: UIView!
     @IBOutlet var stopName: UILabel!
     @IBOutlet var stopNumber: UILabel!
-    
+    @IBOutlet var stopDistance: UILabel!
+
     var lineThumbnailLabels: [BusLineLabelView] = []
+    var existingConstraints: [NSLayoutConstraint]!
+
+    
+    func setDistance(distance: CLLocationDistance) {
+        
+        var distanceString: String
+        
+        if distance < 1000 {
+            distanceString = String(format: "%.0f metres", distance)
+        } else {
+            let kilometres = distance / 1000
+            distanceString = String(format: "%.2f km", kilometres)
+        }
+        
+        stopDistance.text = distanceString
+        
+    }
+    
     
     func setStopLines(lines: [BusLineType]) {
         
@@ -72,23 +92,29 @@ class BusStopTableViewCell: UITableViewCell {
         
         //If we haven't used all of the available labels, remove the extra ones
         
-        let labelsUsed = viewIdentifier + 1
-
-        //Are there more than we used?
-        
-        if labelsUsed < lineThumbnailLabels.count {
-            for label in lineThumbnailLabels[labelsUsed..<lineThumbnailLabels.count] {
+        if viewIdentifier < lineThumbnailLabels.count {
+            for label in lineThumbnailLabels[viewIdentifier..<lineThumbnailLabels.count] {
                 label.removeFromSuperview()
             }
         
-            lineThumbnailLabels = Array(lineThumbnailLabels[0..<labelsUsed])
+            lineThumbnailLabels = Array(lineThumbnailLabels[0..<viewIdentifier])
         }
-            
-        let layoutConstraints = NSLayoutConstraint.constraintsWithVisualFormat(layoutString, options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewIdentifierDict)
-        lineThumbnailView.addConstraints(layoutConstraints)
+        
+        let lineThumbnailConstraints = NSLayoutConstraint.constraintsWithVisualFormat(layoutString, options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewIdentifierDict)
+        
+        //Remove any existing constraints as it may have been reused
+        
+        if existingConstraints != nil {
+            self.removeConstraints(existingConstraints)
+        }
+        
+        existingConstraints = lineThumbnailConstraints
+        
+        lineThumbnailView.addConstraints(lineThumbnailConstraints)
 
     }
 
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

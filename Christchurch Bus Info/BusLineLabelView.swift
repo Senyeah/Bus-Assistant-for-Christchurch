@@ -10,6 +10,8 @@ import UIKit
 
 let LINE_LABEL_RADIUS: CGFloat = 5.0
 
+//Todo: redo the whole fucking thing this is so messy
+
 let purple = UIColor.init(red: 0.33, green: 0.27, blue: 0.53, alpha: 1.00)
 let orange = UIColor.init(red: 0.93, green: 0.44, blue: 0.15, alpha: 1.00)
 let yellow = UIColor.init(red: 1.00, green: 0.76, blue: 0.00, alpha: 1.00)
@@ -35,9 +37,15 @@ class BusLineLabelView: UIView {
     var lineType: BusLineType?
     var cellBackgroundColour: UIColor?
     
+    var viewConstraints: [NSLayoutConstraint]!
+    
     let label = UILabel()
     
+    
     func setLineType(lineType: BusLineType) {
+        
+        self.invalidateIntrinsicContentSize()
+        
         switch lineType {
         case .PurpleLine:
             cellBackgroundColour = purple
@@ -85,16 +93,16 @@ class BusLineLabelView: UIView {
             labelText = routeNo
         }
         
+        
         label.text = labelText
         
         //Stroke if necessary
         
         switch lineType {
         case .NumberedRoute(_):
-            
             self.layer.borderWidth = 1.0
         default:
-           self.layer.borderWidth = 0.0
+            self.layer.borderWidth = 0.0
         }
         
         //Compute the dimensions of the view based on the size of the text in the label
@@ -109,30 +117,40 @@ class BusLineLabelView: UIView {
             width = height
         }
         
+        if viewConstraints != nil {
+            self.removeConstraints(viewConstraints)
+        }
+        
+        viewConstraints = [NSLayoutConstraint]()
+
         let widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
         let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         
         self.addConstraints([widthConstraint, heightConstraint])
         
-        let labelTopConstraint = NSLayoutConstraint(item: label, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0.0)
-        let labelBottomConstraint = NSLayoutConstraint(item: label, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        viewConstraints.append(widthConstraint)
+        viewConstraints.append(heightConstraint)
         
-        let labelLeftConstraint = NSLayoutConstraint(item: label, attribute: .Left, relatedBy: .Equal, toItem: self, attribute: .Left, multiplier: 1.0, constant: 0.0)
-        let labelRightConstraint = NSLayoutConstraint(item: label, attribute: .Right, relatedBy: .Equal, toItem: self, attribute: .Right, multiplier: 1.0, constant: 0.0)
+        let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[label]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
         
-        self.addConstraints([labelTopConstraint, labelBottomConstraint, labelLeftConstraint, labelRightConstraint])
+        self.addConstraints(labelWidthConstraint)
+        viewConstraints.appendContentsOf(labelWidthConstraint)
+        
+        let labelHeightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[label]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
+
+        self.addConstraints(labelHeightConstraint)
+        viewConstraints.appendContentsOf(labelHeightConstraint)
         
     }
     
-    init(lineType: BusLineType) {
-        
-        super.init(frame: CGRectZero)
+    
+    func initView() {
         
         self.translatesAutoresizingMaskIntoConstraints = false
-    
+        
         self.layer.cornerRadius = LINE_LABEL_RADIUS
         self.layer.borderColor = self.tintColor.CGColor
-
+        
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.mainScreen().scale
         
@@ -148,12 +166,20 @@ class BusLineLabelView: UIView {
         label.backgroundColor = UIColor.clearColor()
         
         self.addSubview(label)
-        self.setLineType(lineType)
         
     }
-
+    
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.initView()
     }
-
+    
+    
+    init(lineType: BusLineType) {
+        super.init(frame: CGRectZero)
+        
+        self.initView()
+        self.setLineType(lineType)
+    }
 }

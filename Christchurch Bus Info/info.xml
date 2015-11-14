@@ -1,0 +1,26 @@
+<JPRoutePositionET2 xmlns="urn:connexionz-co-nz:jp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:connexionz-co-nz:jp JourneyPlanner.xsd">
+    <Content Expires="2015-11-13T23:58:01+13:00" MaxArrivalScope="60"/>
+    <Platform PlatformTag="1500" Name="Riccarton Rd near Wainui St">
+        <Route RouteNo="80" Name="Lincoln/Parklands">
+            <Destination Name="City &amp; Polytech">
+                <Trip ETA="23" TripID="1953" WheelchairAccess="true"/>
+            </Destination>
+        </Route>
+        <Route RouteNo="Oa" Name="Orbiter">
+            <Destination Name="Eastgate via Westfield">
+                <Trip ETA="0" TripID="140710" WheelchairAccess="true"/>
+            </Destination>
+            <Destination Name="Eastgate via Fuckers">
+                <Trip ETA="144" TripID="140710" WheelchairAccess="true"/>
+            </Destination>
+        </Route>
+        <Route RouteNo="Y" Name="Yellow Line">
+            <Destination Name="New Brighton via City">
+                <Trip ETA="14" TripID="1878" WheelchairAccess="true"/>
+            </Destination>
+            <Destination Name="Invercargill">
+                <Trip ETA="453" TripID="1878" WheelchairAccess="true"/>
+            </Destination>
+        </Route>
+    </Platform>
+</JPRoutePositionET2>

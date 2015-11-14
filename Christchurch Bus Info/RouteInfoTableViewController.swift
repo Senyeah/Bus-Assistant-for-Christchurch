@@ -9,23 +9,45 @@
 import UIKit
 import CoreLocation
 
-//"Gardiners Road": ["no": 12345, "stops": [.NumberedRoute("125")]]
-
-var routes: [Dictionary<String, Any>] = [["name": "Gardiners Road", "no": 19416, "stops": [BusLineType.NumberedRoute("125")]],
-                                         ["name": "Breens Road", "no": 42857, "stops": [BusLineType.NumberedRoute("125")]],
-                                         ["name": "Greers Road", "no": 37462, "stops": [BusLineType.Orbiter(.AntiClockwise), BusLineType.NumberedRoute("125")]],
-                                         ["name": "Fake Street", "no": 44196, "stops": [BusLineType.PurpleLine, BusLineType.OrangeLine, BusLineType.BlueLine, BusLineType.YellowLine, BusLineType.NumberedRoute("17"), BusLineType.NumberedRoute("120")]]]
+let NEAREST_STOPS_TO_LOAD = 5
 
 var currentIndex: Int = 0
 
 class RouteInfoTableViewController: UITableViewController, CLLocationManagerDelegate {
 
+    let locationManager = CLLocationManager()
+    
     var hasObtainedInitialLocation = false
     var lastLocationUpdated: CLLocation?
+
+    var groupedStops = [String: NSMutableArray]()
+    var distanceFromStop = [String: CLLocationDistance]()
     
-    var nearestStops: [(StopInformation, CLLocationDistance)] = []
-    
-    let locationManager = CLLocationManager()
+    func processLocationUpdate() {
+        
+        groupedStops = [:]
+        
+        let nearestStops = RouteInformationManager.sharedInstance.closestStopsForCoordinate(NEAREST_STOPS_TO_LOAD, coordinate: locationManager.location!)
+        
+        var groupOrdering: [String] = []
+        
+        for (stop, distance) in nearestStops {
+            
+            if groupedStops[stop.roadName] == nil {
+                groupedStops[stop.roadName] = NSMutableArray()
+            }
+            
+            groupedStops[stop.roadName]!.addObject(stop.stopNo)
+            
+            if groupOrdering.contains(stop.roadName) == false {
+                groupOrdering.append(stop.roadName)
+            }
+            
+            distanceFromStop[stop.stopNo] = distance
+            
+        }
+        
+    }
     
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
@@ -35,30 +57,26 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             distanceMoved = newLocation.distanceFromLocation(lastLocationUpdated!)
         } else {
             //change me
-            locationManager.stopUpdatingLocation()
+          //  locationManager.stopUpdatingLocation()
         }
         
         if distanceMoved > 5 || hasObtainedInitialLocation == false {
-            nearestStops = RouteInformationManager.sharedInstance.closestStopsForCoordinate(5, coordinate: locationManager.location!)
+            
+            processLocationUpdate()
 
             lastLocationUpdated = locationManager.location
             hasObtainedInitialLocation = true
             
             self.tableView.reloadData()
             
-            print("\n\nCurrent location: \(locationManager.location!.coordinate)")
-            
-            for (stop, distance) in nearestStops {
-                print("Stop: \(stop.name), no = \(stop.stopNo) distance = \(String(format: "%.2f", distance)) metres")
-            }
-            print("--------")
         }
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.clearsSelectionOnViewWillAppear = false
+        
+        self.tableView.rowHeight = UITableViewAutomaticDimension
         
         locationManager.requestWhenInUseAuthorization()
         
@@ -74,38 +92,22 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return groupedStops.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 4
-        } else {
-            return 2
-        }
-    }
-    
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        cell.accessoryType = .DisclosureIndicator
         
-        let (stopInfo, distance) = nearestStops[indexPath.row]
+        let key = Array(groupedStops.keys)[section]
+        return groupedStops[key]!.count + 1
         
-        cell.textLabel!.text = stopInfo.name
-        cell.detailTextLabel!.text = String(format: "%.0f metres", distance)
-    
-        return cell
     }
-    */
         
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if indexPath.row == 0 {
 
             let cell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell", forIndexPath: indexPath)
-            cell.textLabel?.text = indexPath.section == 0 ? "Harewood Road" : "Sheffield Crescent"
+            cell.textLabel?.text = Array(groupedStops.keys)[indexPath.section]
             
             return cell
         
@@ -113,24 +115,17 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     
             let cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell", forIndexPath: indexPath) as! BusStopTableViewCell
             
-            print("row = \(indexPath.row), section = \(indexPath.section)")
+            let groupName = Array(groupedStops.keys)[indexPath.section]
+            let stopNumber = groupedStops[groupName]![indexPath.row - 1] as! String
             
-            if currentIndex + 1 > routes.count {
-                return cell
-            }
+            let stopInfo: StopInformation = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber)!
             
-            let currentInfo: Dictionary<String, Any> = routes[currentIndex]
+            cell.stopName.text = stopInfo.name
+            cell.stopNumber.text = String(stopNumber)
             
-            let stops: [BusLineType] = currentInfo["stops"] as! [BusLineType]
+            cell.setDistance(distanceFromStop[stopNumber]!)
             
-            cell.stopName.text = currentInfo["name"] as? String
-            cell.stopNumber.text = String(currentInfo["no"] as! Int)
-            
-            cell.setStopLines(stops)
-            
-            if ++currentIndex > routes.count {
-                currentIndex = 0
-            }
+            cell.setStopLines(stopInfo.lines)
             
             return cell
             
@@ -139,42 +134,21 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-        struct StaticInstance {
-            static var stopInfoSizingCell: UITableViewCell?
-            static var headerSizingCell: UITableViewCell?
-        }
-        
-        var cellRequired: UITableViewCell?
-        
-        if indexPath.row == 0 {
-            
-            //This means we need sizing for a header
-            
-            if StaticInstance.headerSizingCell == nil {
-                StaticInstance.headerSizingCell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell")
-            }
-            
-            cellRequired = StaticInstance.headerSizingCell
-            
-        } else {
-            
-            if StaticInstance.stopInfoSizingCell == nil {
-                StaticInstance.stopInfoSizingCell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell")
-            }
-            
-            cellRequired = StaticInstance.stopInfoSizingCell
-            
-        }
-        
-        //cellRequired!.setNeedsLayout()
-        //cellRequired!.layoutIfNeeded()
-        
-        let size = cellRequired!.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        return size.height + 1.0
-        
+        return UITableViewAutomaticDimension
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        let destinationController = segue.destinationViewController as! StopInformationTableViewController
+        let indexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
+        
+        let groupName = Array(groupedStops.keys)[indexPath.section]
+        destinationController.stopNumber = groupedStops[groupName]![indexPath.row - 1] as! String
+        
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -209,15 +183,4 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         return true
     }
     */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
