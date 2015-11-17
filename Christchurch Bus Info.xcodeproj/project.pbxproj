@@ -16,14 +16,56 @@
 		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
 		042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */; };
 		04350F551BEFA31D00FC189E /* stop_information.json in Resources */ = {isa = PBXBuildFile; fileRef = 04350F541BEFA31D00FC189E /* stop_information.json */; };
+		0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */; };
 		0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC8B1BF600F600794D4C /* StopInformationParser.swift */; };
 		0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */; };
 		0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */; };
 		04688E8E1BF6339C006A1DFA /* info.xml in Resources */ = {isa = PBXBuildFile; fileRef = 04688E8D1BF6339C006A1DFA /* info.xml */; };
+		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
+		048BE8661BF8D8110064F627 /* default.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 048BE8651BF8D8110064F627 /* default.gpx */; };
+		048BE8681BF8D87C0064F627 /* second.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 048BE8671BF8D87C0064F627 /* second.gpx */; };
+		04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */; };
+		04D6FAF61BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */; };
+		04D6FAF81BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */; };
+		04D6FB191BF887A5001BFC49 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */; };
+		04D6FB251BF88E09001BFC49 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D6FB061BF886AD001BFC49 /* SQLite.framework */; };
+		04D6FB271BF88E16001BFC49 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 04D6FB061BF886AD001BFC49 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */; };
 		04FF5B351BECA2B300A69C9C /* blue location.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FF5B341BECA2B300A69C9C /* blue location.png */; };
 		04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */; };
 		04FF5B3C1BECBE7C00A69C9C /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B3B1BECBE7C00A69C9C /* TestViewController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04D6FB051BF886AD001BFC49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04D6FAF91BF886AD001BFC49 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC2B29E21B26F718001C60EA;
+			remoteInfo = "SQLite iOS";
+		};
+		04D6FB281BF88E16001BFC49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04D6FAF91BF886AD001BFC49 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DC2B29E11B26F718001C60EA;
+			remoteInfo = "SQLite iOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04D6FB2A1BF88E16001BFC49 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				04D6FB271BF88E16001BFC49 /* SQLite.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopIndeterminateTableViewCell.swift; sourceTree = "<group>"; };
@@ -37,10 +79,20 @@
 		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
 		042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
 		04350F541BEFA31D00FC189E /* stop_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stop_information.json; sourceTree = "<group>"; };
+		0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewTableViewController.swift; sourceTree = "<group>"; };
 		0451FC8B1BF600F600794D4C /* StopInformationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationParser.swift; sourceTree = "<group>"; };
 		0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationTableViewController.swift; sourceTree = "<group>"; };
 		0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopTableViewCell.swift; sourceTree = "<group>"; };
 		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
+		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
+		048BE8651BF8D8110064F627 /* default.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = default.gpx; path = ../../default.gpx; sourceTree = "<group>"; };
+		048BE8671BF8D87C0064F627 /* second.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = second.gpx; path = ../../second.gpx; sourceTree = "<group>"; };
+		04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMajorStopTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMinorStopTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FAF91BF886AD001BFC49 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
+		04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopIndicator.swift; sourceTree = "<group>"; };
 		04FF5B341BECA2B300A69C9C /* blue location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue location.png"; sourceTree = "<group>"; };
 		04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusLineLabelView.swift; sourceTree = "<group>"; };
 		04FF5B3B1BECBE7C00A69C9C /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D6FB251BF88E09001BFC49 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,9 +113,12 @@
 		042ED5991BEB2D910093EB77 = {
 			isa = PBXGroup;
 			children = (
+				048BE8671BF8D87C0064F627 /* second.gpx */,
+				048BE8651BF8D8110064F627 /* default.gpx */,
 				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
 				04FF5B341BECA2B300A69C9C /* blue location.png */,
 				042ED5A31BEB2D910093EB77 /* Products */,
+				04D6FAF91BF886AD001BFC49 /* SQLite.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,6 +133,7 @@
 		042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */ = {
 			isa = PBXGroup;
 			children = (
+				0445E2CD1BF73C4E00A3D416 /* Line Visualisation */,
 				0451FC8F1BF60A9B00794D4C /* Stop Info */,
 				04FF5B361BECA79200A69C9C /* Bus Stop Resources */,
 				042ED5BF1BEB5C500093EB77 /* Data Management */,
@@ -97,6 +154,7 @@
 			children = (
 				042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */,
 				0451FC8B1BF600F600794D4C /* StopInformationParser.swift */,
+				04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */,
 			);
 			name = "Data Management";
 			sourceTree = "<group>";
@@ -106,8 +164,21 @@
 			children = (
 				04688E8D1BF6339C006A1DFA /* info.xml */,
 				04350F541BEFA31D00FC189E /* stop_information.json */,
+				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		0445E2CD1BF73C4E00A3D416 /* Line Visualisation */ = {
+			isa = PBXGroup;
+			children = (
+				0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */,
+				04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */,
+				04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */,
+				04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */,
+				04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */,
+			);
+			name = "Line Visualisation";
 			sourceTree = "<group>";
 		};
 		0451FC8F1BF60A9B00794D4C /* Stop Info */ = {
@@ -118,6 +189,14 @@
 				0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */,
 			);
 			name = "Stop Info";
+			sourceTree = "<group>";
+		};
+		04D6FAFA1BF886AD001BFC49 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04D6FB061BF886AD001BFC49 /* SQLite.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		04FF5B361BECA79200A69C9C /* Bus Stop Resources */ = {
@@ -139,10 +218,12 @@
 				042ED59E1BEB2D910093EB77 /* Sources */,
 				042ED59F1BEB2D910093EB77 /* Frameworks */,
 				042ED5A01BEB2D910093EB77 /* Resources */,
+				04D6FB2A1BF88E16001BFC49 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				04D6FB291BF88E16001BFC49 /* PBXTargetDependency */,
 			);
 			name = "Christchurch Bus Info";
 			productName = "Christchurch Bus Info";
@@ -176,12 +257,28 @@
 			mainGroup = 042ED5991BEB2D910093EB77;
 			productRefGroup = 042ED5A31BEB2D910093EB77 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 04D6FAFA1BF886AD001BFC49 /* Products */;
+					ProjectRef = 04D6FAF91BF886AD001BFC49 /* SQLite.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				042ED5A11BEB2D910093EB77 /* Christchurch Bus Info */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		04D6FB061BF886AD001BFC49 /* SQLite.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SQLite.framework;
+			remoteRef = 04D6FB051BF886AD001BFC49 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		042ED5A01BEB2D910093EB77 /* Resources */ = {
@@ -190,10 +287,13 @@
 			files = (
 				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
+				048BE8681BF8D87C0064F627 /* second.gpx in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
 				04350F551BEFA31D00FC189E /* stop_information.json in Resources */,
 				04FF5B351BECA2B300A69C9C /* blue location.png in Resources */,
+				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
+				048BE8661BF8D8110064F627 /* default.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,20 +304,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D6FB191BF887A5001BFC49 /* DatabaseManager.swift in Sources */,
 				042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */,
 				042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */,
+				04D6FAF81BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift in Sources */,
 				04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */,
 				0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */,
+				04D6FAF61BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift in Sources */,
 				042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */,
 				04FF5B3C1BECBE7C00A69C9C /* TestViewController.swift in Sources */,
 				0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */,
 				0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */,
+				04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */,
 				0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */,
+				04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */,
 				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
+				0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		04D6FB291BF88E16001BFC49 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite iOS";
+			targetProxy = 04D6FB281BF88E16001BFC49 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		042ED5A91BEB2D910093EB77 /* Main.storyboard */ = {
@@ -324,6 +438,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -336,6 +451,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -60,6 +60,10 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
             currentItem["eta"] = Int(attributeDict["ETA"]!)!
         }
         
+        if attributeDict["TripID"] != nil {
+            currentItem["trip_id"] = attributeDict["TripID"]!
+        }
+        
     }
     
     
@@ -94,13 +98,18 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         let request = NSURLRequest(URL: updateURL)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
-            
+       
             guard let receivedData = data else {
                 return
             }
             
             var xmlContents = NSString(data: receivedData, encoding: NSUTF8StringEncoding)!
             
+            print("\n---------\n")
+            
+    //    let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
+    //    var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
+        
             //Thank you Metro for giving us invalid XML!
             
             //We need to ensure if at some point they give us valid

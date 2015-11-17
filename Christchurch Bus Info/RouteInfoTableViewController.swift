@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-let NEAREST_STOPS_TO_LOAD = 5
+let NEAREST_STOPS_TO_LOAD = 7
 
 var currentIndex: Int = 0
 
@@ -82,8 +82,21 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.startUpdatingLocation()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
+        if self.tableView.indexPathForSelectedRow != nil {
+            self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
+        }
+        
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        locationManager.startUpdatingLocation()
     }
 
     override func didReceiveMemoryWarning() {
@@ -125,7 +138,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             cell.setDistance(distanceFromStop[stopNumber]!)
             
-            cell.setStopLines(stopInfo.lines)
+            let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stopTag)
+            cell.setStopLines(stopLinesForStop)
             
             return cell
             
@@ -141,6 +155,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         
+        locationManager.stopUpdatingLocation()
+        
         let destinationController = segue.destinationViewController as! StopInformationTableViewController
         let indexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
         
@@ -148,39 +164,5 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         destinationController.stopNumber = groupedStops[groupName]![indexPath.row - 1] as! String
         
     }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 }

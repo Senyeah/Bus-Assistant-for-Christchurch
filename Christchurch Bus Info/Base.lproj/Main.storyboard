@@ -251,6 +251,7 @@
                                     <outlet property="lineLabel" destination="TEo-G7-aaq" id="mTq-hW-qhA"/>
                                     <outlet property="timeRemainingLabel" destination="7Xa-q7-5wW" id="T2A-aB-TSE"/>
                                     <outlet property="titleLabel" destination="5sh-4W-Aj5" id="Cvn-L0-NFO"/>
+                                    <segue destination="BTN-KZ-czy" kind="show" id="41d-Gh-Ahs"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
@@ -290,6 +291,210 @@
             </objects>
             <point key="canvasLocation" x="1392" y="251"/>
         </scene>
+        <!--Line View Table View Controller-->
+        <scene sceneID="3Cu-9q-Fe5">
+            <objects>
+                <tableViewController id="BTN-KZ-czy" customClass="LineViewTableViewController" customModule="Christchurch_Bus_Info" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="65" sectionHeaderHeight="18" sectionFooterHeight="18" id="VcI-8c-e4R">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineViewHeaderCell" rowHeight="80" id="AIO-TC-jHD" customClass="LineViewHeaderTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AIO-TC-jHD" id="SL4-Fn-LCW">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="79"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Purple Line" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQa-Vj-Kju">
+                                            <rect key="frame" x="70" y="15" width="105" height="27"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HiD-Qh-TlR" customClass="BusLineLabelView" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                            <rect key="frame" x="20" y="25" width="30" height="30"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" placeholder="YES" id="8CM-zj-y8Q"/>
+                                                <constraint firstAttribute="height" constant="30" placeholder="YES" id="eot-Wv-kUK"/>
+                                            </constraints>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Airport via University" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyw-Op-GoN">
+                                            <rect key="frame" x="70" y="47" width="515" height="17"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="FQa-Vj-Kju" firstAttribute="centerY" secondItem="SL4-Fn-LCW" secondAttribute="centerY" id="1lo-of-3Me"/>
+                                        <constraint firstItem="Yyw-Op-GoN" firstAttribute="centerY" secondItem="SL4-Fn-LCW" secondAttribute="centerY" id="4Op-Gz-dOL"/>
+                                        <constraint firstItem="Yyw-Op-GoN" firstAttribute="leading" secondItem="SL4-Fn-LCW" secondAttribute="leadingMargin" constant="10" id="5Yv-of-YHK"/>
+                                        <constraint firstItem="HiD-Qh-TlR" firstAttribute="centerY" secondItem="SL4-Fn-LCW" secondAttribute="centerY" id="5aI-eL-qir"/>
+                                        <constraint firstItem="FQa-Vj-Kju" firstAttribute="leading" secondItem="HiD-Qh-TlR" secondAttribute="trailing" constant="20" id="C9p-Jw-8uV"/>
+                                        <constraint firstAttribute="bottom" secondItem="Yyw-Op-GoN" secondAttribute="bottom" constant="15" id="EGb-NO-sSS"/>
+                                        <constraint firstAttribute="trailing" secondItem="Yyw-Op-GoN" secondAttribute="trailing" constant="15" id="JsE-j5-0jR"/>
+                                        <constraint firstItem="FQa-Vj-Kju" firstAttribute="leading" secondItem="HiD-Qh-TlR" secondAttribute="trailing" constant="10" id="S9K-0C-u8v"/>
+                                        <constraint firstItem="Yyw-Op-GoN" firstAttribute="top" secondItem="SL4-Fn-LCW" secondAttribute="topMargin" constant="10" id="VUr-hZ-7RC"/>
+                                        <constraint firstItem="FQa-Vj-Kju" firstAttribute="top" secondItem="SL4-Fn-LCW" secondAttribute="top" constant="15" id="WbZ-6e-5eU"/>
+                                        <constraint firstItem="HiD-Qh-TlR" firstAttribute="leading" secondItem="SL4-Fn-LCW" secondAttribute="leading" constant="20" id="XMb-Y9-kkK"/>
+                                        <constraint firstItem="Yyw-Op-GoN" firstAttribute="leading" secondItem="HiD-Qh-TlR" secondAttribute="trailing" constant="20" id="jsm-hx-0VD"/>
+                                        <constraint firstItem="Yyw-Op-GoN" firstAttribute="top" secondItem="FQa-Vj-Kju" secondAttribute="bottom" constant="5" id="ys5-iM-bZZ"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="1lo-of-3Me"/>
+                                            <exclude reference="S9K-0C-u8v"/>
+                                            <exclude reference="4Op-Gz-dOL"/>
+                                            <exclude reference="5Yv-of-YHK"/>
+                                            <exclude reference="VUr-hZ-7RC"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="lineLabel" destination="HiD-Qh-TlR" id="oZ2-AK-PdV"/>
+                                    <outlet property="lineNameLabel" destination="FQa-Vj-Kju" id="Rlp-Tp-P02"/>
+                                    <outlet property="routeNameLabel" destination="Yyw-Op-GoN" id="aiU-hQ-shG"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicDetailCell" textLabel="PY8-E8-KKU" rowHeight="44" style="IBUITableViewCellStyleDefault" id="5NK-yp-GF5">
+                                <rect key="frame" x="0.0" y="130" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5NK-yp-GF5" id="ccP-QM-eAv">
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PY8-E8-KKU">
+                                            <rect key="frame" x="15" y="0.0" width="550" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMajorStopCell" rowHeight="44" id="xct-pU-KnK" customClass="LineMajorStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="174" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xct-pU-KnK" id="93v-te-1n8">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kui-Jb-MPA" customClass="LineStopIndicator" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="58" height="54"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Christchurch International Airport" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvp-HD-eP5">
+                                            <rect key="frame" x="58" y="0.0" width="534" height="44"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="PFh-5a-NOC"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="rvp-HD-eP5" firstAttribute="leading" secondItem="Kui-Jb-MPA" secondAttribute="trailing" id="2Lp-fX-fW8"/>
+                                        <constraint firstItem="rvp-HD-eP5" firstAttribute="centerY" secondItem="93v-te-1n8" secondAttribute="centerY" id="5eC-7P-o6x"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="rvp-HD-eP5" secondAttribute="trailing" id="B6e-gu-7kz"/>
+                                        <constraint firstItem="Kui-Jb-MPA" firstAttribute="top" secondItem="93v-te-1n8" secondAttribute="top" id="LqX-Xj-48u"/>
+                                        <constraint firstItem="rvp-HD-eP5" firstAttribute="top" secondItem="93v-te-1n8" secondAttribute="top" id="M0N-50-MxX"/>
+                                        <constraint firstItem="rvp-HD-eP5" firstAttribute="leading" secondItem="93v-te-1n8" secondAttribute="leadingMargin" constant="50" id="OmF-lM-frM"/>
+                                        <constraint firstItem="Kui-Jb-MPA" firstAttribute="leading" secondItem="93v-te-1n8" secondAttribute="leading" id="fCa-jP-N61"/>
+                                        <constraint firstAttribute="bottom" secondItem="Kui-Jb-MPA" secondAttribute="bottom" id="iQa-Ig-HBN"/>
+                                        <constraint firstAttribute="bottom" secondItem="rvp-HD-eP5" secondAttribute="bottom" id="k9f-v9-1LB"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="5eC-7P-o6x"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="lineStopIndicator" destination="Kui-Jb-MPA" id="nFk-wD-5UM"/>
+                                    <outlet property="titleLabel" destination="rvp-HD-eP5" id="uqh-ut-2Uk"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="218" width="600" height="40"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bF8-UI-nYJ" id="j4Q-D4-Iif">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XzA-zL-udK" customClass="LineStopIndicator" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="58" height="39"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="3 stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gbc-Te-V8L">
+                                            <rect key="frame" x="58" y="0.0" width="534" height="39"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="S4R-pn-KPP"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="TfS-M2-jXo"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
+                                            <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="S4R-pn-KPP"/>
+                                                </mask>
+                                            </variation>
+                                        </label>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="Gbc-Te-V8L" firstAttribute="leading" secondItem="XzA-zL-udK" secondAttribute="trailing" id="08c-P1-DS4"/>
+                                        <constraint firstItem="XzA-zL-udK" firstAttribute="top" secondItem="j4Q-D4-Iif" secondAttribute="top" id="42w-pu-ft8"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Gbc-Te-V8L" secondAttribute="trailing" id="Hjy-LO-fAh"/>
+                                        <constraint firstItem="Gbc-Te-V8L" firstAttribute="leading" secondItem="j4Q-D4-Iif" secondAttribute="leadingMargin" constant="50" id="IG1-HO-heP"/>
+                                        <constraint firstAttribute="bottom" secondItem="Gbc-Te-V8L" secondAttribute="bottom" id="IM3-vs-pba"/>
+                                        <constraint firstAttribute="bottom" secondItem="XzA-zL-udK" secondAttribute="bottom" id="M66-G0-2dH"/>
+                                        <constraint firstItem="XzA-zL-udK" firstAttribute="leading" secondItem="j4Q-D4-Iif" secondAttribute="leading" id="ma6-5R-5nl"/>
+                                        <constraint firstItem="Gbc-Te-V8L" firstAttribute="top" secondItem="j4Q-D4-Iif" secondAttribute="top" id="n0k-2H-OiZ"/>
+                                        <constraint firstItem="Gbc-Te-V8L" firstAttribute="centerY" secondItem="j4Q-D4-Iif" secondAttribute="centerY" id="xg9-VI-z2A"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="xg9-VI-z2A"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="lineStopIndicator" destination="XzA-zL-udK" id="aBX-L8-3XS"/>
+                                    <outlet property="titleLabel" destination="Gbc-Te-V8L" id="Cju-8F-eRs"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="BTN-KZ-czy" id="2jt-tq-gBo"/>
+                            <outlet property="delegate" destination="BTN-KZ-czy" id="EUS-l8-G9n"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O6d-yR-Scq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2075" y="251"/>
+        </scene>
         <!--Item 2-->
         <scene sceneID="0Rm-om-gaV">
             <objects>
@@ -301,6 +506,16 @@
                     <view key="view" contentMode="scaleToFill" id="71Z-rP-khs">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5XL-Ch-YDb">
+                                <rect key="frame" x="35" y="37" width="30" height="30"/>
+                                <animations/>
+                                <state key="normal" title="test"/>
+                                <connections>
+                                    <segue destination="BTN-KZ-czy" kind="show" id="ZPp-89-69s"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -333,4 +548,7 @@
     <resources>
         <image name="blue location.png" width="34" height="34"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ZPp-89-69s"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -32,12 +32,19 @@ enum BusLineType {
     case NumberedRoute(String)
 }
 
+protocol BusLineLabelViewWidthDelegate {
+    func busLineLabelViewDidDetermineIntrinsicContentWidth(width: CGFloat, forView view: BusLineLabelView, withWidthConstraint constraint: NSLayoutConstraint)
+}
+
 class BusLineLabelView: UIView {
 
+    var delegate: BusLineLabelViewWidthDelegate?
+    
     var lineType: BusLineType?
     var cellBackgroundColour: UIColor?
     
     var viewConstraints: [NSLayoutConstraint]!
+    var widthConstraint: NSLayoutConstraint!
     
     let label = UILabel()
     
@@ -123,23 +130,21 @@ class BusLineLabelView: UIView {
         
         viewConstraints = [NSLayoutConstraint]()
 
-        let widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
-        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
+        widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
+        delegate?.busLineLabelViewDidDetermineIntrinsicContentWidth(width, forView: self, withWidthConstraint: widthConstraint)
         
-        self.addConstraints([widthConstraint, heightConstraint])
+        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         
         viewConstraints.append(widthConstraint)
         viewConstraints.append(heightConstraint)
         
-        let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[label]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
-        
-        self.addConstraints(labelWidthConstraint)
+        let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[label]-0-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
         viewConstraints.appendContentsOf(labelWidthConstraint)
         
-        let labelHeightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[label]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
-
-        self.addConstraints(labelHeightConstraint)
+        let labelHeightConstraint = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[label]-0-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
         viewConstraints.appendContentsOf(labelHeightConstraint)
+        
+        self.addConstraints(viewConstraints)
         
     }
     
