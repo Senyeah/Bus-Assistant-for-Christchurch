@@ -14,7 +14,7 @@ let UPDATE_FREQUENCY_SECONDS = 30.0
 let MIN_THUMBNAIL_WIDTH = 30.0
 let DEFAULT_SEPARATOR_INSET = 60.0
 
-class StopInformationTableViewController: UITableViewController, StopInformationParserDelegate, BusLineLabelViewWidthDelegate {
+class StopInformationTableViewController: UITableViewController, StopInformationParserDelegate {
     
     var stopNumber: String!
     
@@ -94,50 +94,49 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     }
     
     
-    func busLineLabelViewDidDetermineIntrinsicContentWidth(width: CGFloat, forView view: BusLineLabelView, withWidthConstraint constraint: NSLayoutConstraint) {
-        
-        struct StaticInstance {
-            static var timesCalled = 0
-            static var viewWidths = [CGFloat]()
-            static var constraints = [NSLayoutConstraint]()
-        }
-        
-        StaticInstance.viewWidths.append(width)
-        StaticInstance.constraints.append(constraint)
-        
-        StaticInstance.timesCalled++
-        
-        if StaticInstance.timesCalled == busArrivalInfo.count {
-            
-            //Determine whether the widths are all the same
-            
-            let uniqueWidths = Set(StaticInstance.viewWidths)
-            
-            if uniqueWidths.count > 1 {
-                
-                routeThumbnailWidth = uniqueWidths.maxElement()!
-                let changeInWidth = routeThumbnailWidth - CGFloat(MIN_THUMBNAIL_WIDTH)
-                
-                separatorInset = CGFloat(DEFAULT_SEPARATOR_INSET) + changeInWidth
-                
-                for index in 0..<StaticInstance.constraints.count {
-                    StaticInstance.constraints[index].constant = routeThumbnailWidth
-                 //   print("setting item \(index) of \(StaticInstance.constraints.count-1) to \(routeThumbnailWidth)")
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    view.setNeedsUpdateConstraints()
-                })
-                
-            }
-            
-            StaticInstance.timesCalled = 0
-            StaticInstance.viewWidths = []
-            StaticInstance.constraints = []
-            
-        }
-        
-    }
+//    func busLineLabelViewDidDetermineIntrinsicContentWidth(width: CGFloat, forView view: BusLineLabelView, withWidthConstraint constraint: NSLayoutConstraint) {
+//        
+//        struct StaticInstance {
+//            static var timesCalled = 0
+//            static var viewWidths = [CGFloat]()
+//            static var constraints = [NSLayoutConstraint]()
+//        }
+//        
+//        StaticInstance.viewWidths.append(width)
+//        StaticInstance.constraints.append(constraint)
+//        
+//        StaticInstance.timesCalled++
+//        
+//        if StaticInstance.timesCalled == busArrivalInfo.count {
+//            
+//            //Determine whether the widths are all the same
+//            
+//            let uniqueWidths = Set(StaticInstance.viewWidths)
+//            
+//            if uniqueWidths.count > 1 {
+//                
+//                routeThumbnailWidth = uniqueWidths.maxElement()!
+//                let changeInWidth = routeThumbnailWidth - CGFloat(MIN_THUMBNAIL_WIDTH)
+//                
+//                separatorInset = CGFloat(DEFAULT_SEPARATOR_INSET) + changeInWidth
+//                
+//                for index in 0..<StaticInstance.constraints.count {
+//                    StaticInstance.constraints[index].constant = routeThumbnailWidth
+//                 //   print("setting item \(index) of \(StaticInstance.constraints.count-1) to \(routeThumbnailWidth)")
+//                }
+//                
+//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                    view.setNeedsUpdateConstraints()
+//                })
+//                
+//            }
+//            
+//            StaticInstance.timesCalled = 0
+//            StaticInstance.viewWidths = []
+//            StaticInstance.constraints = []
+//            
+//        }
+//    }
     
     
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String : AnyObject]]) {
@@ -190,8 +189,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopCell", forIndexPath: indexPath) as! RouteStopTableViewCell
             let info: [String: AnyObject] = busArrivalInfo[indexPath.row]
             
-            cell.lineLabel.delegate = self
-            
             cell.titleLabel.text = info["name"]! as? String
             cell.timeRemainingLabel.text = formattedStringForArrivalTime(Int(info["eta"]! as! NSNumber))
             
@@ -241,6 +238,8 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
         let tappedIndexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
         let tappedTripID = busArrivalInfo[tappedIndexPath.row]["trip_id"] as! String
+        
+        print("tapped trip id = \(tappedTripID)")
         
         //find the route info before we actually segue
         

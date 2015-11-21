@@ -8,10 +8,7 @@
 
 import UIKit
 
-class LineMajorStopTableViewCell: UITableViewCell {
-
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var lineStopIndicator: LineStopIndicator!
+class LineMajorStopTableViewCell: LineStopTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()

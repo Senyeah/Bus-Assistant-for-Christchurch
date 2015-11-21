@@ -13,15 +13,14 @@ import SQLite
 struct StopOnRoute {
     var stopName: String
     var stopNumber: String
-    var isMajorStop: Bool
+    var shouldDisplay: Bool
+    var isIntermediate: Bool = false
 }
 
 
 class DatabaseManager: NSObject {
 
     static let sharedInstance = DatabaseManager()
-    let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-    
     var database: Connection!
     
     
@@ -55,7 +54,7 @@ class DatabaseManager: NSObject {
             let name = rows[1] as! String
             let isMajorStop = rows[2] as! String == "1"
             
-            result.append(StopOnRoute(stopName: name, stopNumber: number, isMajorStop: isMajorStop))
+            result.append(StopOnRoute(stopName: name, stopNumber: number, shouldDisplay: isMajorStop, isIntermediate: false))
             
         }
         
@@ -107,9 +106,12 @@ class DatabaseManager: NSObject {
         
     }
     
+    func connect() {
+        database = try! Connection(documentsDirectory + "/database.sqlite3")
+    }
+    
     override init() {
         super.init()
-        database = try! Connection(documentsDirectory + "/database.sqlite")
     }
     
 }

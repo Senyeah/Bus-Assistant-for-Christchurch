@@ -15,13 +15,20 @@
 		042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */; };
 		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
 		042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */; };
-		04350F551BEFA31D00FC189E /* stop_information.json in Resources */ = {isa = PBXBuildFile; fileRef = 04350F541BEFA31D00FC189E /* stop_information.json */; };
 		0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */; };
+		044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */; };
 		0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC8B1BF600F600794D4C /* StopInformationParser.swift */; };
 		0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */; };
 		0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */; };
 		04688E8E1BF6339C006A1DFA /* info.xml in Resources */ = {isa = PBXBuildFile; fileRef = 04688E8D1BF6339C006A1DFA /* info.xml */; };
 		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
+		047981221BFF3EE000DB3947 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 047981211BFF3EE000DB3947 /* database.zip */; };
+		0479812E1BFF73C800DB3947 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 0479812C1BFF73C800DB3947 /* SSZipArchive.m */; };
+		047981301BFF747000DB3947 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0479812F1BFF747000DB3947 /* libz.1.dylib */; };
+		047981421BFF75B000DB3947 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0479813E1BFF75B000DB3947 /* ioapi.c */; };
+		047981431BFF75B000DB3947 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0479813F1BFF75B000DB3947 /* mztools.c */; };
+		047981441BFF75B000DB3947 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 047981401BFF75B000DB3947 /* unzip.c */; };
+		047981451BFF75B000DB3947 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 047981411BFF75B000DB3947 /* zip.c */; };
 		048BE8661BF8D8110064F627 /* default.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 048BE8651BF8D8110064F627 /* default.gpx */; };
 		048BE8681BF8D87C0064F627 /* second.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 048BE8671BF8D87C0064F627 /* second.gpx */; };
 		04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */; };
@@ -78,13 +85,29 @@
 		042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfoTableViewController.swift; sourceTree = "<group>"; };
 		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
 		042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
-		04350F541BEFA31D00FC189E /* stop_information.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stop_information.json; sourceTree = "<group>"; };
 		0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewTableViewController.swift; sourceTree = "<group>"; };
+		044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopTableViewCell.swift; sourceTree = "<group>"; };
 		0451FC8B1BF600F600794D4C /* StopInformationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationParser.swift; sourceTree = "<group>"; };
 		0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationTableViewController.swift; sourceTree = "<group>"; };
 		0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopTableViewCell.swift; sourceTree = "<group>"; };
 		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
+		047981211BFF3EE000DB3947 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
+		047981251BFF734600DB3947 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = "<group>"; };
+		047981291BFF73C800DB3947 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		0479812A1BFF73C800DB3947 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		0479812C1BFF73C800DB3947 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		0479812F1BFF747000DB3947 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
+		0479813E1BFF75B000DB3947 /* ioapi.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		0479813F1BFF75B000DB3947 /* mztools.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		047981401BFF75B000DB3947 /* unzip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		047981411BFF75B000DB3947 /* zip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		047981461BFF75D500DB3947 /* crypt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		047981471BFF75D500DB3947 /* ioapi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		047981481BFF75D500DB3947 /* mztools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		047981491BFF75D500DB3947 /* unzip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		0479814A1BFF75D500DB3947 /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		048BE8651BF8D8110064F627 /* default.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = default.gpx; path = ../../default.gpx; sourceTree = "<group>"; };
 		048BE8671BF8D87C0064F627 /* second.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = second.gpx; path = ../../second.gpx; sourceTree = "<group>"; };
 		04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMajorStopTableViewCell.swift; sourceTree = "<group>"; };
@@ -103,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047981301BFF747000DB3947 /* libz.1.dylib in Frameworks */,
 				04D6FB251BF88E09001BFC49 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +137,9 @@
 		042ED5991BEB2D910093EB77 = {
 			isa = PBXGroup;
 			children = (
+				0479812F1BFF747000DB3947 /* libz.1.dylib */,
+				047981271BFF73B200DB3947 /* ZipArchive */,
+				047981251BFF734600DB3947 /* libz.tbd */,
 				048BE8671BF8D87C0064F627 /* second.gpx */,
 				048BE8651BF8D8110064F627 /* default.gpx */,
 				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
@@ -162,8 +189,8 @@
 		042ED5C21BEB5FF20093EB77 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				047981211BFF3EE000DB3947 /* database.zip */,
 				04688E8D1BF6339C006A1DFA /* info.xml */,
-				04350F541BEFA31D00FC189E /* stop_information.json */,
 				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
 			);
 			name = Resources;
@@ -174,6 +201,7 @@
 			children = (
 				0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */,
 				04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */,
+				044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */,
 				04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */,
 				04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */,
 				04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */,
@@ -189,6 +217,34 @@
 				0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */,
 			);
 			name = "Stop Info";
+			sourceTree = "<group>";
+		};
+		047981271BFF73B200DB3947 /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				0479814B1BFF75D900DB3947 /* minizip */,
+				047981291BFF73C800DB3947 /* Common.h */,
+				0479812A1BFF73C800DB3947 /* SSZipArchive.h */,
+				0479812C1BFF73C800DB3947 /* SSZipArchive.m */,
+				047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */,
+			);
+			name = ZipArchive;
+			sourceTree = "<group>";
+		};
+		0479814B1BFF75D900DB3947 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				0479813E1BFF75B000DB3947 /* ioapi.c */,
+				0479813F1BFF75B000DB3947 /* mztools.c */,
+				047981401BFF75B000DB3947 /* unzip.c */,
+				047981411BFF75B000DB3947 /* zip.c */,
+				047981461BFF75D500DB3947 /* crypt.h */,
+				047981471BFF75D500DB3947 /* ioapi.h */,
+				047981481BFF75D500DB3947 /* mztools.h */,
+				047981491BFF75D500DB3947 /* unzip.h */,
+				0479814A1BFF75D500DB3947 /* zip.h */,
+			);
+			name = minizip;
 			sourceTree = "<group>";
 		};
 		04D6FAFA1BF886AD001BFC49 /* Products */ = {
@@ -289,7 +345,7 @@
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
 				048BE8681BF8D87C0064F627 /* second.gpx in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
-				04350F551BEFA31D00FC189E /* stop_information.json in Resources */,
+				047981221BFF3EE000DB3947 /* database.zip in Resources */,
 				04FF5B351BECA2B300A69C9C /* blue location.png in Resources */,
 				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
@@ -304,8 +360,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047981421BFF75B000DB3947 /* ioapi.c in Sources */,
+				047981431BFF75B000DB3947 /* mztools.c in Sources */,
+				047981441BFF75B000DB3947 /* unzip.c in Sources */,
+				047981451BFF75B000DB3947 /* zip.c in Sources */,
 				04D6FB191BF887A5001BFC49 /* DatabaseManager.swift in Sources */,
 				042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */,
+				0479812E1BFF73C800DB3947 /* SSZipArchive.m in Sources */,
 				042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */,
 				04D6FAF81BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift in Sources */,
 				04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */,
@@ -316,6 +377,7 @@
 				0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */,
 				0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */,
 				04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */,
+				044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */,
 				0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */,
 				04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */,
 				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
@@ -438,12 +500,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.Christchurch-Bus-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -451,12 +516,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.Christchurch-Bus-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
 			};
 			name = Release;
 		};

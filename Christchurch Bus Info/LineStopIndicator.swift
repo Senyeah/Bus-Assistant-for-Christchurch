@@ -18,7 +18,11 @@ enum StopType {
 class LineStopIndicator: UIView {
 
     var isMajorStop = true
-    var stopType: StopType = .LineStart
+    var stopType: StopType = .LineStart {
+        didSet {
+            self.setNeedsDisplay()
+        }
+    }
     
     @IBInspectable var strokeColour: UIColor! = purple
     
@@ -36,7 +40,7 @@ class LineStopIndicator: UIView {
         var lineStartY: CGFloat = 0.0
         
         if stopType == .LineStart {
-            lineStartY = rect.height / 2.0
+            lineStartY = rect.height / 2
         }
         
         var lineEndY = rect.height

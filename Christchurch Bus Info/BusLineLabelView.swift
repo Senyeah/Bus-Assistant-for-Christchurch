@@ -32,13 +32,8 @@ enum BusLineType {
     case NumberedRoute(String)
 }
 
-protocol BusLineLabelViewWidthDelegate {
-    func busLineLabelViewDidDetermineIntrinsicContentWidth(width: CGFloat, forView view: BusLineLabelView, withWidthConstraint constraint: NSLayoutConstraint)
-}
 
 class BusLineLabelView: UIView {
-
-    var delegate: BusLineLabelViewWidthDelegate?
     
     var lineType: BusLineType?
     var cellBackgroundColour: UIColor?
@@ -131,7 +126,6 @@ class BusLineLabelView: UIView {
         viewConstraints = [NSLayoutConstraint]()
 
         widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
-        delegate?.busLineLabelViewDidDetermineIntrinsicContentWidth(width, forView: self, withWidthConstraint: widthConstraint)
         
         let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         

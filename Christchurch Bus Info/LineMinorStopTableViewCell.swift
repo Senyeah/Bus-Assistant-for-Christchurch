@@ -8,11 +8,8 @@
 
 import UIKit
 
-class LineMinorStopTableViewCell: UITableViewCell {
-    
-    @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var lineStopIndicator: LineStopIndicator!
-    
+class LineMinorStopTableViewCell: LineStopTableViewCell {
+        
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

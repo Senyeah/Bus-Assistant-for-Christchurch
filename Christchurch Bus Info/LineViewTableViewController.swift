@@ -33,68 +33,69 @@ class LineViewTableViewController: UITableViewController {
         }
     }
     
-    var majorStopsOnRoute: [StopOnRoute] = []
-    var numberOfStopsInIntermediateSection: [Int] = []
+    var stopsToShow: [Int: StopOnRoute] = [:]
+    var stopsToHide: [Int: Int] = [:]
     
-    var majorStopIndices: [Int] = []
-    var intermediateSectionIndices: [Int] = []
+    var intermediateSectionCount = 0
     
     var stopsOnRoute: [StopOnRoute] = [] {
         didSet {
-            var count = 0
-            var index = 0
+            stopsToShow.removeAll()
+            stopsToHide.removeAll()
+            
+            intermediateSectionCount = 0
+            
+            //make sure the first and last items are always shown
+            
+            stopsOnRoute[0].shouldDisplay = true
+            stopsOnRoute[stopsOnRoute.count - 1].shouldDisplay = true
+            
+            var intermediateRowCount = 0
+            var rowsInSectionCount = 0
+            
+            var row = 0
+            var didShowLastRow = false
             
             for stop in stopsOnRoute {
-                if stop.isMajorStop {
-
-                    if count > 0 {
-                        intermediateSectionIndices.append(majorStopsOnRoute.count + intermediateSectionIndices.count)
-                        numberOfStopsInIntermediateSection.append(count)
-                        count = 0
+                
+                var wouldCollapseOnlyOneStop = false
+                
+                if stop.shouldDisplay == false && rowsInSectionCount == 0 {
+                    if row == stopsOnRoute.count - 1 {
+                        wouldCollapseOnlyOneStop = true
+                    } else {
+                        wouldCollapseOnlyOneStop = stopsOnRoute[row + 1].shouldDisplay
                     }
-                    
-                    majorStopIndices.append(majorStopsOnRoute.count + intermediateSectionIndices.count)
-                    majorStopsOnRoute.append(stop)
-                    
-                } else {
-                    count += 1
                 }
                 
-                index += 1
-            }            
+                if stop.shouldDisplay || wouldCollapseOnlyOneStop {
+                    
+                    let index = row - intermediateRowCount + intermediateSectionCount
+                    stopsToShow[index] = stop
+                    
+                    if didShowLastRow == false && intermediateRowCount > 0 {
+                        stopsToHide[stopsToShow.count + intermediateSectionCount - 2] = rowsInSectionCount
+                        rowsInSectionCount = 0
+                    }
+                    
+                    didShowLastRow = true
+                    
+                } else {
+                    
+                    if didShowLastRow {
+                        intermediateSectionCount += 1
+                        didShowLastRow = false
+                    }
+                    
+                    intermediateRowCount += 1
+                    rowsInSectionCount += 1
+                    
+                }
+                
+                row += 1
+                
+            }
         }
-    }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
-    }
-    
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else if section == 1 {
-            return 2
-        } else {
-            return majorStopsOnRoute.count + numberOfStopsInIntermediateSection.count
-        }
-    }
-    
-    
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
     }
     
     
@@ -125,20 +126,20 @@ class LineViewTableViewController: UITableViewController {
             
         } else {
             
-            let isIntermediate = intermediateSectionIndices.contains(indexPath.row)
+            var cell: LineStopTableViewCell!
             
-            if isIntermediate == false {
+            if stopsToShow.keys.contains(indexPath.row) {
                 
-                let cell = tableView.dequeueReusableCellWithIdentifier("LineMajorStopCell", forIndexPath: indexPath) as! LineMajorStopTableViewCell
-                let stopInfo = majorStopsOnRoute[majorStopIndices.indexOf(indexPath.row)!]
+                let stopInfo = stopsToShow[indexPath.row]!
                 
+                if stopInfo.isIntermediate == false {
+                    cell = tableView.dequeueReusableCellWithIdentifier("LineMajorStopCell", forIndexPath: indexPath) as! LineMajorStopTableViewCell
+                } else {
+                    cell = tableView.dequeueReusableCellWithIdentifier("LineMinorStopCell", forIndexPath: indexPath) as! LineMinorStopTableViewCell
+                }
                 
-                cell.titleLabel.text = stopInfo.stopName
-                
-                cell.lineStopIndicator.isMajorStop = true
-                cell.lineStopIndicator.strokeColour = lineColour
-                
-                cell.separatorInset = UIEdgeInsets(top: 0.0, left: cell.contentView.frame.width, bottom: 0.0, right: 0.0)
+                cell.titleLabel.text = (stopInfo.isIntermediate ? "Near " : "") + stopInfo.stopName
+                cell.lineStopIndicator.isMajorStop = !stopInfo.isIntermediate
                 
                 if indexPath.row == 0 {
                     cell.lineStopIndicator.stopType = .LineStart
@@ -148,77 +149,132 @@ class LineViewTableViewController: UITableViewController {
                     cell.lineStopIndicator.stopType = .IntermediateStop
                 }
                 
-                
-                return cell
-                
             } else {
                 
-                let cell = tableView.dequeueReusableCellWithIdentifier("LineMinorStopCell", forIndexPath: indexPath) as! LineMinorStopTableViewCell
-                let numberOfStopsInSection = numberOfStopsInIntermediateSection[intermediateSectionIndices.indexOf(indexPath.row)!]
+                cell = tableView.dequeueReusableCellWithIdentifier("LineMinorStopCell", forIndexPath: indexPath) as! LineMinorStopTableViewCell
                 
-                cell.titleLabel.text = "\(numberOfStopsInSection) stop" + ((numberOfStopsInSection > 1) ? "s" : "")
+                guard let numberOfStopsInSection = stopsToHide[indexPath.row] else {
+                    return cell
+                }
+                
+                cell.titleLabel.text = "\(numberOfStopsInSection) stops"
                 
                 cell.lineStopIndicator.isMajorStop = false
-                cell.lineStopIndicator.strokeColour = lineColour
-                
-                cell.separatorInset = UIEdgeInsets(top: 0.0, left: cell.contentView.frame.width, bottom: 0.0, right: 0.0)
                 cell.lineStopIndicator.stopType = .IntermediateStop
-                                
-                return cell
                 
             }
             
+            cell.lineStopIndicator.strokeColour = lineColour
+            cell.separatorInset = UIEdgeInsets(top: 0.0, left: cell.contentView.frame.width, bottom: 0.0, right: 0.0)
+            
+            return cell
+            
+        }
+    }
+
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.section == 2 && stopsToShow.keys.contains(indexPath.row) == false {
+            
+            //we need to expand this collapsed section of stops
+            
+            let collapsedIntermediateStopsCount = stopsToHide.reduce(0) { (currentCollapsed, object) in
+                let (key, numCollapsed) = object
+                return (key < indexPath.row) ? currentCollapsed + numCollapsed : currentCollapsed
+            }
+
+            let stopsDisplayedAboveCollapseCount = stopsToShow.reduce(0) { (currentStopsDisplayed, object) in
+                let (key, _) = object
+                return (key < indexPath.row) ? currentStopsDisplayed + 1 : currentStopsDisplayed
+            }
+            
+            let stopsCollapsedCount = stopsToHide[indexPath.row]
+            let startIndex = stopsDisplayedAboveCollapseCount + collapsedIntermediateStopsCount
+            
+            var clone = stopsOnRoute
+            var insertedRowsIndexPaths: [NSIndexPath] = []
+            
+            for index in startIndex..<startIndex + stopsCollapsedCount! {
+                let newRowIndex = index - startIndex + indexPath.row
+                insertedRowsIndexPaths.append(NSIndexPath(forRow: newRowIndex, inSection: indexPath.section))
+                
+                clone[index].shouldDisplay = true
+                clone[index].isIntermediate = true
+            }
+            
+            stopsOnRoute = clone
+            
+            tableView.beginUpdates()
+            
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+            tableView.insertRowsAtIndexPaths(insertedRowsIndexPaths, withRowAnimation: .Top)
+            
+            tableView.endUpdates()
+            
+        } else {
+            self.performSegueWithIdentifier("LineStopInfoSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
         }
         
-        //cell.separatorInset = UIEdgeInsets(top: 0.0, left: cell.contentView.frame.width, bottom: 0.0, right: 0.0)
-        
-        
     }
     
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        let selectedRowIndexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
+        
+        if selectedRowIndexPath.section == 2 && stopsToShow.keys.contains(selectedRowIndexPath.row) == false {
+            return
+        }
+        
+        if selectedRowIndexPath.section == 2 {
+            
+            let stopInfoViewController = segue.destinationViewController as! StopInformationTableViewController
+            let stopInfo = stopsToShow[selectedRowIndexPath.row]!
+            
+            stopInfoViewController.stopNumber = stopInfo.stopNumber
+            
+        }
+        
     }
-    */
+    
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        return false
+    }
+    
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 1
+        } else if section == 1 {
+            return 2
+        } else {
+            return stopsToShow.count + intermediateSectionCount
+        }
+    }
+    
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     
 }

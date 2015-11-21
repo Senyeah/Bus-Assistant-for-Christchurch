@@ -68,7 +68,7 @@
                                             <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="3" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Another Road" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaO-Xz-fn6">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="3" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Another Road" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaO-Xz-fn6">
                                             <rect key="frame" x="76" y="10" width="427" height="20"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -194,13 +194,13 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteStopCell" rowHeight="58" id="0Q3-Ob-24f" customClass="RouteStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="600" height="58"/>
+                                <rect key="frame" x="0.0" y="50" width="600" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalCompressionResistancePriority="1000" tableViewCell="0Q3-Ob-24f" id="12u-nr-aye">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="57"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="751" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="751" text="Route Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sh-4W-Aj5">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="751" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="751" text="Route Name" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sh-4W-Aj5">
                                             <rect key="frame" x="60" y="10" width="499" height="20"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -255,7 +255,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="172" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="108" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t0a-zb-fhk" id="aS0-g5-78m">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -324,7 +324,7 @@
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Airport via University" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyw-Op-GoN">
-                                            <rect key="frame" x="70" y="47" width="515" height="17"/>
+                                            <rect key="frame" x="70" y="47" width="510" height="17"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -339,7 +339,7 @@
                                         <constraint firstItem="HiD-Qh-TlR" firstAttribute="centerY" secondItem="SL4-Fn-LCW" secondAttribute="centerY" id="5aI-eL-qir"/>
                                         <constraint firstItem="FQa-Vj-Kju" firstAttribute="leading" secondItem="HiD-Qh-TlR" secondAttribute="trailing" constant="20" id="C9p-Jw-8uV"/>
                                         <constraint firstAttribute="bottom" secondItem="Yyw-Op-GoN" secondAttribute="bottom" constant="15" id="EGb-NO-sSS"/>
-                                        <constraint firstAttribute="trailing" secondItem="Yyw-Op-GoN" secondAttribute="trailing" constant="15" id="JsE-j5-0jR"/>
+                                        <constraint firstAttribute="trailing" secondItem="Yyw-Op-GoN" secondAttribute="trailing" constant="20" id="JsE-j5-0jR"/>
                                         <constraint firstItem="FQa-Vj-Kju" firstAttribute="leading" secondItem="HiD-Qh-TlR" secondAttribute="trailing" constant="10" id="S9K-0C-u8v"/>
                                         <constraint firstItem="Yyw-Op-GoN" firstAttribute="top" secondItem="SL4-Fn-LCW" secondAttribute="topMargin" constant="10" id="VUr-hZ-7RC"/>
                                         <constraint firstItem="FQa-Vj-Kju" firstAttribute="top" secondItem="SL4-Fn-LCW" secondAttribute="top" constant="15" id="WbZ-6e-5eU"/>
@@ -392,15 +392,15 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kui-Jb-MPA" customClass="LineStopIndicator" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="58" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="58" height="0.0"/>
                                             <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Christchurch International Airport" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rvp-HD-eP5">
-                                            <rect key="frame" x="58" y="0.0" width="534" height="44"/>
+                                            <rect key="frame" x="58" y="0.0" width="534" height="40"/>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="PFh-5a-NOC"/>
+                                                <constraint firstAttribute="height" constant="40" id="PFh-5a-NOC"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -429,6 +429,7 @@
                                 <connections>
                                     <outlet property="lineStopIndicator" destination="Kui-Jb-MPA" id="nFk-wD-5UM"/>
                                     <outlet property="titleLabel" destination="rvp-HD-eP5" id="uqh-ut-2Uk"/>
+                                    <segue destination="Aft-Di-Ohz" kind="show" identifier="LineStopInfoSegue" id="ApD-Dq-SBi"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
@@ -482,6 +483,7 @@
                                 <connections>
                                     <outlet property="lineStopIndicator" destination="XzA-zL-udK" id="aBX-L8-3XS"/>
                                     <outlet property="titleLabel" destination="Gbc-Te-V8L" id="Cju-8F-eRs"/>
+                                    <segue destination="Aft-Di-Ohz" kind="show" identifier="LineStopInfoSegue" id="vgy-k6-HAr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -525,6 +527,75 @@
             </objects>
             <point key="canvasLocation" x="22" y="916"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="Ari-bN-hFI">
+            <objects>
+                <viewController id="ZtN-ll-dgC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R8f-7X-f0O"/>
+                        <viewControllerLayoutGuide type="bottom" id="PCn-zh-HMc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5zO-hf-l8x">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading Update" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="07G-c2-g2d">
+                                <rect key="frame" x="175" y="100" width="250" height="32"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="Gmf-zD-zL0"/>
+                                    <constraint firstAttribute="width" constant="250" id="aE2-6h-JIC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Gmf-zD-zL0"/>
+                                    </mask>
+                                </variation>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecF-dK-LuH">
+                                <rect key="frame" x="233" y="484" width="134" height="36"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Cancel Update"/>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="4Mz-0j-MMu">
+                                <rect key="frame" x="60" y="299" width="480" height="2"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="oXM-VJ-oWH"/>
+                                </constraints>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 KB of 3.2 MB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zup-FA-YsP">
+                                <rect key="frame" x="249" y="147" width="103" height="18"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Zup-FA-YsP" firstAttribute="top" secondItem="07G-c2-g2d" secondAttribute="bottom" constant="15" id="2s9-Lo-nLy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4Mz-0j-MMu" secondAttribute="trailing" constant="40" id="38i-e7-oZ4"/>
+                            <constraint firstItem="07G-c2-g2d" firstAttribute="centerX" secondItem="5zO-hf-l8x" secondAttribute="centerX" id="Kam-Fv-qQM"/>
+                            <constraint firstItem="Zup-FA-YsP" firstAttribute="centerX" secondItem="5zO-hf-l8x" secondAttribute="centerX" id="Lne-KD-oZm"/>
+                            <constraint firstItem="4Mz-0j-MMu" firstAttribute="centerY" secondItem="5zO-hf-l8x" secondAttribute="centerY" id="WJp-3A-Lt5"/>
+                            <constraint firstItem="07G-c2-g2d" firstAttribute="top" secondItem="R8f-7X-f0O" secondAttribute="bottom" constant="80" id="X83-SS-7AV"/>
+                            <constraint firstItem="4Mz-0j-MMu" firstAttribute="centerX" secondItem="5zO-hf-l8x" secondAttribute="centerX" id="ddP-6z-d2D"/>
+                            <constraint firstItem="PCn-zh-HMc" firstAttribute="top" secondItem="ecF-dK-LuH" secondAttribute="bottom" constant="80" id="fle-e4-eEL"/>
+                            <constraint firstItem="ecF-dK-LuH" firstAttribute="centerX" secondItem="5zO-hf-l8x" secondAttribute="centerX" id="lAf-He-4m7"/>
+                            <constraint firstItem="4Mz-0j-MMu" firstAttribute="leading" secondItem="5zO-hf-l8x" secondAttribute="leadingMargin" constant="40" id="sdl-cc-sAG"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aQa-FA-p79" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-798" y="-93"/>
+        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="lKr-93-i24">
             <objects>
@@ -538,6 +609,7 @@
                     <connections>
                         <segue destination="OBA-sT-3h3" kind="relationship" relationship="viewControllers" id="Mpe-8b-FwC"/>
                         <segue destination="Dnx-h0-hJn" kind="relationship" relationship="viewControllers" id="5rQ-ZE-sDO"/>
+                        <segue destination="ZtN-ll-dgC" kind="presentation" identifier="ShowUpdateViewSegue" id="AQs-Lf-JQn"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v3b-Uj-JHZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -549,6 +621,7 @@
         <image name="blue location.png" width="34" height="34"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZPp-89-69s"/>
+        <segue reference="41d-Gh-Ahs"/>
+        <segue reference="vgy-k6-HAr"/>
     </inferredMetricsTieBreakers>
 </document>

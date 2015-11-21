@@ -9,10 +9,8 @@
 import UIKit
 import CoreLocation
 
-//Todo:
-
-let UPDATE_URL = "http://dev.miyazudesign.co.nz/bus/stop_info.php"
-let VERSION_URL = "http://dev.miyazudesign.co.nz/bus/stop_info_version.php"
+let UPDATE_URL = "http://metro.miyazudesign.co.nz/latest.php"
+let VERSION_URL = "http://metro.miyazudesign.co.nz/version.php"
 
 struct StopInformation {
     var stopNo: String
@@ -22,16 +20,89 @@ struct StopInformation {
     var location: CLLocation
 }
 
-class RouteInformationManager: NSObject {
+let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+
+class RouteInformationManager: NSObject, SSZipArchiveDelegate {
     
     static let sharedInstance = RouteInformationManager()
+    
     var stopInformation = [String: StopInformation]()
+    
+    let deviceExpandedDatabasePath = documentsDirectory + "/database.sqlite3"
     
     override init() {
         
         super.init()
         
+        //Copy and expand the database from the bundle
+        
+        let databaseIsInitialised = self.initialiseDatabase()
+        
+        if databaseIsInitialised {
+            parseDatabase()
+            updateDatabaseIfNecessary()
+        }
+
+    }
+    
+    
+    func setDatabaseVersion(newVersion: String) {
+        NSUserDefaults.standardUserDefaults().setObject(newVersion, forKey: "database_version")
+    }
+    
+    
+    func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInfo: unz_global_info, unzippedPath: String!) {
+                
+        let expandedDatabaseDirectory = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(unzippedPath)
+        var expandedDatabase: String!
+        
+        for file in expandedDatabaseDirectory {
+            
+            if file.hasSuffix("sqlite3") {
+                
+                var expandedDatabaseVersion = file.stringByReplacingOccurrencesOfString("database-", withString: "")
+                expandedDatabaseVersion = expandedDatabaseVersion.stringByReplacingOccurrencesOfString(".sqlite3", withString: "")
+                
+                expandedDatabase = unzippedPath + "/" + file
+                
+                setDatabaseVersion(expandedDatabaseVersion)
+                
+                break
+                
+            }
+            
+        }
+        
+        try! NSFileManager.defaultManager().moveItemAtPath(expandedDatabase, toPath: deviceExpandedDatabasePath)
+        
+        try! NSFileManager.defaultManager().removeItemAtPath(unzippedPath)
+        try! NSFileManager.defaultManager().removeItemAtPath(path)
+        
+        parseDatabase()
+        updateDatabaseIfNecessary()        
+        
+    }
+    
+    
+    func updateDatabaseIfNecessary() {
+        
+        //Update data if necessary
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { () -> Void in
+            let updatesAvailable = self.checkForUpdates()
+            print("updates available = \(updatesAvailable)")
+            
+            //(UIApplication.sharedApplication().delegate as! AppDelegate).window!.rootViewController!.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
+            
+        }
+        
+    }
+    
+    
+    func parseDatabase() {
         //Get the stops from the database
+        
+        DatabaseManager.sharedInstance.connect()
         
         let stops = DatabaseManager.sharedInstance.listStops()
         let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
@@ -40,7 +111,7 @@ class RouteInformationManager: NSObject {
             
             let latitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lat")!])!
             let longitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lon")!])!
-
+            
             let location = CLLocation(latitude: latitude, longitude: longitude)
             
             let stopNo = stop[stopAttributes.indexOf("stop_code")!]
@@ -50,10 +121,49 @@ class RouteInformationManager: NSObject {
             //Figure out the road name
             
             let roadName = stop[stopAttributes.indexOf("road_name")!]
-
+            
             stopInformation[stopNo] = StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, roadName: roadName, location: location)
             
         }
+
+    }
+    
+    
+    func initialiseDatabase() -> Bool {
+        
+        let bundledDatabasePath = NSBundle.mainBundle().pathForResource("database", ofType: "zip")
+        
+        let zipFolderExpandedPath = documentsDirectory + "/database"
+        
+        let deviceCompressedDatabasePath = documentsDirectory + "/database.zip"
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(deviceExpandedDatabasePath) == false {
+            
+            do {
+                try NSFileManager.defaultManager().copyItemAtPath(bundledDatabasePath!, toPath: deviceCompressedDatabasePath)
+            } catch let error as NSError {
+                print("well shit, \(error)")
+            }
+            
+            SSZipArchive.unzipFileAtPath(deviceCompressedDatabasePath, toDestination: zipFolderExpandedPath, delegate: self)
+            
+            return false
+            
+        } else {
+            return true
+        }
+        
+    }
+    
+    
+    func checkForUpdates() -> Bool {
+        
+        let latestVersionData = NSData(contentsOfURL: NSURL(string: VERSION_URL)!)
+        let latestVersion = NSString(data: latestVersionData!, encoding: NSUTF8StringEncoding)!
+        
+        let currentVersion = NSUserDefaults.standardUserDefaults().objectForKey("database_version")
+        
+        return !latestVersion.isEqualToString(currentVersion as! String)
         
     }
     

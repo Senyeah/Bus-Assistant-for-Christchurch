@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-let NEAREST_STOPS_TO_LOAD = 7
+let NEAREST_STOPS_TO_LOAD = 150
 
 var currentIndex: Int = 0
 
@@ -17,9 +17,9 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
 
     let locationManager = CLLocationManager()
     
-    var hasObtainedInitialLocation = false
     var lastLocationUpdated: CLLocation?
-
+    var hasObtainedInitialLocation = false
+    
     var groupedStops = [String: NSMutableArray]()
     var distanceFromStop = [String: CLLocationDistance]()
     
@@ -55,16 +55,13 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         if lastLocationUpdated != nil {
             distanceMoved = newLocation.distanceFromLocation(lastLocationUpdated!)
-        } else {
-            //change me
-          //  locationManager.stopUpdatingLocation()
         }
         
         if distanceMoved > 5 || hasObtainedInitialLocation == false {
             
             processLocationUpdate()
-
             lastLocationUpdated = locationManager.location
+            
             hasObtainedInitialLocation = true
             
             self.tableView.reloadData()
@@ -74,6 +71,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -82,6 +80,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -146,6 +145,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         }
         
     }
+    
+    
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
