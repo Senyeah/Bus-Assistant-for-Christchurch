@@ -20,13 +20,24 @@ struct StopInformation {
     var location: CLLocation
 }
 
+struct StopCoverageInfomation {
+    var referencePoint: CLLocation
+    var minLat: CLLocationDegrees, maxLat: CLLocationDegrees
+    var minLon: CLLocationDegrees, maxLon: CLLocationDegrees
+    var coverageWidth: Double, coverageHeight: Double
+}
+
 let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
 
 class RouteInformationManager: NSObject, SSZipArchiveDelegate {
     
     static let sharedInstance = RouteInformationManager()
     
-    var stopInformation = [String: StopInformation]()
+    var stopInformation: [String: StopInformation] = [:]
+
+    private var relativeCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
+    private var stopsKdTree: COpaquePointer!
+    private var coverageInformation: StopCoverageInfomation!
     
     let deviceExpandedDatabasePath = documentsDirectory + "/database.sqlite3"
     
@@ -41,6 +52,8 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
         if databaseIsInitialised {
             parseDatabase()
             updateDatabaseIfNecessary()
+            
+            initialiseStopInformation()
         }
 
     }
@@ -79,7 +92,8 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
         try! NSFileManager.defaultManager().removeItemAtPath(path)
         
         parseDatabase()
-        updateDatabaseIfNecessary()        
+        updateDatabaseIfNecessary()
+        initialiseStopInformation()
         
     }
     
@@ -256,21 +270,123 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
         
     }
     
+    //Convert a latitude, longitude coordinate to a point mapping on a cartesian plane
     
-    func closestStopsForCoordinate(numStops: Int, coordinate: CLLocation) -> [(StopInformation, CLLocationDistance)] {
+    private func normaliseCoordinate(coordinate: CLLocationCoordinate2D, coverage: StopCoverageInfomation) -> (x: Double, y: Double) {
         
-        var candidates: [(StopInformation, CLLocationDistance)] = []
+        let longitudeDeltaLocation = CLLocation(latitude: coverage.minLat, longitude: coordinate.longitude)
+        let latitudeDeltaLocation = CLLocation(latitude: coordinate.latitude, longitude: coverage.minLon)
         
-        for (_, stopInfo) in stopInformation {
-            let distance = coordinate.distanceFromLocation(stopInfo.location)
-            candidates.append((stopInfo, distance))
+        let normalisedLongitude = coverage.referencePoint.distanceFromLocation(longitudeDeltaLocation) / coverage.coverageWidth
+        let normalisedLatitude = coverage.referencePoint.distanceFromLocation(latitudeDeltaLocation) / coverage.coverageHeight
+        
+        return (x: normalisedLongitude, y: normalisedLatitude)
+        
+    }
+    
+    
+    //Converts from latitude-longitude to a relative coordinate based on the stop
+    //with the smallest x- and y-coordinate so it can be used in a kd-tree
+    
+    private func relativeCoordinatesForStops() -> [(stop: StopInformation, (x: Double, y: Double))] {
+        
+        var latitudes: [CLLocationDegrees] = []
+        var longitudes: [CLLocationDegrees] = []
+        
+        for (_, info) in stopInformation {
+            latitudes.append(info.location.coordinate.latitude)
+            longitudes.append(info.location.coordinate.longitude)
         }
         
-        candidates.sortInPlace({$0.1 < $1.1})
+        let (minLat, maxLat) = (latitudes.minElement()!, latitudes.maxElement()!)
+        let (minLon, maxLon) = (longitudes.minElement()!, longitudes.maxElement()!)
         
-        let itemsToReturn = min(numStops, candidates.count)
+        let referencePoint = CLLocation(latitude: minLat, longitude: minLon)
+        
+        let coverageWidth = referencePoint.distanceFromLocation(CLLocation(latitude: minLat, longitude: maxLon))
+        let coverageHeight = referencePoint.distanceFromLocation(CLLocation(latitude: maxLat, longitude: minLon))
+        
+        self.coverageInformation = StopCoverageInfomation(referencePoint: referencePoint, minLat: minLat, maxLat: maxLat, minLon: minLon, maxLon: maxLon, coverageWidth: coverageWidth, coverageHeight: coverageHeight)
+        
+        var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
+            
+        for (_, info) in stopInformation {
+            
+            let coordinate = info.location.coordinate
+            let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
+            
+            normalisedCoordinates.append((stop: info, normalisedCoordinate))
+            
+        }
+        
+        return normalisedCoordinates
 
-        return Array(candidates[0..<itemsToReturn])
+    }
+    
+    //Constructs a kd-tree of the stops
+    
+    private func kdTreeForStops(relativeStops: [(stop: StopInformation, (x: Double, y: Double))]) -> COpaquePointer {
+        
+        //Create a 2-dimensional tree
+        
+        let tree = kd_create(2)
+        
+        for (stop, coordinate) in relativeStops {
+            
+            let coordinatePointer = UnsafeMutablePointer<Double>.alloc(2)
+            coordinatePointer.initializeFrom([coordinate.x, coordinate.y])
+            
+            let stopPointer = UnsafeMutablePointer<StopInformation>.alloc(1)
+            stopPointer.initialize(stop)
+            
+            kd_insert(tree, coordinatePointer, stopPointer)
+                        
+        }
+        
+        return tree
+        
+    }
+    
+    
+    func closestStopsForLocation(radiusInMetres: Double, location: CLLocation) -> [(stop: StopInformation, distance: CLLocationDistance)] {
+        
+        let normalisedCoordinate = self.normaliseCoordinate(location.coordinate, coverage: self.coverageInformation)
+        
+        let coordinatePointer = UnsafeMutablePointer<Double>.alloc(2)
+        coordinatePointer.initializeFrom([normalisedCoordinate.x, normalisedCoordinate.y])
+        
+        //This isn't entirely accurate but oh well
+        
+        let radius = radiusInMetres / min(self.coverageInformation.coverageWidth, self.coverageInformation.coverageHeight)
+        
+        let resultingStops = kd_nearest_range(stopsKdTree!, coordinatePointer, radius)
+        var resultingStopsArray: [(stop: StopInformation, distance: CLLocationDistance)] = []
+        
+        while kd_res_end(resultingStops) == 0 {
+            
+            let returnedStopPointer = kd_res_item(resultingStops, UnsafeMutablePointer<Double>.init())
+            let returnedStop = UnsafePointer<StopInformation>(returnedStopPointer).memory
+            
+            let distanceFromStop = location.distanceFromLocation(returnedStop.location)
+            resultingStopsArray.append((stop: returnedStop, distance: distanceFromStop))
+                        
+            kd_res_next(resultingStops)
+            
+        }
+        
+        coordinatePointer.dealloc(2)
+        
+        return resultingStopsArray
+        
+    }
+    
+    
+    private func initialiseStopInformation() {
+        
+        relativeCoordinates.removeAll()
+        relativeCoordinates = relativeCoordinatesForStops()
+        
+        stopsKdTree = kdTreeForStops(relativeCoordinates)
         
     }
     

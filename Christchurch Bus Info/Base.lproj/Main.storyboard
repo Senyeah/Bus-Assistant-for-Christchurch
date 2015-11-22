@@ -194,7 +194,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteStopCell" rowHeight="58" id="0Q3-Ob-24f" customClass="RouteStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="58"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalCompressionResistancePriority="1000" tableViewCell="0Q3-Ob-24f" id="12u-nr-aye">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="57"/>
@@ -255,7 +255,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="108" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="172" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t0a-zb-fhk" id="aS0-g5-78m">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -302,7 +302,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineViewHeaderCell" rowHeight="80" id="AIO-TC-jHD" customClass="LineViewHeaderTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AIO-TC-jHD" id="SL4-Fn-LCW">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="79"/>
@@ -365,7 +365,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicDetailCell" textLabel="PY8-E8-KKU" rowHeight="44" style="IBUITableViewCellStyleDefault" id="5NK-yp-GF5">
-                                <rect key="frame" x="0.0" y="130" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="194" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5NK-yp-GF5" id="ccP-QM-eAv">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -385,7 +385,7 @@
                                 <animations/>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMajorStopCell" rowHeight="44" id="xct-pU-KnK" customClass="LineMajorStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="174" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="238" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xct-pU-KnK" id="93v-te-1n8">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -433,7 +433,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Christchurch_Bus_Info" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218" width="600" height="40"/>
+                                <rect key="frame" x="0.0" y="282" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bF8-UI-nYJ" id="j4Q-D4-Iif">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
@@ -621,7 +621,7 @@
         <image name="blue location.png" width="34" height="34"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="mgN-cp-QeB"/>
         <segue reference="41d-Gh-Ahs"/>
-        <segue reference="vgy-k6-HAr"/>
     </inferredMetricsTieBreakers>
 </document>

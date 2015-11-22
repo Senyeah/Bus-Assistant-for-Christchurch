@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040D641B1C01C1B2009BF2C8 /* kdtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 040D64191C01C1B2009BF2C8 /* kdtree.c */; };
 		0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */; };
 		042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5A51BEB2D910093EB77 /* AppDelegate.swift */; };
 		042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5A91BEB2D910093EB77 /* Main.storyboard */; };
@@ -75,6 +76,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		040D64191C01C1B2009BF2C8 /* kdtree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kdtree.c; sourceTree = "<group>"; };
+		040D641A1C01C1B2009BF2C8 /* kdtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdtree.h; sourceTree = "<group>"; };
 		0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopIndeterminateTableViewCell.swift; sourceTree = "<group>"; };
 		042ED5A21BEB2D910093EB77 /* Christchurch Bus Info.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Christchurch Bus Info.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		042ED5A51BEB2D910093EB77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,12 +96,11 @@
 		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
 		047981211BFF3EE000DB3947 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
-		047981251BFF734600DB3947 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = "<group>"; };
+		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		047981291BFF73C800DB3947 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		0479812A1BFF73C800DB3947 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		0479812C1BFF73C800DB3947 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
-		0479812F1BFF747000DB3947 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
+		0479812F1BFF747000DB3947 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = /usr/lib/libz.1.dylib; sourceTree = "<absolute>"; };
 		0479813E1BFF75B000DB3947 /* ioapi.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		0479813F1BFF75B000DB3947 /* mztools.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
 		047981401BFF75B000DB3947 /* unzip.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
@@ -134,12 +136,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040D64181C01C1A6009BF2C8 /* kdtree */ = {
+			isa = PBXGroup;
+			children = (
+				040D64191C01C1B2009BF2C8 /* kdtree.c */,
+				040D641A1C01C1B2009BF2C8 /* kdtree.h */,
+			);
+			name = kdtree;
+			sourceTree = "<group>";
+		};
 		042ED5991BEB2D910093EB77 = {
 			isa = PBXGroup;
 			children = (
-				0479812F1BFF747000DB3947 /* libz.1.dylib */,
+				040D64181C01C1A6009BF2C8 /* kdtree */,
 				047981271BFF73B200DB3947 /* ZipArchive */,
-				047981251BFF734600DB3947 /* libz.tbd */,
 				048BE8671BF8D87C0064F627 /* second.gpx */,
 				048BE8651BF8D8110064F627 /* default.gpx */,
 				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
@@ -167,6 +177,7 @@
 				042ED5C21BEB5FF20093EB77 /* Resources */,
 				042ED5A51BEB2D910093EB77 /* AppDelegate.swift */,
 				042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */,
+				047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */,
 				042ED5A91BEB2D910093EB77 /* Main.storyboard */,
 				042ED5AC1BEB2D910093EB77 /* Assets.xcassets */,
 				042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */,
@@ -222,11 +233,11 @@
 		047981271BFF73B200DB3947 /* ZipArchive */ = {
 			isa = PBXGroup;
 			children = (
+				0479812F1BFF747000DB3947 /* libz.1.dylib */,
 				0479814B1BFF75D900DB3947 /* minizip */,
 				047981291BFF73C800DB3947 /* Common.h */,
 				0479812A1BFF73C800DB3947 /* SSZipArchive.h */,
 				0479812C1BFF73C800DB3947 /* SSZipArchive.m */,
-				047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */,
 			);
 			name = ZipArchive;
 			sourceTree = "<group>";
@@ -382,6 +393,7 @@
 				04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */,
 				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
 				0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */,
+				040D641B1C01C1B2009BF2C8 /* kdtree.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

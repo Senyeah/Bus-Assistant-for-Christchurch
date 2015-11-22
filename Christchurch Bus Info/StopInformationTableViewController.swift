@@ -71,6 +71,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = "Stop \(stopNumber)"
         
         if self.tableView.indexPathForSelectedRow != nil {
             self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
@@ -78,7 +79,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.navigationItem.title = "Stop \(stopNumber)"
         
         stopInfoParser = StopInformationParser(stopNumber: stopNumber)
         stopInfoParser.delegate = self
@@ -86,6 +86,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         stopInfoParser.updateData()
         
         infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(UPDATE_FREQUENCY_SECONDS, target: stopInfoParser, selector: "updateData", userInfo: nil, repeats: true)
+        
     }
     
 
