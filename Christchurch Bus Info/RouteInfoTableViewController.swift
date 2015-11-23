@@ -31,7 +31,11 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         groupedStops = [:]
         
-        let nearestStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: locationManager.location!)
+        guard let currentLocation = locationManager.location else {
+            return
+        }
+        
+        let nearestStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: currentLocation)
         
         var groupOrdering: [String] = []
         

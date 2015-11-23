@@ -42,12 +42,14 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     private var coverageInformation: StopCoverageInfomation!
     
     override init() {
+        
         super.init()
         
         UpdateManager.sharedInstance.delegate = self
         DatabaseManager.sharedInstance.delegate = self
         
         UpdateManager.sharedInstance.initialise()
+        
     }
     
     func priorityForRoute(line: BusLineType) -> Int? {
@@ -290,8 +292,6 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             
         }
         
-        
-        
     }
     
     func updateManagerDidCompleteDownload(manager: UpdateManager, error: NSError?) {
@@ -310,7 +310,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         print("extracted update with failure = \(extractionFailed)")
         
         if extractionFailed == false {
-            progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                self.progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
         
     }

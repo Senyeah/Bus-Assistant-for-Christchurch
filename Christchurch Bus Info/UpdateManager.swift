@@ -62,13 +62,29 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     }
     
     func copyBundledDatabase() {
+        
         let bundledDatabasePath = NSBundle.mainBundle().pathForResource("database", ofType: "zip")!
         try! NSFileManager.defaultManager().copyItemAtPath(bundledDatabasePath, toPath: UpdateManager.downloadedArchiveLocation)
         
         extractDatabase()
+        
+    }
+    
+    func removeTemporaryFiles() {
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(UpdateManager.downloadedArchiveLocation) {
+            try! NSFileManager.defaultManager().removeItemAtPath(UpdateManager.downloadedArchiveLocation)
+        }
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(UpdateManager.zipFolderExpandedPath) {
+            try! NSFileManager.defaultManager().removeItemAtPath(UpdateManager.zipFolderExpandedPath)
+        }
+        
     }
     
     func initialise() {
+        
+        removeTemporaryFiles()
         
         if hasCopiedBundledDatabase() == false {
             copyBundledDatabase()
@@ -78,10 +94,14 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         DatabaseManager.sharedInstance.connect()
         DatabaseManager.sharedInstance.parseDatabase()
         
-        let isUpdateAvailable = updateAvailable()
-        
-        if isUpdateAvailable {
-            downloadLatestDatabase()
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            
+            let isUpdateAvailable = self.updateAvailable()
+            
+            if isUpdateAvailable {
+                self.downloadLatestDatabase()
+            }
+            
         }
         
     }
@@ -114,8 +134,9 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         
         try! NSFileManager.defaultManager().moveItemAtPath(expandedDatabasePath, toPath: DatabaseManager.databasePath)
         
-        try! NSFileManager.defaultManager().removeItemAtPath(UpdateManager.downloadedArchiveLocation)
-        try! NSFileManager.defaultManager().removeItemAtPath(UpdateManager.zipFolderExpandedPath)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.removeTemporaryFiles()
+        }
         
         initialise()
         
@@ -128,6 +149,7 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     }
     
     func extractDatabase() {
+        
         delegate?.updateManagerWillExtractUpdate(self)
         
         let extractionResult = SSZipArchive.unzipFileAtPath(UpdateManager.downloadedArchiveLocation, toDestination: UpdateManager.zipFolderExpandedPath, delegate: self)
@@ -135,6 +157,7 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         if extractionResult == false {
             delegate?.updateManagerDidExtractUpdate(self, extractionFailed: true)
         }
+        
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {

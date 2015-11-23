@@ -17,17 +17,41 @@ let DEFAULT_SEPARATOR_INSET = 60.0
 class StopInformationTableViewController: UITableViewController, StopInformationParserDelegate {
     
     var stopNumber: String!
-    
     var stopInfoParser: StopInformationParser!
     
-    var hasReceivedInfo = false
-    var busArrivalInfo = [[String: AnyObject]]()
+    var lineLabelWidth = CGFloat(30.0)
+    var cellContentInset = CGFloat(0.0)
     
+    var busArrivalInfo: [[String : AnyObject]] = [] {
+        
+        didSet {
+            
+            let prototypeLineLabelView = BusLineLabelView(lineType: .NumberedRoute(""))
+            var maxWidth = CGFloat(0.0)
+            
+            for item in busArrivalInfo {
+                
+                let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(item["route_no"]! as! String)
+                prototypeLineLabelView.setLineType(lineType)
+                
+                if prototypeLineLabelView.widthConstraint.constant > maxWidth {
+                    maxWidth = prototypeLineLabelView.widthConstraint.constant
+                    cellContentInset = 30 + maxWidth
+                }
+                
+            }
+            
+            lineLabelWidth = maxWidth
+            
+        }
+        
+    }
+    
+    var hasReceivedInfo = false
     var infoUpdateTimer: NSTimer!
     
     var separatorInset = CGFloat(DEFAULT_SEPARATOR_INSET)
     var routeThumbnailWidth = CGFloat(MIN_THUMBNAIL_WIDTH)
-    
     
     func formattedStringForArrivalTime(minutes: Int) -> String {
 
@@ -60,86 +84,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
     }
     
-    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-    }
-    
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationItem.title = "Stop \(stopNumber)"
-        
-        if self.tableView.indexPathForSelectedRow != nil {
-            self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        stopInfoParser = StopInformationParser(stopNumber: stopNumber)
-        stopInfoParser.delegate = self
-        
-        stopInfoParser.updateData()
-        
-        infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(UPDATE_FREQUENCY_SECONDS, target: stopInfoParser, selector: "updateData", userInfo: nil, repeats: true)
-        
-    }
-    
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
-//    func busLineLabelViewDidDetermineIntrinsicContentWidth(width: CGFloat, forView view: BusLineLabelView, withWidthConstraint constraint: NSLayoutConstraint) {
-//        
-//        struct StaticInstance {
-//            static var timesCalled = 0
-//            static var viewWidths = [CGFloat]()
-//            static var constraints = [NSLayoutConstraint]()
-//        }
-//        
-//        StaticInstance.viewWidths.append(width)
-//        StaticInstance.constraints.append(constraint)
-//        
-//        StaticInstance.timesCalled++
-//        
-//        if StaticInstance.timesCalled == busArrivalInfo.count {
-//            
-//            //Determine whether the widths are all the same
-//            
-//            let uniqueWidths = Set(StaticInstance.viewWidths)
-//            
-//            if uniqueWidths.count > 1 {
-//                
-//                routeThumbnailWidth = uniqueWidths.maxElement()!
-//                let changeInWidth = routeThumbnailWidth - CGFloat(MIN_THUMBNAIL_WIDTH)
-//                
-//                separatorInset = CGFloat(DEFAULT_SEPARATOR_INSET) + changeInWidth
-//                
-//                for index in 0..<StaticInstance.constraints.count {
-//                    StaticInstance.constraints[index].constant = routeThumbnailWidth
-//                 //   print("setting item \(index) of \(StaticInstance.constraints.count-1) to \(routeThumbnailWidth)")
-//                }
-//                
-//                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                    view.setNeedsUpdateConstraints()
-//                })
-//                
-//            }
-//            
-//            StaticInstance.timesCalled = 0
-//            StaticInstance.viewWidths = []
-//            StaticInstance.constraints = []
-//            
-//        }
-//    }
-    
-    
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String : AnyObject]]) {
         
         //Weird things happen if you don't update the UI on the main thread
@@ -156,10 +101,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopCell", forIndexPath: indexPath) as! RouteStopTableViewCell
-        cell.layoutMargins = UIEdgeInsets(top: 0.0, left: cell.titleLabel.frame.origin.x + 150.0, bottom: 0.0, right: 0.0)
-            
+        cell.layoutMargins = UIEdgeInsets(top: 0.0, left: cellContentInset, bottom: 0.0, right: 0.0)
     }
     
     
@@ -188,7 +130,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         } else {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopCell", forIndexPath: indexPath) as! RouteStopTableViewCell
-            let info: [String: AnyObject] = busArrivalInfo[indexPath.row]
+            let info = busArrivalInfo[indexPath.row]
             
             cell.titleLabel.text = info["name"]! as? String
             cell.timeRemainingLabel.text = formattedStringForArrivalTime(Int(info["eta"]! as! NSNumber))
@@ -197,7 +139,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             
             cell.lineLabel.setLineType(lineType)
             
-            cell.lineLabel.widthConstraint.constant = max(cell.lineLabel.widthConstraint.constant, routeThumbnailWidth)
+            cell.lineLabel.widthConstraint.constant = lineLabelWidth
             cell.lineLabel.setNeedsUpdateConstraints()
             
             return cell
@@ -222,19 +164,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     }
     
     
-    override func viewDidDisappear(animated: Bool) {
-        
-        stopInfoParser = nil
-        
-        busArrivalInfo = []
-        hasReceivedInfo = false
-        routeThumbnailWidth = CGFloat(MIN_THUMBNAIL_WIDTH)
-        
-        infoUpdateTimer.invalidate()
-        
-    }
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         let tappedIndexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
@@ -254,6 +183,52 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         destination.lineType = lineType
         
     }
-
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        self.navigationItem.title = "Stop \(stopNumber)"
+        
+        if self.tableView.indexPathForSelectedRow != nil {
+            self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
+        }
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        
+        stopInfoParser = StopInformationParser(stopNumber: stopNumber)
+        stopInfoParser.delegate = self
+        
+        stopInfoParser.updateData()
+        
+        infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(UPDATE_FREQUENCY_SECONDS, target: stopInfoParser, selector: "updateData", userInfo: nil, repeats: true)
+        
+    }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    
+    override func viewDidDisappear(animated: Bool) {
+        
+        stopInfoParser = nil
+        
+        busArrivalInfo = []
+        hasReceivedInfo = false
+        routeThumbnailWidth = CGFloat(MIN_THUMBNAIL_WIDTH)
+        
+        infoUpdateTimer.invalidate()
+        
+    }
 
 }
