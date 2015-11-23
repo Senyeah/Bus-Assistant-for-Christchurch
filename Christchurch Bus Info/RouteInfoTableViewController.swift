@@ -9,11 +9,11 @@
 import UIKit
 import CoreLocation
 
-let STOPS_TO_LOAD_RADIUS = 5000.0
+let STOPS_TO_LOAD_RADIUS = 500.0
 
 var currentIndex: Int = 0
 
-class RouteInfoTableViewController: UITableViewController, CLLocationManagerDelegate {
+class RouteInfoTableViewController: UITableViewController, CLLocationManagerDelegate, RouteInformationManagerDelegate {
 
     let locationManager = CLLocationManager()
     
@@ -22,6 +22,10 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     
     var groupedStops = [String: [String]]()
     var distanceFromStop = [String: CLLocationDistance]()
+    
+    func managerReceivedUpdatedInformation(manager: RouteInformationManager) {
+        self.tableView.reloadData()
+    }
     
     func processLocationUpdate() {
         
@@ -81,15 +85,17 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
+        RouteInformationManager.sharedInstance.delegate = self
+        
     }
     
     override func viewWillAppear(animated: Bool) {
+
         super.viewWillAppear(animated)
         
         if self.tableView.indexPathForSelectedRow != nil {
             self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
         }
-        
         
     }
     

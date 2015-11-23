@@ -9,9 +9,6 @@
 import UIKit
 import CoreLocation
 
-let UPDATE_URL = "http://metro.miyazudesign.co.nz/latest.php"
-let VERSION_URL = "http://metro.miyazudesign.co.nz/version.php"
-
 struct StopInformation {
     var stopNo: String
     var stopTag: String
@@ -27,160 +24,31 @@ struct StopCoverageInfomation {
     var coverageWidth: Double, coverageHeight: Double
 }
 
-let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+protocol RouteInformationManagerDelegate {
+    func managerReceivedUpdatedInformation(manager: RouteInformationManager)
+}
 
-class RouteInformationManager: NSObject, SSZipArchiveDelegate {
+class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerDelegate {
     
     static let sharedInstance = RouteInformationManager()
     
-    var stopInformation: [String: StopInformation] = [:]
-
+    var stopInformation: [String: StopInformation]!
+    var delegate: RouteInformationManagerDelegate?
+    
+    var progressViewController: DownloadUpdateViewController?
+    
     private var relativeCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
     private var stopsKdTree: COpaquePointer!
     private var coverageInformation: StopCoverageInfomation!
     
-    let deviceExpandedDatabasePath = documentsDirectory + "/database.sqlite3"
-    
     override init() {
-        
         super.init()
         
-        //Copy and expand the database from the bundle
+        UpdateManager.sharedInstance.delegate = self
+        DatabaseManager.sharedInstance.delegate = self
         
-        let databaseIsInitialised = self.initialiseDatabase()
-        
-        if databaseIsInitialised {
-            parseDatabase()
-            updateDatabaseIfNecessary()
-            
-            initialiseStopInformation()
-        }
-
+        UpdateManager.sharedInstance.initialise()
     }
-    
-    
-    func setDatabaseVersion(newVersion: String) {
-        NSUserDefaults.standardUserDefaults().setObject(newVersion, forKey: "database_version")
-    }
-    
-    
-    func zipArchiveDidUnzipArchiveAtPath(path: String!, zipInfo: unz_global_info, unzippedPath: String!) {
-                
-        let expandedDatabaseDirectory = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(unzippedPath)
-        var expandedDatabase: String!
-        
-        for file in expandedDatabaseDirectory {
-            
-            if file.hasSuffix("sqlite3") {
-                
-                var expandedDatabaseVersion = file.stringByReplacingOccurrencesOfString("database-", withString: "")
-                expandedDatabaseVersion = expandedDatabaseVersion.stringByReplacingOccurrencesOfString(".sqlite3", withString: "")
-                
-                expandedDatabase = unzippedPath + "/" + file
-                
-                setDatabaseVersion(expandedDatabaseVersion)
-                
-                break
-                
-            }
-            
-        }
-        
-        try! NSFileManager.defaultManager().moveItemAtPath(expandedDatabase, toPath: deviceExpandedDatabasePath)
-        
-        try! NSFileManager.defaultManager().removeItemAtPath(unzippedPath)
-        try! NSFileManager.defaultManager().removeItemAtPath(path)
-        
-        parseDatabase()
-        updateDatabaseIfNecessary()
-        initialiseStopInformation()
-        
-    }
-    
-    
-    func updateDatabaseIfNecessary() {
-        
-        //Update data if necessary
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) { () -> Void in
-            let updatesAvailable = self.checkForUpdates()
-            print("updates available = \(updatesAvailable)")
-            
-            //(UIApplication.sharedApplication().delegate as! AppDelegate).window!.rootViewController!.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
-            
-        }
-        
-    }
-    
-    
-    func parseDatabase() {
-        //Get the stops from the database
-        
-        DatabaseManager.sharedInstance.connect()
-        
-        let stops = DatabaseManager.sharedInstance.listStops()
-        let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
-        
-        for stop in stops {
-            
-            let latitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lat")!])!
-            let longitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lon")!])!
-            
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            
-            let stopNo = stop[stopAttributes.indexOf("stop_code")!]
-            let stopTag = stop[stopAttributes.indexOf("stop_id")!]
-            let stopName = stop[stopAttributes.indexOf("stop_name")!]
-            
-            //Figure out the road name
-            
-            let roadName = stop[stopAttributes.indexOf("road_name")!]
-            
-            stopInformation[stopNo] = StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, roadName: roadName, location: location)
-            
-        }
-
-    }
-    
-    
-    func initialiseDatabase() -> Bool {
-        
-        let bundledDatabasePath = NSBundle.mainBundle().pathForResource("database", ofType: "zip")
-        
-        let zipFolderExpandedPath = documentsDirectory + "/database"
-        
-        let deviceCompressedDatabasePath = documentsDirectory + "/database.zip"
-        
-        if NSFileManager.defaultManager().fileExistsAtPath(deviceExpandedDatabasePath) == false {
-            
-            do {
-                try NSFileManager.defaultManager().copyItemAtPath(bundledDatabasePath!, toPath: deviceCompressedDatabasePath)
-            } catch let error as NSError {
-                print("well shit, \(error)")
-            }
-            
-            SSZipArchive.unzipFileAtPath(deviceCompressedDatabasePath, toDestination: zipFolderExpandedPath, delegate: self)
-            
-            return false
-            
-        } else {
-            return true
-        }
-        
-    }
-    
-    
-    func checkForUpdates() -> Bool {
-        
-        let latestVersionData = NSData(contentsOfURL: NSURL(string: VERSION_URL)!)
-        let latestVersion = NSString(data: latestVersionData!, encoding: NSUTF8StringEncoding)!
-        
-        let currentVersion = NSUserDefaults.standardUserDefaults().objectForKey("database_version")
-        
-        return !latestVersion.isEqualToString(currentVersion as! String)
-        
-    }
-    
     
     func priorityForRoute(line: BusLineType) -> Int? {
         switch line {
@@ -200,7 +68,7 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
             return nil
         }
     }
-    
+
     
     func linesForStop(stopTag: String) -> [BusLineType] {
         
@@ -246,7 +114,6 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
         return lineArray
         
     }
-    
     
     
     func stopInformationForStopNumber(number: String) -> StopInformation? {
@@ -374,19 +241,77 @@ class RouteInformationManager: NSObject, SSZipArchiveDelegate {
             
         }
         
+        kd_res_free(resultingStops)
         coordinatePointer.dealloc(2)
         
         return resultingStopsArray
         
     }
     
-    
-    private func initialiseStopInformation() {
+    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String : StopInformation]) {
+        
+        stopInformation = database
         
         relativeCoordinates.removeAll()
         relativeCoordinates = relativeCoordinatesForStops()
         
         stopsKdTree = kdTreeForStops(relativeCoordinates)
+        
+        delegate?.managerReceivedUpdatedInformation(self)
+        
+    }
+    
+    func updateManagerWillDownloadFile(manager: UpdateManager) {
+        
+        let shouldDisplayProgressView = true
+        
+        if shouldDisplayProgressView {
+            
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let rootViewController = appDelegate.window!.rootViewController
+            
+            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                rootViewController!.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
+            }
+            
+        }
+        
+    }
+    
+    func updateManagerIsDownloadingFileWithProgress(manager: UpdateManager, progress: Double, currentSize: Int64, maxSize: Int64) {
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            
+            let currentSizeFormatted = NSByteCountFormatter.stringFromByteCount(currentSize, countStyle: .File)
+            let totalSizeFormatted = NSByteCountFormatter.stringFromByteCount(maxSize, countStyle: .File)
+            
+            self.progressViewController?.progressLabel.text = currentSizeFormatted + " of " + totalSizeFormatted
+            self.progressViewController?.progressBar.progress = Float(progress)
+            
+        }
+        
+        
+        
+    }
+    
+    func updateManagerDidCompleteDownload(manager: UpdateManager, error: NSError?) {
+        print("completed download! yay!")
+        
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.delegate?.managerReceivedUpdatedInformation(self)
+        }
+    }
+    
+    func updateManagerWillExtractUpdate(manager: UpdateManager) {
+        print("extracting update...")
+    }
+    
+    func updateManagerDidExtractUpdate(manager: UpdateManager, extractionFailed: Bool) {
+        print("extracted update with failure = \(extractionFailed)")
+        
+        if extractionFailed == false {
+            progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        }
         
     }
     

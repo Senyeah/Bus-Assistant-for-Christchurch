@@ -8,7 +8,7 @@
 
 import UIKit
 import SQLite
-
+import CoreLocation
 
 struct StopOnRoute {
     var stopName: String
@@ -17,12 +17,50 @@ struct StopOnRoute {
     var isIntermediate: Bool = false
 }
 
+protocol DatabaseManagerDelegate {
+    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String : StopInformation])
+}
+
+let DOCUMENTS_DIRECTORY = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
 
 class DatabaseManager: NSObject {
 
     static let sharedInstance = DatabaseManager()
-    var database: Connection!
+    static let databasePath = DOCUMENTS_DIRECTORY + "/database.sqlite3"
     
+    var delegate: DatabaseManagerDelegate?
+    
+    var database: Connection!
+    var isConnected = false
+    
+    func parseDatabase() {
+        
+        let stops = listStops()
+        let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
+        
+        var stopInformation: [String : StopInformation] = [:]
+        
+        for stop in stops {
+            
+            let latitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lat")!])!
+            let longitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lon")!])!
+            
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            
+            let stopNo = stop[stopAttributes.indexOf("stop_code")!]
+            let stopTag = stop[stopAttributes.indexOf("stop_id")!]
+            let stopName = stop[stopAttributes.indexOf("stop_name")!]
+            
+            //Figure out the road name
+            let roadName = stop[stopAttributes.indexOf("road_name")!]
+            
+            stopInformation[stopNo] = StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, roadName: roadName, location: location)
+            
+        }
+        
+        delegate?.databaseManagerDidParseDatabase(self, database: stopInformation)
+        
+    }
     
     func infoForTripIdentifier(tripID: String) -> (lineName: String, routeName: String, lineType: BusLineType) {
         
@@ -106,8 +144,24 @@ class DatabaseManager: NSObject {
         
     }
     
+    func disconnect() {
+        database = nil
+        isConnected = false
+    }
+    
     func connect() {
-        database = try! Connection(documentsDirectory + "/database.sqlite3")
+        if isConnected {
+            return
+        }
+        
+        do {
+            database = try Connection(DatabaseManager.databasePath)
+        } catch {
+            isConnected = false
+            return
+        }
+        
+        isConnected = true
     }
     
     override init() {

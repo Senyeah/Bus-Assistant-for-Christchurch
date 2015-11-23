@@ -107,8 +107,8 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
             
             //Uncomment if you're working at 4am when no buses run
             
-       // let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
-       // var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
+    //    let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
+      //  var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
         
             //Thank you Metro for giving us invalid XML!
             

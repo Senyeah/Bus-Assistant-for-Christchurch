@@ -14,7 +14,6 @@ enum StopType {
     case LineEnd
 }
 
-@IBDesignable
 class LineStopIndicator: UIView {
 
     var isMajorStop = true
@@ -24,7 +23,7 @@ class LineStopIndicator: UIView {
         }
     }
     
-    @IBInspectable var strokeColour: UIColor! = purple
+    var strokeColour: UIColor! = purple
     
     let lineWidth = CGFloat(3.0)
     
