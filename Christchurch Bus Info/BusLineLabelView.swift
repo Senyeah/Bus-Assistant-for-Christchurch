@@ -39,10 +39,18 @@ class BusLineLabelView: UIView {
     var cellBackgroundColour: UIColor?
     
     var viewConstraints: [NSLayoutConstraint]!
+    
     var widthConstraint: NSLayoutConstraint!
+    var heightConstraint: NSLayoutConstraint!
+    
+    var xConstraint: NSLayoutConstraint?
+    var yConstraint: NSLayoutConstraint?
     
     let label = UILabel()
     
+    override func intrinsicContentSize() -> CGSize {
+        return CGSizeMake(widthConstraint.constant, heightConstraint.constant)
+    }
     
     func setLineType(lineType: BusLineType) {
         
@@ -123,14 +131,12 @@ class BusLineLabelView: UIView {
             self.removeConstraints(viewConstraints)
         }
         
-        viewConstraints = [NSLayoutConstraint]()
+        viewConstraints = []
 
         widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
+        heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         
-        let heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
-        
-        viewConstraints.append(widthConstraint)
-        viewConstraints.append(heightConstraint)
+        viewConstraints.appendContentsOf([widthConstraint, heightConstraint])
         
         let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[label]-0-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
         viewConstraints.appendContentsOf(labelWidthConstraint)
@@ -144,6 +150,8 @@ class BusLineLabelView: UIView {
     
     
     func initView() {
+        
+        self.setContentCompressionResistancePriority(1000, forAxis: .Vertical)
         
         self.translatesAutoresizingMaskIntoConstraints = false
         

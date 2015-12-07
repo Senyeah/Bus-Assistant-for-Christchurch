@@ -20,8 +20,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     var lastLocationUpdated: CLLocation?
     var hasObtainedInitialLocation = false
     
-    var groupedStops = [String: [String]]()
-    var distanceFromStop = [String: CLLocationDistance]()
+    var groupedStops: [String: [String]] = [:]
+    var distanceFromStop: [String: CLLocationDistance] = [:]
     
     func managerReceivedUpdatedInformation(manager: RouteInformationManager) {
         self.tableView.reloadData()
@@ -90,7 +90,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         RouteInformationManager.sharedInstance.delegate = self
-        
+        RouteInformationManager.sharedInstance.initialise()
+                
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -140,7 +141,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             let groupName = Array(groupedStops.keys)[indexPath.section]
             let stopNumber = groupedStops[groupName]![indexPath.row - 1] 
             
-            let stopInfo: StopInformation = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber)!
+            let stopInfo = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber)!
             
             cell.stopName.text = stopInfo.name
             cell.stopNumber.text = String(stopNumber)
@@ -149,6 +150,8 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stopTag)
             cell.setStopLines(stopLinesForStop)
+            
+            cell.layoutThumbnailViews()
             
             return cell
             

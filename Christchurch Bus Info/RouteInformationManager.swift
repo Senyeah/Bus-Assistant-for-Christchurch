@@ -32,24 +32,43 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     static let sharedInstance = RouteInformationManager()
     
-    var stopInformation: [String: StopInformation]!
+    var stopInformation: [String: StopInformation]?
     var delegate: RouteInformationManagerDelegate?
     
     var progressViewController: DownloadUpdateViewController?
     
-    private var relativeCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
-    private var stopsKdTree: COpaquePointer!
-    private var coverageInformation: StopCoverageInfomation!
+    private var relativeCoordinates: [(stop: StopInformation, (x: Double, y: Double))] {
+        get {
+            var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
+            
+            for (_, info) in stopInformation! {
+                
+                let coordinate = info.location.coordinate
+                let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
+                
+                normalisedCoordinates.append((stop: info, normalisedCoordinate))
+                
+            }
+            
+            return normalisedCoordinates
+        }
+    }
+    
+    private lazy var stopsKdTree: COpaquePointer = { [unowned self] in
+        return self.kdTreeForStops(self.relativeCoordinates)
+    }()
+    
+    private lazy var coverageInformation: StopCoverageInfomation = computeCoverageInformation(self)()
     
     override init() {
-        
         super.init()
-        
+    }
+    
+    func initialise() {
         UpdateManager.sharedInstance.delegate = self
         DatabaseManager.sharedInstance.delegate = self
         
         UpdateManager.sharedInstance.initialise()
-        
     }
     
     func priorityForRoute(line: BusLineType) -> Int? {
@@ -74,7 +93,10 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     func linesForStop(stopTag: String) -> [BusLineType] {
         
-        let lines = DatabaseManager.sharedInstance.rawLinesForStop(stopTag)
+        guard let lines = DatabaseManager.sharedInstance.rawLinesForStop(stopTag) else {
+            return []
+        }
+        
         var lineArray: [BusLineType] = []
         
         for line in lines {
@@ -82,8 +104,8 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         }
         
         lineArray.sortInPlace({
-            let priority1 = priorityForRoute($0)
-            let priority2 = priorityForRoute($1)
+            
+            let (priority1, priority2) = (priorityForRoute($0), priorityForRoute($1))
             
             if priority1 != nil && priority2 == nil {
                 return true
@@ -119,7 +141,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     
     func stopInformationForStopNumber(number: String) -> StopInformation? {
-        return stopInformation[number]
+        return stopInformation?[number]
     }
     
     
@@ -154,15 +176,16 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     }
     
     
-    //Converts from latitude-longitude to a relative coordinate based on the stop
-    //with the smallest x- and y-coordinate so it can be used in a kd-tree
-    
-    private func relativeCoordinatesForStops() -> [(stop: StopInformation, (x: Double, y: Double))] {
+    private func computeCoverageInformation() -> StopCoverageInfomation {
         
         var latitudes: [CLLocationDegrees] = []
         var longitudes: [CLLocationDegrees] = []
         
-        for (_, info) in stopInformation {
+        guard stopInformation != nil else {
+            fatalError("It's nil, shit! (computeCoverageInformation)")
+        }
+        
+        for (_, info) in stopInformation! {
             latitudes.append(info.location.coordinate.latitude)
             longitudes.append(info.location.coordinate.longitude)
         }
@@ -175,11 +198,23 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         let coverageWidth = referencePoint.distanceFromLocation(CLLocation(latitude: minLat, longitude: maxLon))
         let coverageHeight = referencePoint.distanceFromLocation(CLLocation(latitude: maxLat, longitude: minLon))
         
-        self.coverageInformation = StopCoverageInfomation(referencePoint: referencePoint, minLat: minLat, maxLat: maxLat, minLon: minLon, maxLon: maxLon, coverageWidth: coverageWidth, coverageHeight: coverageHeight)
+        return StopCoverageInfomation(referencePoint: referencePoint, minLat: minLat, maxLat: maxLat, minLon: minLon, maxLon: maxLon, coverageWidth: coverageWidth, coverageHeight: coverageHeight)
+        
+    }
+    
+    
+    //Converts from latitude-longitude to a relative coordinate based on the stop
+    //with the smallest x- and y-coordinate so it can be used in a kd-tree
+    
+    private func relativeCoordinatesForStops() -> [(stop: StopInformation, (x: Double, y: Double))] {
         
         var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
-            
-        for (_, info) in stopInformation {
+        
+        guard stopInformation != nil else {
+            fatalError("It's nil, shit! (relativeCoordinatesForStops)")
+        }
+        
+        for (_, info) in stopInformation! {
             
             let coordinate = info.location.coordinate
             let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
@@ -228,7 +263,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
         let radius = radiusInMetres / min(self.coverageInformation.coverageWidth, self.coverageInformation.coverageHeight)
         
-        let resultingStops = kd_nearest_range(stopsKdTree!, coordinatePointer, radius)
+        let resultingStops = kd_nearest_range(stopsKdTree, coordinatePointer, radius)
         var resultingStopsArray: [(stop: StopInformation, distance: CLLocationDistance)] = []
         
         while kd_res_end(resultingStops) == 0 {
@@ -253,12 +288,6 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String : StopInformation]) {
         
         stopInformation = database
-        
-        relativeCoordinates.removeAll()
-        relativeCoordinates = relativeCoordinatesForStops()
-        
-        stopsKdTree = kdTreeForStops(relativeCoordinates)
-        
         delegate?.managerReceivedUpdatedInformation(self)
         
     }

@@ -30,41 +30,94 @@ class DatabaseManager: NSObject {
     
     var delegate: DatabaseManagerDelegate?
     
-    var database: Connection!
+    var database: Connection?
     var isConnected = false
     
-    func parseDatabase() {
+    func parseDatabase(runQueue: dispatch_queue_t = dispatch_get_main_queue()) {
         
-        let stops = listStops()
-        let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
-        
-        var stopInformation: [String : StopInformation] = [:]
-        
-        for stop in stops {
-            
-            let latitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lat")!])!
-            let longitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lon")!])!
-            
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            
-            let stopNo = stop[stopAttributes.indexOf("stop_code")!]
-            let stopTag = stop[stopAttributes.indexOf("stop_id")!]
-            let stopName = stop[stopAttributes.indexOf("stop_name")!]
-            
-            //Figure out the road name
-            let roadName = stop[stopAttributes.indexOf("road_name")!]
-            
-            stopInformation[stopNo] = StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, roadName: roadName, location: location)
-            
+        if isConnected == false {
+            return
         }
         
-        delegate?.databaseManagerDidParseDatabase(self, database: stopInformation)
+        let parseBlock: () -> Void = {
+            
+            guard let stops = self.listStops() else {
+                return
+            }
+            
+            let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
+            
+            var stopInformation: [String : StopInformation] = [:]
+            
+            for stop in stops {
+                
+                let latitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lat")!])!
+                let longitude = CLLocationDegrees(stop[stopAttributes.indexOf("stop_lon")!])!
+                
+                let location = CLLocation(latitude: latitude, longitude: longitude)
+                
+                let stopNo = stop[stopAttributes.indexOf("stop_code")!]
+                let stopTag = stop[stopAttributes.indexOf("stop_id")!]
+                let stopName = stop[stopAttributes.indexOf("stop_name")!]
+                
+                //Figure out the road name
+                let roadName = stop[stopAttributes.indexOf("road_name")!]
+                
+                stopInformation[stopNo] = StopInformation(stopNo: stopNo, stopTag: stopTag, name: stopName, roadName: roadName, location: location)
+                
+            }
+            
+            self.delegate?.databaseManagerDidParseDatabase(self, database: stopInformation)
+
+        }
+        
+        if NSThread.isMainThread() {
+            parseBlock()
+        } else {
+            dispatch_sync(runQueue, parseBlock)
+        }
         
     }
     
-    func infoForTripIdentifier(tripID: String) -> (lineName: String, routeName: String, lineType: BusLineType) {
+    func routeCoordinatesForTripIdentifier(tripID: String) -> [CLLocationCoordinate2D]? {
         
-        let statement = database.prepare("SELECT trips.route_id, trip_headsign, route_long_name FROM trips, routes WHERE trips.route_id=routes.route_id AND trip_id='\(tripID)'")
+        if isConnected == false {
+            return nil
+        }
+        
+        guard let statement = database?.prepare("SELECT latitude, longitude FROM polyline_points") else {
+            return nil
+        }
+        
+        var lineCoordinates: [CLLocationCoordinate2D] = []
+        
+        for point in statement {
+            
+            if point.count < 2 {
+                continue
+            }
+            
+            let latitude = (point[0] as! NSString).doubleValue
+            let longitude = (point[1] as! NSString).doubleValue
+                
+            let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+            lineCoordinates.append(coordinate)
+            
+        }
+        
+        return lineCoordinates
+        
+    }
+    
+    func infoForTripIdentifier(tripID: String) -> (lineName: String, routeName: String, lineType: BusLineType)? {
+        
+        if isConnected == false {
+            return nil
+        }
+        
+        guard let statement = database?.prepare("SELECT trips.route_id, trip_headsign, route_long_name FROM trips, routes WHERE trips.route_id=routes.route_id AND trip_id='\(tripID)'") else {
+            return nil
+        }
 
         let line = Array(statement)[0][2] as! String
         let routeName = Array(statement)[0][1] as! String
@@ -75,14 +128,20 @@ class DatabaseManager: NSObject {
     }
     
     
-    func stopsOnRouteWithTripIdentifier(tripID: String) -> [StopOnRoute] {
+    func stopsOnRouteWithTripIdentifier(tripID: String) -> [StopOnRoute]? {
+        
+        if isConnected == false {
+            return nil
+        }
         
         //Load the query as it's so big it can't be inlined
         
         var query = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
         query = query.stringByReplacingOccurrencesOfString("[tripID]", withString: tripID)
         
-        let statement = database.prepare(query as String)
+        guard let statement = database?.prepare(query as String) else {
+            return nil
+        }
         
         var result: [StopOnRoute] = []
         
@@ -101,11 +160,17 @@ class DatabaseManager: NSObject {
     }
     
     
-    func rawLinesForStop(stopTag: String) -> [String] {
+    func rawLinesForStop(stopTag: String) -> [String]? {
+        
+        if isConnected == false {
+            return nil
+        }
         
         //Good thing SQL injection here is impossible and useless
         
-        let statement = database.prepare("SELECT route_no FROM stop_lines WHERE stop_id='\(stopTag)'")
+        guard let statement = database?.prepare("SELECT route_no FROM stop_lines WHERE stop_id='\(stopTag)'") else {
+            return nil
+        }
         
         var toReturn: [String] = []
         
@@ -117,9 +182,16 @@ class DatabaseManager: NSObject {
         
     }
     
-    func listStops() -> [[String]] {
+    func listStops() -> [[String]]? {
         
-        let statement = database.prepare("SELECT * FROM stops")
+        if isConnected == false {
+            return nil
+        }
+        
+        guard let statement = database?.prepare("SELECT * FROM stops") else {
+            return nil
+        }
+        
         var returnedColumns: [[String]] = []
         
         for row in statement {
@@ -127,14 +199,8 @@ class DatabaseManager: NSObject {
             var temp: [String] = []
             
             for column in row {
-                
-                if column == nil {
-                    temp.append("")
-                } else {
-                    temp.append(column as! String)
-                }
-                
-                
+                let columnValue = column as! String? ?? ""
+                temp.append(columnValue)
             }
             
             returnedColumns.append(temp)
@@ -150,6 +216,7 @@ class DatabaseManager: NSObject {
     }
     
     func connect() {
+        
         if isConnected {
             return
         }
@@ -162,6 +229,7 @@ class DatabaseManager: NSObject {
         }
         
         isConnected = true
+        
     }
     
     override init() {

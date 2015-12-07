@@ -19,11 +19,15 @@
 		042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */; };
 		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
 		042ED5C11BEB5C880093EB77 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */; };
+		043CC5DD1C11AE41000F6602 /* home.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 043CC5DC1C11AE41000F6602 /* home.gpx */; };
+		04409AFF1C12A5B000214CB8 /* riccarton.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 04409AFE1C12A5B000214CB8 /* riccarton.gpx */; };
 		0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */; };
 		044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */; };
 		0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC8B1BF600F600794D4C /* StopInformationParser.swift */; };
 		0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */; };
 		0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */; };
+		0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0455D0AD1C05FCA700134810 /* MapKit.framework */; };
+		0455D0B11C0601F000134810 /* RouteMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455D0B01C0601F000134810 /* RouteMapViewController.swift */; };
 		04688E8E1BF6339C006A1DFA /* info.xml in Resources */ = {isa = PBXBuildFile; fileRef = 04688E8D1BF6339C006A1DFA /* info.xml */; };
 		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
 		047981221BFF3EE000DB3947 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 047981211BFF3EE000DB3947 /* database.zip */; };
@@ -94,11 +98,15 @@
 		042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfoTableViewController.swift; sourceTree = "<group>"; };
 		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
 		042ED5C01BEB5C880093EB77 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
+		043CC5DC1C11AE41000F6602 /* home.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = home.gpx; path = ../../home.gpx; sourceTree = "<group>"; };
+		04409AFE1C12A5B000214CB8 /* riccarton.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = riccarton.gpx; path = ../../riccarton.gpx; sourceTree = "<group>"; };
 		0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewTableViewController.swift; sourceTree = "<group>"; };
 		044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopTableViewCell.swift; sourceTree = "<group>"; };
 		0451FC8B1BF600F600794D4C /* StopInformationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationParser.swift; sourceTree = "<group>"; };
 		0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationTableViewController.swift; sourceTree = "<group>"; };
 		0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopTableViewCell.swift; sourceTree = "<group>"; };
+		0455D0AD1C05FCA700134810 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0455D0B01C0601F000134810 /* RouteMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMapViewController.swift; sourceTree = "<group>"; };
 		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
 		047981211BFF3EE000DB3947 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
@@ -134,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */,
 				047981301BFF747000DB3947 /* libz.1.dylib in Frameworks */,
 				04D6FB251BF88E09001BFC49 /* SQLite.framework in Frameworks */,
 			);
@@ -172,6 +181,9 @@
 		042ED5991BEB2D910093EB77 = {
 			isa = PBXGroup;
 			children = (
+				04409AFE1C12A5B000214CB8 /* riccarton.gpx */,
+				043CC5DC1C11AE41000F6602 /* home.gpx */,
+				0455D0AD1C05FCA700134810 /* MapKit.framework */,
 				040D64181C01C1A6009BF2C8 /* kdtree */,
 				047981271BFF73B200DB3947 /* ZipArchive */,
 				048BE8671BF8D87C0064F627 /* second.gpx */,
@@ -194,6 +206,7 @@
 		042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */ = {
 			isa = PBXGroup;
 			children = (
+				0455D0AF1C0601CC00134810 /* Maps */,
 				0445E2CD1BF73C4E00A3D416 /* Line Visualisation */,
 				0451FC8F1BF60A9B00794D4C /* Stop Info */,
 				04FF5B361BECA79200A69C9C /* Bus Stop Resources */,
@@ -253,6 +266,14 @@
 				0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */,
 			);
 			name = "Stop Info";
+			sourceTree = "<group>";
+		};
+		0455D0AF1C0601CC00134810 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				0455D0B01C0601F000134810 /* RouteMapViewController.swift */,
+			);
+			name = Maps;
 			sourceTree = "<group>";
 		};
 		047981271BFF73B200DB3947 /* ZipArchive */ = {
@@ -380,9 +401,11 @@
 				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
 				048BE8681BF8D87C0064F627 /* second.gpx in Resources */,
+				04409AFF1C12A5B000214CB8 /* riccarton.gpx in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
 				047981221BFF3EE000DB3947 /* database.zip in Resources */,
 				04FF5B351BECA2B300A69C9C /* blue location.png in Resources */,
+				043CC5DD1C11AE41000F6602 /* home.gpx in Resources */,
 				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
 				048BE8661BF8D8110064F627 /* default.gpx in Resources */,
@@ -421,6 +444,7 @@
 				040D641D1C03653B009BF2C8 /* UpdateManager.swift in Sources */,
 				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
 				0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */,
+				0455D0B11C0601F000134810 /* RouteMapViewController.swift in Sources */,
 				040D641B1C01C1B2009BF2C8 /* kdtree.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -549,6 +573,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -564,6 +589,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.Christchurch-Bus-Info";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -12,8 +12,10 @@ class LineViewTableViewController: UITableViewController {
     
     var lineName: String!
     var routeName: String!
+    var tripID: String!
     
     var lineColour: UIColor!
+    
     var lineType: BusLineType = .NumberedRoute("error") {
         didSet {
             switch lineType {
@@ -212,24 +214,34 @@ class LineViewTableViewController: UITableViewController {
             
             tableView.endUpdates()
             
-        } else {
+        } else if indexPath.section == 2 && stopsToShow.keys.contains(indexPath.row) {
+            
             self.performSegueWithIdentifier("LineStopInfoSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
+            
+        } else if indexPath.section == 1 && indexPath.row == 0 {
+            
+            self.performSegueWithIdentifier("RouteMapViewSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
+            
         }
         
     }
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
         
         let selectedRowIndexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
         
-        if selectedRowIndexPath.section == 2 && stopsToShow.keys.contains(selectedRowIndexPath.row) == false {
-            return
-        }
+        if selectedRowIndexPath.section == 1 {
         
-        if selectedRowIndexPath.section == 2 {
+            let mapViewController = segue.destinationViewController as! RouteMapViewController
+            
+            guard let coordinates = DatabaseManager.sharedInstance.routeCoordinatesForTripIdentifier(tripID) else {
+                return
+            }
+            
+            mapViewController.polylineCoordinates = coordinates
+            
+        } else if selectedRowIndexPath.section == 2 {
             
             let stopInfoViewController = segue.destinationViewController as! StopInformationTableViewController
             let stopInfo = stopsToShow[selectedRowIndexPath.row]!

@@ -9,49 +9,36 @@
 import UIKit
 
 let ARRIVING_BUSES_SECTION = 0
-let UPDATE_FREQUENCY_SECONDS = 30.0
-
-let MIN_THUMBNAIL_WIDTH = 30.0
-let DEFAULT_SEPARATOR_INSET = 60.0
+let UPDATE_FREQUENCY_SECONDS = 15.0
 
 class StopInformationTableViewController: UITableViewController, StopInformationParserDelegate {
     
     var stopNumber: String!
     var stopInfoParser: StopInformationParser!
     
-    var lineLabelWidth = CGFloat(30.0)
+    var lineLabelWidth = CGFloat(0.0)
     var cellContentInset = CGFloat(0.0)
     
+    var hasReceivedInfo = false
+    var infoUpdateTimer: NSTimer!
+    
     var busArrivalInfo: [[String : AnyObject]] = [] {
-        
         didSet {
-            
             let prototypeLineLabelView = BusLineLabelView(lineType: .NumberedRoute(""))
-            var maxWidth = CGFloat(0.0)
             
             for item in busArrivalInfo {
                 
                 let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(item["route_no"]! as! String)
                 prototypeLineLabelView.setLineType(lineType)
                 
-                if prototypeLineLabelView.widthConstraint.constant > maxWidth {
-                    maxWidth = prototypeLineLabelView.widthConstraint.constant
-                    cellContentInset = 30 + maxWidth
+                if prototypeLineLabelView.widthConstraint.constant > lineLabelWidth {
+                    lineLabelWidth = prototypeLineLabelView.widthConstraint.constant
+                    cellContentInset = 30 + lineLabelWidth
                 }
                 
             }
-            
-            lineLabelWidth = maxWidth
-            
         }
-        
     }
-    
-    var hasReceivedInfo = false
-    var infoUpdateTimer: NSTimer!
-    
-    var separatorInset = CGFloat(DEFAULT_SEPARATOR_INSET)
-    var routeThumbnailWidth = CGFloat(MIN_THUMBNAIL_WIDTH)
     
     func formattedStringForArrivalTime(minutes: Int) -> String {
 
@@ -173,14 +160,22 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
         //find the route info before we actually segue
         
-        let (lineName, routeName, lineType) = DatabaseManager.sharedInstance.infoForTripIdentifier(tappedTripID)
+        guard let (lineName, routeName, lineType) = DatabaseManager.sharedInstance.infoForTripIdentifier(tappedTripID) else {
+            return
+        }
         
         let destination = segue.destinationViewController as! LineViewTableViewController
-        destination.stopsOnRoute = DatabaseManager.sharedInstance.stopsOnRouteWithTripIdentifier(tappedTripID)
+        
+        guard let stopsOnRoute = DatabaseManager.sharedInstance.stopsOnRouteWithTripIdentifier(tappedTripID) else {
+            return
+        }
+        
+        destination.stopsOnRoute = stopsOnRoute
         
         destination.lineName = lineName
         destination.routeName = routeName
         destination.lineType = lineType
+        destination.tripID = tappedTripID
         
     }
     
@@ -200,10 +195,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
         }
         
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
         stopInfoParser = StopInformationParser(stopNumber: stopNumber)
         stopInfoParser.delegate = self
         
@@ -212,7 +203,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(UPDATE_FREQUENCY_SECONDS, target: stopInfoParser, selector: "updateData", userInfo: nil, repeats: true)
         
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -225,7 +215,9 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
         busArrivalInfo = []
         hasReceivedInfo = false
-        routeThumbnailWidth = CGFloat(MIN_THUMBNAIL_WIDTH)
+        
+        lineLabelWidth = CGFloat(0.0)
+        cellContentInset = CGFloat(0.0)
         
         infoUpdateTimer.invalidate()
         

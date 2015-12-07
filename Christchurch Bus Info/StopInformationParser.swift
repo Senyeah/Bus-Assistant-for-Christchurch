@@ -22,13 +22,10 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
     var stopInfoData: NSData!
     var xmlParser: NSXMLParser!
     
-    var stopInformation = [[String: AnyObject]]()
-    
-    //Format: [["name": name, "route_no": no, "eta": eta], ...]
-    
+    var stopInformation: [[String: AnyObject]] = []
     var rootNode: String?
     
-    var currentItem = [String: AnyObject]()
+    var currentItem: [String: AnyObject] = [:]
     
     var destinationName: String?
     var routeNumber: String?
@@ -72,7 +69,7 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         if elementName == "Trip" {
             
             stopInformation.append(currentItem)
-            currentItem = [String: AnyObject]()
+            currentItem = [:]
             
         } else if elementName == rootNode! {
             
@@ -92,13 +89,15 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
     
     func updateData() {
         
-        stopInformation = [[String: AnyObject]]()
+        stopInformation = []
         
         let updateURL = NSURL(string: STOP_ARRIVAL_INFO_URL + stopNumber)!
         let request = NSURLRequest(URL: updateURL)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
        
+            print("hello")
+            
             guard let receivedData = data else {
                 return
             }
@@ -107,8 +106,8 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
             
             //Uncomment if you're working at 4am when no buses run
             
-    //    let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
-      //  var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
+   //     let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
+   //     var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
         
             //Thank you Metro for giving us invalid XML!
             
@@ -135,5 +134,6 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         super.init()
         self.stopNumber = stopNumber
     }
+    
     
 }
