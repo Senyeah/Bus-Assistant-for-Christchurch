@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 
 let STOPS_TO_LOAD_RADIUS = 500.0
+let MIN_UPDATE_DISTANCE_DELTA = 5.0
 
 var currentIndex: Int = 0
 
@@ -65,7 +66,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             distanceMoved = newLocation.distanceFromLocation(lastLocationUpdated!)
         }
         
-        if distanceMoved > 5 || hasObtainedInitialLocation == false {
+        if distanceMoved > MIN_UPDATE_DISTANCE_DELTA || hasObtainedInitialLocation == false {
             
             processLocationUpdate()
             lastLocationUpdated = locationManager.location
@@ -151,14 +152,13 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stopTag)
             cell.setStopLines(stopLinesForStop)
             
-            cell.layoutThumbnailViews()
+            cell.layoutSubviews()
             
             return cell
             
         }
         
     }
-    
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension

@@ -19,6 +19,8 @@ class BusStopTableViewCell: UITableViewCell {
     var lineThumbnailLabels: [BusLineLabelView] = []
     var existingConstraints: [NSLayoutConstraint] = []
     
+    var bottomConstraint: NSLayoutConstraint?
+    
     func setDistance(distance: CLLocationDistance) {
         
         var distanceString: String
@@ -34,15 +36,14 @@ class BusStopTableViewCell: UITableViewCell {
         
     }
     
-    var bottomConstraint: NSLayoutConstraint?
-    
-    func layoutThumbnailViews() {
+    override func layoutSubviews() {
         
-        if bottomConstraint != nil && bottomConstraint!.firstItem as! BusLineLabelView == lineThumbnailLabels.last! {
-            return
-        }
+        super.layoutSubviews()
+       
+//        lineThumbnailView.setNeedsLayout()
+//        lineThumbnailView.layoutIfNeeded()
         
-        let availableWidth = lineThumbnailView.frame.size.width
+        let availableWidth = lineThumbnailView.bounds.size.width
         let minimumHorizontalPadding = CGFloat(10.0)
         
         var currentX = CGFloat(0.0)
@@ -65,8 +66,6 @@ class BusStopTableViewCell: UITableViewCell {
                 thumbnailView.xConstraint!.constant = currentX
                 thumbnailView.yConstraint!.constant = currentY
                 
-                thumbnailView.updateConstraintsIfNeeded()
-                
             } else {
                 
                 let xConstraint = NSLayoutConstraint(item: thumbnailView, attribute: .Leading, relatedBy: .Equal, toItem: lineThumbnailView, attribute: .Leading, multiplier: 1.0, constant: currentX)
@@ -76,9 +75,10 @@ class BusStopTableViewCell: UITableViewCell {
                 thumbnailView.yConstraint = yConstraint
                 
                 lineThumbnailView.addConstraints([xConstraint, yConstraint])
-                
+
             }
             
+            thumbnailView.setNeedsUpdateConstraints()
             currentX += minimumHorizontalPadding + dimensions.width
             
         }
@@ -91,7 +91,7 @@ class BusStopTableViewCell: UITableViewCell {
         bottomConstraint!.priority = 250
         
         lineThumbnailView.addConstraint(bottomConstraint!)
-        
+
     }
     
     

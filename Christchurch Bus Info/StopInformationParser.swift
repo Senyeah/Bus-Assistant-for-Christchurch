@@ -95,9 +95,7 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         let request = NSURLRequest(URL: updateURL)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
-       
-            print("hello")
-            
+                   
             guard let receivedData = data else {
                 return
             }

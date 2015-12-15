@@ -167,7 +167,7 @@ class LineViewTableViewController: UITableViewController {
             }
             
             cell.lineStopIndicator.strokeColour = lineColour
-            cell.separatorInset = UIEdgeInsets(top: 0.0, left: cell.contentView.frame.width, bottom: 0.0, right: 0.0)
+            cell.separatorInset = UIEdgeInsets(top: 0.0, left: 10000, bottom: 0.0, right: 0.0)
             
             return cell
             

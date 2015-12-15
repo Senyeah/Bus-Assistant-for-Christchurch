@@ -41,7 +41,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     }
     
     func formattedStringForArrivalTime(minutes: Int) -> String {
-
+        
         let hoursAway = Int(floor(Double(minutes / 60)))
         var minutesAway = minutes
         
@@ -70,7 +70,6 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         return returnString
         
     }
-    
 
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String : AnyObject]]) {
         

@@ -42,12 +42,10 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
             
             for (_, info) in stopInformation! {
-                
                 let coordinate = info.location.coordinate
                 let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
                 
                 normalisedCoordinates.append((stop: info, normalisedCoordinate))
-                
             }
             
             return normalisedCoordinates
@@ -148,16 +146,15 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     func busLineTypeForString(inString: String) -> BusLineType {
         
         let linesMap: [String: BusLineType] = ["P": .PurpleLine, "O": .OrangeLine, "Y": .YellowLine, "B": .BlueLine, "Oa": .Orbiter(.AntiClockwise), "Oc": .Orbiter(.Clockwise)]
-        
-        var lineType: BusLineType?
+        var lineType: BusLineType
         
         if linesMap[inString] == nil {
             lineType = .NumberedRoute(inString)
         } else {
-            lineType = linesMap[inString]
+            lineType = linesMap[inString]!
         }
         
-        return lineType!
+        return lineType
         
     }
     

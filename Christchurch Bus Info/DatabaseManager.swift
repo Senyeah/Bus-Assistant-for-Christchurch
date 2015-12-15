@@ -33,6 +33,8 @@ class DatabaseManager: NSObject {
     var database: Connection?
     var isConnected = false
     
+    var stopTagNumbers: [String: String] = [:]
+    
     func parseDatabase(runQueue: dispatch_queue_t = dispatch_get_main_queue()) {
         
         if isConnected == false {
@@ -59,6 +61,8 @@ class DatabaseManager: NSObject {
                 let stopNo = stop[stopAttributes.indexOf("stop_code")!]
                 let stopTag = stop[stopAttributes.indexOf("stop_id")!]
                 let stopName = stop[stopAttributes.indexOf("stop_name")!]
+                
+                self.stopTagNumbers[stopTag] = stopNo
                 
                 //Figure out the road name
                 let roadName = stop[stopAttributes.indexOf("road_name")!]
@@ -210,13 +214,27 @@ class DatabaseManager: NSObject {
         
     }
     
+    func executeQuery(sqlQuery: String, completion: Statement -> ()) {
+        
+        if isConnected == false {
+            return
+        }
+        
+        guard let statement = database?.prepare(sqlQuery) else {
+            return
+        }
+        
+        completion(statement)
+        
+    }
+    
     func disconnect() {
         database = nil
         isConnected = false
     }
+
     
     func connect() {
-        
         if isConnected {
             return
         }
@@ -229,7 +247,6 @@ class DatabaseManager: NSObject {
         }
         
         isConnected = true
-        
     }
     
     override init() {

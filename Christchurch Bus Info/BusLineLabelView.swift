@@ -32,7 +32,6 @@ enum BusLineType {
     case NumberedRoute(String)
 }
 
-
 class BusLineLabelView: UIView {
     
     var lineType: BusLineType?
