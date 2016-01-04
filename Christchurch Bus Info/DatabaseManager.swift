@@ -10,6 +10,24 @@ import UIKit
 import SQLite
 import CoreLocation
 
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat = 1) {
+        assert(hex[hex.startIndex] == "#", "Expected hex string of format #RRGGBB")
+        
+        let scanner = NSScanner(string: hex)
+        scanner.scanLocation = 1  // skip #
+        
+        var rgb: UInt32 = 0
+        scanner.scanHexInt(&rgb)
+        
+        self.init(
+            red:   CGFloat((rgb & 0xFF0000) >> 16)/255.0,
+            green: CGFloat((rgb &   0xFF00) >>  8)/255.0,
+            blue:  CGFloat((rgb &     0xFF)      )/255.0,
+            alpha: alpha)
+    }
+}
+
 struct StopOnRoute {
     var stopName: String
     var stopNumber: String
@@ -164,6 +182,29 @@ class DatabaseManager: NSObject {
     }
     
     
+    func lineColourForRoute(route: BusLineType) -> (text: UIColor?, background: UIColor?) {
+        
+        guard let statement = database?.prepare("SELECT background, text FROM route_colours WHERE route='\(route.toString)'") else {
+            return (text: nil, background: nil)
+        }
+        
+        var textColourString: String?
+        var backgroundColourString: String?
+        
+        for lines in statement {
+            backgroundColourString = lines[0] as? String
+            textColourString = lines[1] as? String
+        }
+        
+        guard textColourString != nil && backgroundColourString != nil else {
+            return (text: nil, background: nil)
+        }
+        
+        return (text: UIColor(hex: textColourString!), background: UIColor(hex: backgroundColourString!))
+        
+    }
+    
+    
     func rawLinesForStop(stopTag: String) -> [String]? {
         
         if isConnected == false {
@@ -215,7 +256,6 @@ class DatabaseManager: NSObject {
     }
     
     func executeQuery(sqlQuery: String, completion: Statement -> ()) {
-        
         if isConnected == false {
             return
         }
@@ -225,7 +265,6 @@ class DatabaseManager: NSObject {
         }
         
         completion(statement)
-        
     }
     
     func disconnect() {

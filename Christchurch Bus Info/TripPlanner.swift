@@ -22,6 +22,17 @@ extension NSDate {
         return (date: dateString, time: timeString)
     }
     
+    public var localisedTimeString: String {
+        get {
+            let formatter = NSDateFormatter()
+            
+            formatter.timeStyle = .ShortStyle
+            formatter.dateStyle = .NoStyle
+            
+            return formatter.stringFromDate(self)
+        }
+    }
+    
     static func representationToDate(stringRepresentation: String) -> NSDate {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
@@ -35,14 +46,14 @@ func < (lhs: NSDate, rhs: NSDate) -> Bool {
 }
 
 extension CLLocationCoordinate2D {
-    func toCoordinateString() -> String {
+    var stringValue: String {
         return String(self.latitude) + "," + String(self.longitude)
     }
 }
 
 protocol TripPlannerDelegate {
     func tripPlannerDidBegin(planner: TripPlanner)
-    func tripPlannerDidCompleteWithError(planner: TripPlanner, error: TripPlannerError)
+    func tripPlannerDidCompleteWithError(planner: TripPlanner?, error: TripPlannerError)
     func tripPlannerDidCompleteSuccessfully(planner: TripPlanner, journey: [TripPlannerJourney])
 }
 
@@ -55,6 +66,7 @@ enum TripPlannerError {
 struct TripPlannerSegment {
     var isBusJourney: Bool
     var route: BusLineType?
+    var tripID: String?
     
     var startTime: NSDate
     var endTime: NSDate
@@ -72,6 +84,9 @@ struct TripPlannerSegment {
 struct TripPlannerJourney {
     var startTime: NSDate
     var finishTime: NSDate
+    
+    var startLocationString: String?
+    var endLocationString: String?
     
     var walkTime: Int
     var transitTime: Int
@@ -91,10 +106,18 @@ class TripPlanner: NSObject {
     
     private lazy var requestURL: NSURL = { [unowned self] in
         let (dateString, timeString) = self.startTime.toDateTimeString()
-        let (startPosString, endPosString) = (self.startPosition.coordinate.toCoordinateString(), self.endPosition.coordinate.toCoordinateString())
+        let (startPosString, endPosString) = (self.startPosition.coordinate.stringValue, self.endPosition.coordinate.stringValue)
 
         return NSURL(string: "https://metro.miyazudesign.co.nz/trip_planner.php?from=\(startPosString)&to=\(endPosString)&date=\(dateString)&time=\(timeString)")!
     }()
+    
+    static func canAccessServer() -> Bool {
+        guard let _ = NSData(contentsOfURL: NSURL(string: "https://metro.miyazudesign.co.nz/")!) else {
+            return false
+        }
+        
+        return true
+    }
     
     init(start: CLLocation, end: CLLocation, time: NSDate, updateDelegate: TripPlannerDelegate) {
         
@@ -170,19 +193,26 @@ class TripPlanner: NSObject {
                         }
                         
                         var routeType: BusLineType? = nil
+                        var tripID: String? = nil
                         
                         if segmentInfo.keys.contains("trip_id") {
-                            let tripID = segmentInfo["trip_id"] as! String
                             
-                            guard let (_, _, type) = DatabaseManager.sharedInstance.infoForTripIdentifier(tripID) else {
+                            tripID = segmentInfo["trip_id"] as? String
+                            
+                            guard let (_, _, type) = DatabaseManager.sharedInstance.infoForTripIdentifier(tripID!) else {
                                 dispatch_async(dispatch_get_main_queue()) {
                                     self.delegate.tripPlannerDidCompleteWithError(self, error: .VersionError)
                                 }
+                                
                                 return
                             }
                             
-                            routes.append(type)
+                            if routes.last == nil || routes.last!.toString != type.toString {
+                                routes.append(type)
+                            }
+                            
                             routeType = type
+                            
                         }
                         
                         var polylinePoints: [CLLocationCoordinate2D] = []
@@ -193,7 +223,7 @@ class TripPlanner: NSObject {
                         }
                         
                         let segmentObject = TripPlannerSegment(isBusJourney: isBusSegment,
-                                                               route: routeType,
+                                                               route: routeType, tripID: tripID,
                                                                startTime: segmentStart, endTime: segmentEnd, duration: segmentDuration,
                                                                startPosition: fromPoint, endPosition: toPoint,
                                                                startStop: fromStop, endStop: toStop,
@@ -203,7 +233,10 @@ class TripPlanner: NSObject {
                         
                     }
                     
-                    let journeyObject = TripPlannerJourney(startTime: startTime, finishTime: finishTime, walkTime: walkTime, transitTime: transitTime, duration: duration, segments: segments, routes: routes)
+                    let journeyObject = TripPlannerJourney(startTime: startTime,finishTime: finishTime,
+                                                           startLocationString: nil, endLocationString: nil,
+                                                           walkTime: walkTime, transitTime: transitTime, duration: duration,
+                                                           segments: segments, routes: routes)
                     trips.append(journeyObject)
                     
                 }

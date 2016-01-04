@@ -10,10 +10,8 @@ import UIKit
 import CoreLocation
 
 struct StopInformation {
-    var stopNo: String
-    var stopTag: String
-    var name: String
-    var roadName: String
+    var stopNo: String, stopTag: String
+    var name: String, roadName: String
     var location: CLLocation
 }
 
@@ -282,11 +280,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
     }
     
-    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String : StopInformation]) {
-        
+    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String: StopInformation]) {
         stopInformation = database
         delegate?.managerReceivedUpdatedInformation(self)
-        
     }
     
     func updateManagerWillDownloadFile(manager: UpdateManager) {

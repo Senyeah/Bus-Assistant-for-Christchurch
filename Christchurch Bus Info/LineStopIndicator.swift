@@ -17,14 +17,13 @@ enum StopType {
 class LineStopIndicator: UIView {
 
     var isMajorStop = true
-    var stopType: StopType = .LineStart {
+    var stopType: StopType = .IntermediateStop {
         didSet {
             self.setNeedsDisplay()
         }
     }
     
-    var strokeColour: UIColor! = purple
-    
+    var strokeColour: UIColor = UIColor.blackColor()
     let lineWidth = CGFloat(3.0)
     
     required init?(coder aDecoder: NSCoder) {

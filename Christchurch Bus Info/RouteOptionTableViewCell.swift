@@ -39,7 +39,6 @@ class RouteOptionTableViewCell: UITableViewCell {
                 image.removeFromSuperview()
             }
             
-            
             sequenceArrowConstraints.removeAll()
             sequenceArrowImages.removeAll()
         }
@@ -81,9 +80,11 @@ class RouteOptionTableViewCell: UITableViewCell {
             if labelView != lineLabels.last! {
                 
                 let sequenceArrowImage = UIImageView(image: UIImage(named: "SequenceArrow"))
-                sequenceArrowImage.frame = CGRectMake(0.0, 0.0, 8.5, 16.0)
                 
+                sequenceArrowImage.frame = CGRectMake(0.0, 0.0, 8.5, 16.0)
                 sequenceArrowImage.translatesAutoresizingMaskIntoConstraints = false
+                
+                sequenceArrowImages.append(sequenceArrowImage)
                 
                 let sequenceArrowXConstraint = NSLayoutConstraint(item: sequenceArrowImage, attribute: .Leading, relatedBy: .Equal, toItem: routeView, attribute: .Leading, multiplier: 1.0, constant: xPosition + sequenceArrowPadding)
                 let sequenceArrowYConstraint = NSLayoutConstraint(item: sequenceArrowImage, attribute: .CenterY, relatedBy: .Equal, toItem: routeView, attribute: .CenterY, multiplier: 1.0, constant: 0.0)

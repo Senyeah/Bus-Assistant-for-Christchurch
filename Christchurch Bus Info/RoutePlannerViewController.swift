@@ -7,8 +7,29 @@
 //
 
 import UIKit
+import CoreLocation
 
-class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
+class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource, PlaceSearchResultDelegate {
+    
+    var rowAffected: Int = 0
+    var routePlannerController: RoutePlannerViewController?
+    
+    var optionsTableView: UITableView?
+    
+    func locationWasChosenWithName(name: String, coordinate: CLLocationCoordinate2D) {
+        
+        if rowAffected == 0 {
+            routePlannerController?.startCoordinate = coordinate
+            routePlannerController?.startLabel = name
+        } else if rowAffected == 1 {
+            routePlannerController?.finishCoordinate = coordinate
+            routePlannerController?.finishLabel = name
+        }
+        
+        optionsTableView?.reloadData()
+        routePlannerController?.checkForValidJourney()
+        
+    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -19,34 +40,119 @@ class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("RouteOptionsCell", forIndexPath: indexPath)
         
-        if indexPath.row == 0 {
-            cell.detailTextLabel?.text = "Evans Pass Road, Sumner"
-        } else if indexPath.row == 1 {
-            cell.textLabel?.text = "End"
-            cell.detailTextLabel?.text = "25 Gardiners Road, Bishopdale"
-        } else if indexPath.row == 2 {
-            cell.textLabel?.text = "Depart After"
-            cell.detailTextLabel?.text = "1:30 PM"
-
+        if optionsTableView == nil {
+            optionsTableView = tableView
         }
         
-        cell.layoutMargins = UIEdgeInsetsZero
-        return cell
+        if indexPath.row < 2 {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("RouteOptionsCell", forIndexPath: indexPath)
+            
+            if indexPath.row == 0 {
+                cell.detailTextLabel?.text = routePlannerController?.startLabel ?? "Choose…"
+            } else {
+                cell.textLabel?.text = "End"
+                cell.detailTextLabel?.text = routePlannerController?.finishLabel ?? "Choose…"
+            }
+            
+            cell.layoutMargins = UIEdgeInsetsZero
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("RouteTimePickerCell", forIndexPath: indexPath)
+            
+            cell.textLabel?.text = "Depart After"
+            cell.detailTextLabel?.text = routePlannerController?.startTime.toShortDateTimeString()
+            
+            cell.layoutMargins = UIEdgeInsetsZero
+            return cell
+            
+        }
+        
     }
     
 }
 
-class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TripPlannerDelegate {
+class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TripPlannerDelegate, DatePickerDelegate {
 
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var routeOptionsTableView: UITableView!
+    
+    var startCoordinate: CLLocationCoordinate2D?
+    var finishCoordinate: CLLocationCoordinate2D?
+    
+    var startLabel: String?
+    var finishLabel: String?
+    
+    var startTime = NSDate()
     
     var trip: TripPlanner?
-    var trips: [TripPlannerJourney] = []
+    var trips: [TripPlannerJourney] = [] {
+        didSet {
+            for index in 0..<trips.count {
+                trips[index].startLocationString = startLabel
+                trips[index].endLocationString = finishLabel
+            }
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func datePickerDidSelectNewDate(date: NSDate) {
+        startTime = date
+        routeOptionsTableView.reloadData()
+        
+        checkForValidJourney()
+    }
+    
+    func checkForValidJourney() {
+        
+        if startCoordinate != nil && finishCoordinate != nil {
+            
+            trips = []
+            tableView.reloadData()
+            
+            let loadingIndicator = TableViewLoadingBackgroundView.initView()
+            tableView.backgroundView = loadingIndicator
+            
+            //Plan the trip
+            trip = TripPlanner(start: CLLocation(latitude: startCoordinate!.latitude, longitude: startCoordinate!.longitude),
+                               end: CLLocation(latitude: finishCoordinate!.latitude, longitude: finishCoordinate!.longitude),
+                               time: startTime, updateDelegate: self)
+            
+        }
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let sendingTableView = (sender as! UITableViewCell).superview?.superview as! UITableView
+        
+        if sendingTableView == routeOptionsTableView && sendingTableView.indexPathForSelectedRow!.row < 2 {
+            
+            let modalLocationPicker = (segue.destinationViewController as! UINavigationController).viewControllers.first as! PlaceSearchViewController
+            var routeOptionsDataSource = routeOptionsTableView.delegate! as! PlaceSearchResultDelegate
+            
+            routeOptionsDataSource.rowAffected = routeOptionsTableView.indexPathForSelectedRow!.row
+            modalLocationPicker.delegate = routeOptionsDataSource
+            
+        } else if sendingTableView == routeOptionsTableView && sendingTableView.indexPathForSelectedRow!.row == 2 {
+            
+            let dateTimePicker = (segue.destinationViewController as! UINavigationController).viewControllers.first as! DatePickerViewController
+            
+            dateTimePicker.selectedDate = startTime
+            dateTimePicker.delegate = self
+            
+        } else {
+            
+            let routeOverviewController = segue.destinationViewController as! RouteOverviewViewController
+            routeOverviewController.tripInfo = trips[sendingTableView.indexPathForSelectedRow!.row]
+            
+        }
     }
     
     func formattedDuration(minutes: Int) -> String {
@@ -71,23 +177,34 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         
         super.viewDidLoad()
         
-        let startID = RouteInformationManager.sharedInstance.stopInformationForStopNumber("19416")?.location
-        let finishID = RouteInformationManager.sharedInstance.stopInformationForStopNumber("37404")?.location
-        
-        trip = TripPlanner(start: startID!, end: finishID!, time: NSDate.representationToDate("2015-12-25 10:30:00"), updateDelegate: self)
+        var routeOptionsDataSource = routeOptionsTableView.delegate! as! PlaceSearchResultDelegate
+        routeOptionsDataSource.routePlannerController = self
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            if TripPlanner.canAccessServer() == false {
+                dispatch_sync(dispatch_get_main_queue()) {
+                    self.tripPlannerDidCompleteWithError(nil, error: .ConnectionError)
+                }
+            }
+        }
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(animated: Bool) {
+        if routeOptionsTableView.indexPathForSelectedRow != nil {
+            routeOptionsTableView.deselectRowAtIndexPath(routeOptionsTableView.indexPathForSelectedRow!, animated: true)
+        }
+        
+        if tableView.indexPathForSelectedRow != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        }
     }
     
     func tripPlannerDidBegin(planner: TripPlanner) {
         print("trip planner began!")
     }
     
-    func tripPlannerDidCompleteWithError(planner: TripPlanner, error: TripPlannerError) {
+    func tripPlannerDidCompleteWithError(planner: TripPlanner?, error: TripPlannerError) {
         var errorTitle: String
         var errorMessage: String
         
@@ -148,15 +265,5 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         return cell
         
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

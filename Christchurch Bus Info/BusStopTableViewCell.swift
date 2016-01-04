@@ -14,8 +14,10 @@ class BusStopTableViewCell: UITableViewCell {
     @IBOutlet var lineThumbnailView: UIView!
     @IBOutlet var stopName: UILabel!
     @IBOutlet var stopNumber: UILabel!
+    
     @IBOutlet var stopDistance: UILabel!
-
+    @IBOutlet var walkTimeLabel: UILabel!
+    
     var lineThumbnailLabels: [BusLineLabelView] = []
     var existingConstraints: [NSLayoutConstraint] = []
     
@@ -32,7 +34,12 @@ class BusStopTableViewCell: UITableViewCell {
             distanceString = String(format: "%.2f km", kilometres)
         }
         
-        //stopDistance.text = distanceString
+        //Walk time calculation
+        
+        let walkTime = max(1, Int(ceil(distance / 1.389) / 60))
+        walkTimeLabel.text = String(walkTime) + " min" + (walkTime > 1 ? "s" : "")
+        
+        stopDistance.text = distanceString
         
     }
     
@@ -40,8 +47,8 @@ class BusStopTableViewCell: UITableViewCell {
         
         super.layoutSubviews()
        
-//        lineThumbnailView.setNeedsLayout()
-//        lineThumbnailView.layoutIfNeeded()
+        lineThumbnailView.setNeedsLayout()
+        lineThumbnailView.layoutIfNeeded()
         
         let availableWidth = lineThumbnailView.bounds.size.width
         let minimumHorizontalPadding = CGFloat(10.0)
@@ -117,16 +124,13 @@ class BusStopTableViewCell: UITableViewCell {
                 }
                 
             } else {
-                
                 lineThumbnail = BusLineLabelView(lineType: lineType)
                 lineThumbnailLabels.append(lineThumbnail)
 
                 lineThumbnailView.addSubview(lineThumbnail)
-                
             }
             
-            viewIdentifier++
-            
+            viewIdentifier += 1
         }
         
         //If we haven't used all of the available labels, remove the extra ones

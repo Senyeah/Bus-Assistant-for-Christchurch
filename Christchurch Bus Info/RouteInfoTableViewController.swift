@@ -30,7 +30,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     
     func processLocationUpdate() {
         
-        groupedStops = [:]
+        groupedStops.removeAll()
         
         guard let currentLocation = locationManager.location else {
             return
@@ -73,26 +73,62 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             hasObtainedInitialLocation = true
             
+            if self.groupedStops.count == 0 {
+                let noStopsMessage = TableViewErrorBackgroundView.initView("No Bus Stops Nearby", errorDetail: "No bus stops were found within 500 metres of your location.")
+                tableView.backgroundView = noStopsMessage
+            } else {
+                tableView.backgroundView = nil
+            }
+            
             self.tableView.reloadData()
             
         }
         
     }
     
-    override func viewDidLoad() {
+    func displayNoAuthorisationMessage() {
+        let noStopsMessage = TableViewErrorBackgroundView.initView("Enable Location Services", errorDetail: "You must enable Location Services in order to determine the bus stops nearest to you.")
+        tableView.backgroundView = noStopsMessage
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
-        super.viewDidLoad()
+        if status == .Denied || status == .Restricted {
+            groupedStops.removeAll()
+            tableView.reloadData()
+            
+            displayNoAuthorisationMessage()
+        } else {
+            tableView.backgroundView = nil
+        }
         
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        //Do initialisation stuff
         
         locationManager.requestWhenInUseAuthorization()
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
+        locationManager.activityType = .OtherNavigation
+        
         RouteInformationManager.sharedInstance.delegate = self
         RouteInformationManager.sharedInstance.initialise()
-                
+    }
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+
+        if CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted {
+            displayNoAuthorisationMessage()
+        }
+        
     }
     
     override func viewWillAppear(animated: Bool) {

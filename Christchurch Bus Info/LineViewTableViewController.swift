@@ -18,20 +18,7 @@ class LineViewTableViewController: UITableViewController {
     
     var lineType: BusLineType = .NumberedRoute("error") {
         didSet {
-            switch lineType {
-            case .PurpleLine:
-                lineColour = purple
-            case .OrangeLine:
-                lineColour = orange
-            case .BlueLine:
-                lineColour = blue
-            case .YellowLine:
-                lineColour = yellow
-            case .Orbiter(_):
-                lineColour = green
-            case .NumberedRoute(_):
-                lineColour = self.tableView.tintColor
-            }
+            lineColour = lineType.colours().background
         }
     }
     

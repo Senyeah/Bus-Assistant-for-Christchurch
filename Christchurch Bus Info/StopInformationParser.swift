@@ -9,7 +9,7 @@
 import UIKit
 
 protocol StopInformationParserDelegate {
-    func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String : AnyObject]])
+    func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String: AnyObject]])
 }
 
 let STOP_ARRIVAL_INFO_URL = "http://rtt.metroinfo.org.nz/rtt/public/utility/file.aspx?ContentType=SQLXML&Name=JPRoutePositionET2&PlatformNo="
@@ -104,8 +104,8 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
             
             //Uncomment if you're working at 4am when no buses run
             
-   //     let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
-   //     var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
+        //let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
+        //var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
         
             //Thank you Metro for giving us invalid XML!
             

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TableViewLoadingBackgroundView" customModule="Christchurch_Bus_Info" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="605" height="156"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yb4-VI-MB3">
+                    <rect key="frame" x="256" y="68" width="94" height="21"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pdy-43-8Vc">
+                            <rect key="frame" x="0.0" y="0.0" width="20" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="4lU-av-Xpb"/>
+                                <constraint firstAttribute="width" constant="20" id="Wbc-zD-bdv"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="4lU-av-Xpb"/>
+                                </mask>
+                            </variation>
+                        </activityIndicatorView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading…" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c83-y2-ExK">
+                            <rect key="frame" x="27" y="0.0" width="67" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="uit-cn-wka"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                            <color key="textColor" red="0.42745098039215684" green="0.42745098039215684" blue="0.44313725490196076" alpha="0.85172413793103452" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="c83-y2-ExK" firstAttribute="leading" secondItem="pdy-43-8Vc" secondAttribute="trailing" constant="7" id="0PB-v8-fUE"/>
+                        <constraint firstItem="c83-y2-ExK" firstAttribute="leading" secondItem="pdy-43-8Vc" secondAttribute="trailing" constant="8" id="9g7-NS-Bx3"/>
+                        <constraint firstAttribute="trailing" secondItem="c83-y2-ExK" secondAttribute="trailing" id="BeM-Id-j1I"/>
+                        <constraint firstItem="pdy-43-8Vc" firstAttribute="leading" secondItem="yb4-VI-MB3" secondAttribute="leading" id="IaF-NB-B48"/>
+                        <constraint firstAttribute="bottom" secondItem="c83-y2-ExK" secondAttribute="bottom" id="cuu-E2-Awx"/>
+                        <constraint firstItem="pdy-43-8Vc" firstAttribute="top" secondItem="yb4-VI-MB3" secondAttribute="top" id="g0U-mg-sNQ"/>
+                        <constraint firstAttribute="bottom" secondItem="pdy-43-8Vc" secondAttribute="bottom" id="lVC-fq-UXe"/>
+                        <constraint firstItem="c83-y2-ExK" firstAttribute="top" secondItem="yb4-VI-MB3" secondAttribute="top" id="yaH-Y7-Eks"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="9g7-NS-Bx3"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="yb4-VI-MB3" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="eq4-cQ-d7t"/>
+                <constraint firstItem="yb4-VI-MB3" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="syg-4B-TwR"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="678.5" y="319"/>
+        </view>
+    </objects>
+</document>

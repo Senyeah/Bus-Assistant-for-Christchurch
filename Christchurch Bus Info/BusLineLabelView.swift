@@ -10,14 +10,6 @@ import UIKit
 
 let LINE_LABEL_RADIUS: CGFloat = 5.0
 
-//Todo: redo the whole fucking thing this is so messy
-
-let purple = UIColor.init(red: 0.33, green: 0.27, blue: 0.53, alpha: 1.00)
-let orange = UIColor.init(red: 0.93, green: 0.44, blue: 0.15, alpha: 1.00)
-let yellow = UIColor.init(red: 1.00, green: 0.76, blue: 0.00, alpha: 1.00)
-let blue = UIColor.init(red: 0.30, green: 0.73, blue: 0.94, alpha: 1.00)
-let green = UIColor.init(red: 0.49, green: 0.90, blue: 0.27, alpha: 1.00)
-
 enum OrbiterDirection {
     case Clockwise
     case AntiClockwise
@@ -30,7 +22,31 @@ enum BusLineType {
     case YellowLine
     case Orbiter(OrbiterDirection)
     case NumberedRoute(String)
+    
+    var toString: String {
+        switch self {
+        case .PurpleLine:
+            return "P"
+        case .OrangeLine:
+            return "O"
+        case .BlueLine:
+            return "B"
+        case .YellowLine:
+            return "Y"
+        case .Orbiter(let direction):
+            return (direction == .Clockwise) ? "Oc" : "Oa"
+        case .NumberedRoute(let routeNo):
+            return routeNo
+        }
+    }
+    
+    func colours() -> (text: UIColor?, background: UIColor?) {
+        let colours = DatabaseManager.sharedInstance.lineColourForRoute(self)
+        return (text: colours.text, background: colours.background)
+    }
 }
+
+
 
 class BusLineLabelView: UIView {
     
@@ -39,8 +55,8 @@ class BusLineLabelView: UIView {
     
     var viewConstraints: [NSLayoutConstraint]!
     
-    var widthConstraint: NSLayoutConstraint!
-    var heightConstraint: NSLayoutConstraint!
+    var widthConstraint: NSLayoutConstraint?
+    var heightConstraint: NSLayoutConstraint?
     
     var xConstraint: NSLayoutConstraint?
     var yConstraint: NSLayoutConstraint?
@@ -48,69 +64,29 @@ class BusLineLabelView: UIView {
     let label = UILabel()
     
     override func intrinsicContentSize() -> CGSize {
-        return CGSizeMake(widthConstraint.constant, heightConstraint.constant)
+        if widthConstraint == nil || heightConstraint == nil {
+            return CGSizeMake(40.0, 30.0)
+        } else {
+            return CGSizeMake(widthConstraint!.constant, heightConstraint!.constant)
+        }
     }
+    
     
     func setLineType(lineType: BusLineType) {
         
         self.invalidateIntrinsicContentSize()
-        
-        switch lineType {
-        case .PurpleLine:
-            cellBackgroundColour = purple
-        case .OrangeLine:
-            cellBackgroundColour = orange
-        case .BlueLine:
-            cellBackgroundColour = blue
-        case .YellowLine:
-            cellBackgroundColour = yellow
-        case .Orbiter(_):
-            cellBackgroundColour = green
-        case .NumberedRoute(_):
-            cellBackgroundColour = UIColor.clearColor()
-        }
-        
-        label.layer.backgroundColor = cellBackgroundColour?.CGColor
-        
-        //Configure the label
-        
         self.lineType = lineType
-
-        switch lineType {
-        case .Orbiter(_):
-            label.textColor = UIColor.redColor()
-        case .NumberedRoute(_):
-            label.textColor = self.tintColor
-        default:
-            label.textColor = UIColor.whiteColor()
-        }
         
-        var labelText: String
+        label.layer.backgroundColor = (lineType.colours().background ?? UIColor.clearColor()).CGColor
+        label.textColor = lineType.colours().text ?? self.tintColor
         
-        switch lineType {
-        case .PurpleLine:
-            labelText = "P"
-        case .OrangeLine:
-            labelText = "O"
-        case .BlueLine:
-            labelText = "B"
-        case .YellowLine:
-            labelText = "Y"
-        case .Orbiter(let direction):
-            labelText = (direction == .Clockwise) ? "Oc" : "Oa"
-        case .NumberedRoute(let routeNo):
-            labelText = routeNo
-        }
-        
-        
-        label.text = labelText
+        label.text = lineType.toString
         
         //Stroke if necessary
         
-        switch lineType {
-        case .NumberedRoute(_):
+        if label.textColor == self.tintColor {
             self.layer.borderWidth = 1.0
-        default:
+        } else {
             self.layer.borderWidth = 0.0
         }
         
@@ -131,11 +107,11 @@ class BusLineLabelView: UIView {
         }
         
         viewConstraints = []
-
+        
         widthConstraint = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: width)
         heightConstraint = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: height)
         
-        viewConstraints.appendContentsOf([widthConstraint, heightConstraint])
+        viewConstraints.appendContentsOf([widthConstraint!, heightConstraint!])
         
         let labelWidthConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[label]-0-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["label": label])
         viewConstraints.appendContentsOf(labelWidthConstraint)

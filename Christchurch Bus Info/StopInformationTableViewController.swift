@@ -31,8 +31,8 @@ class StopInformationTableViewController: UITableViewController, StopInformation
                 let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(item["route_no"]! as! String)
                 prototypeLineLabelView.setLineType(lineType)
                 
-                if prototypeLineLabelView.widthConstraint.constant > lineLabelWidth {
-                    lineLabelWidth = prototypeLineLabelView.widthConstraint.constant
+                if prototypeLineLabelView.widthConstraint!.constant > lineLabelWidth {
+                    lineLabelWidth = prototypeLineLabelView.widthConstraint!.constant
                     cellContentInset = 30 + lineLabelWidth
                 }
                 
@@ -71,19 +71,15 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
     }
 
-    func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String : AnyObject]]) {
+    func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String: AnyObject]]) {
         
         //Weird things happen if you don't update the UI on the main thread
-        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            
             self.busArrivalInfo = info
             self.hasReceivedInfo = true
             
             self.tableView.reloadData()
-            
         })
-        
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -125,7 +121,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             
             cell.lineLabel.setLineType(lineType)
             
-            cell.lineLabel.widthConstraint.constant = lineLabelWidth
+            cell.lineLabel.widthConstraint!.constant = lineLabelWidth
             cell.lineLabel.setNeedsUpdateConstraints()
             
             return cell
