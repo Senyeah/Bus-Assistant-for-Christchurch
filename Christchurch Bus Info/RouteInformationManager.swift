@@ -287,7 +287,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     func updateManagerWillDownloadFile(manager: UpdateManager) {
         
-        let shouldDisplayProgressView = true
+        let shouldDisplayProgressView = false
         
         if shouldDisplayProgressView {
             

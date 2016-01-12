@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSource, PlaceSearchResultDelegate {
     
@@ -98,8 +99,39 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
+    private var viewHasLoaded = false
+    var deferredDirectionsRequest: MKDirectionsRequest? {
+        didSet {
+            if viewHasLoaded {
+                if let directionsRequest = deferredDirectionsRequest {
+                    processDirectionsRequest(directionsRequest)
+                    deferredDirectionsRequest = nil
+                }
+            }
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func processDirectionsRequest(request: MKDirectionsRequest) {
+        
+        guard let source = request.source, destination = request.destination else {
+            return
+        }
+        
+        startLabel = source.name
+        finishLabel = destination.name
+        
+        startCoordinate = source.placemark.coordinate
+        finishCoordinate = destination.placemark.coordinate
+        
+        startTime = request.departureDate ?? NSDate()
+    
+        routeOptionsTableView.reloadData()
+        checkForValidJourney()
+        
     }
     
     func datePickerDidSelectNewDate(date: NSDate) {
@@ -164,7 +196,11 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         
         if hoursAway > 0 {
             minutesAway %= 60
-            returnString = "\(hoursAway)h "
+            returnString = "\(hoursAway)h" + (minutesAway > 0 ? " " : "")
+            
+            if minutesAway == 0 {
+                return returnString
+            }
         }
         
         returnString += "\(minutesAway)m"
@@ -176,6 +212,12 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        viewHasLoaded = true
+        
+        if let directionsRequest = deferredDirectionsRequest {
+            processDirectionsRequest(directionsRequest)
+            deferredDirectionsRequest = nil
+        }
         
         var routeOptionsDataSource = routeOptionsTableView.delegate! as! PlaceSearchResultDelegate
         routeOptionsDataSource.routePlannerController = self
@@ -197,6 +239,11 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         
         if tableView.indexPathForSelectedRow != nil {
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        }
+        
+        if trip == nil {
+            startTime = NSDate()
+            routeOptionsTableView.reloadData()
         }
     }
     
@@ -259,7 +306,7 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         cell.transitTimeLabel.text = formattedDuration(trip.transitTime)
         cell.walkTimeLabel.text = formattedDuration(trip.walkTime)
         
-        cell.routes = trip.routes
+        cell.tripSegmentsView.routes = trip.routes
         
         cell.layoutMargins = UIEdgeInsetsZero
         return cell

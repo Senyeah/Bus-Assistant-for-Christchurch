@@ -20,14 +20,39 @@ extension UIColor {
 
 class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDetailSegmentInfoDelegate {
 
-    @IBOutlet var detailInformationTopBorderView: UIView!
+    @IBOutlet var detailInformationView: UIView!
     @IBOutlet var mapView: MKMapView!
+    
+    @IBOutlet var tripSegmentsView: TripSegmentVisualisationView!
+    @IBOutlet var tripDurationLabel: UILabel!
     
     var tripInfo: TripPlannerJourney?
     var prioritisedPolyline: MKPolyline?
     
     var pinOverlays: [MKAnnotation] = []
     
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        layoutPolylines()
+        
+        if let segmentRoutes = tripInfo?.routes {
+            tripSegmentsView.routes = segmentRoutes
+        }
+        
+        if let tripDuration = tripInfo?.duration {
+            tripDurationLabel.text = formattedTimeStringForDuration(tripDuration)
+        }
+        
+        let borderLayer = CALayer()
+        
+        borderLayer.frame = CGRectMake(0.0, 0.0, detailInformationView.frame.width, 1.0 / UIScreen.mainScreen().scale)
+        borderLayer.backgroundColor = UIColor(hex: "#a8acac").CGColor
+        
+        detailInformationView.layer.addSublayer(borderLayer)
+        
+    }
+
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         if annotation.isKindOfClass(MKUserLocation) == false {
@@ -196,11 +221,6 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
             }
         }
         
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        layoutPolylines()
     }
     
 }
