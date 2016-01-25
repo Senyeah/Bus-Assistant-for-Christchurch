@@ -9,15 +9,6 @@
 import UIKit
 import MapKit
 
-extension UIColor {
-    var hexString: String {
-        let components = CGColorGetComponents(self.CGColor)
-        let (r, g, b) = (components[0], components[1], components[2])
-        
-        return String(format: "#%02lX%02lX%02lX", lroundf(Float(r * 255)), lroundf(Float(g * 255)), lroundf(Float(b * 255)))
-    }
-}
-
 class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDetailSegmentInfoDelegate {
 
     @IBOutlet var detailInformationView: UIView!
@@ -25,6 +16,8 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
     
     @IBOutlet var tripSegmentsView: TripSegmentVisualisationView!
     @IBOutlet var tripDurationLabel: UILabel!
+    
+    var notificationsEnabled: Bool = false
     
     var tripInfo: TripPlannerJourney?
     var prioritisedPolyline: MKPolyline?
@@ -50,6 +43,27 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         borderLayer.backgroundColor = UIColor(hex: "#a8acac").CGColor
         
         detailInformationView.layer.addSublayer(borderLayer)
+        
+    }
+    
+    @IBAction func notifyMeButtonPressed(sender: AnyObject?) {
+        
+        let actionSheet = UIAlertController(title: nil, message: "Enabling notifications will alert you of actions you need to take as this journey progresses.", preferredStyle: .ActionSheet)
+        
+        if notificationsEnabled {
+            actionSheet.addAction(UIAlertAction(title: "Disable Notifications", style: .Default) { _ -> Void in
+                JourneyNotificationManager.sharedInstance.removeNotifications()
+                JourneyNotificationManager.sharedInstance.activeJourney = nil
+            })
+        } else {
+            actionSheet.addAction(UIAlertAction(title: "Enable Notifications", style: .Default) { _ -> Void in
+                JourneyNotificationManager.sharedInstance.activeJourney = self.tripInfo!
+            })
+        }
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        
+        self.presentViewController(actionSheet, animated: true, completion: nil)
         
     }
 

@@ -8,17 +8,6 @@
 
 import UIKit
 
-extension NSDate {
-    func toShortDateTimeString(alwaysShowDay: Bool = false) -> String {
-        let formatter = NSDateFormatter()
-        
-        formatter.dateStyle = NSCalendar.currentCalendar().isDateInToday(self) && !alwaysShowDay ? .NoStyle : .MediumStyle
-        formatter.timeStyle = .ShortStyle
-        
-        return formatter.stringFromDate(self)
-    }
-}
-
 protocol DatePickerDelegate {
     func datePickerDidSelectNewDate(date: NSDate)
 }
@@ -40,12 +29,14 @@ class DatePickerViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCellWithIdentifier("DateCell", forIndexPath: indexPath)
         cell.textLabel?.text = selectedDate!.toShortDateTimeString(true)
         
         return cell
-        
+    }
+    
+    @IBAction func cancelButtonPressed(sender: AnyObject?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func doneButtonPressed(sender: AnyObject?) {
@@ -61,7 +52,7 @@ class DatePickerViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedDate = selectedDate ?? NSDate()
+        selectedDate = NSDate()
         datePicker.setDate(selectedDate!, animated: false)
     }
 

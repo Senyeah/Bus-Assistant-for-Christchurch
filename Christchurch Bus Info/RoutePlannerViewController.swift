@@ -76,7 +76,7 @@ class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
     
 }
 
-class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TripPlannerDelegate, DatePickerDelegate {
+class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TripPlannerDelegate, DatePickerDelegate, JourneyNotificationManagerDelegate {
 
     @IBOutlet var tableView: UITableView!
     @IBOutlet var routeOptionsTableView: UITableView!
@@ -88,6 +88,7 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     var finishLabel: String?
     
     var startTime = NSDate()
+    var dateAutomaticallyInferred = true
     
     var trip: TripPlanner?
     var trips: [TripPlannerJourney] = [] {
@@ -98,6 +99,8 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
+    
+    var activeJourney: TripPlannerJourney?
     
     private var viewHasLoaded = false
     var deferredDirectionsRequest: MKDirectionsRequest? {
@@ -135,6 +138,8 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func datePickerDidSelectNewDate(date: NSDate) {
+        dateAutomaticallyInferred = false
+        
         startTime = date
         routeOptionsTableView.reloadData()
         
@@ -181,8 +186,16 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             
         } else {
             
+            let selectedIndexPath = sendingTableView.indexPathForSelectedRow!
             let routeOverviewController = segue.destinationViewController as! RouteOverviewViewController
-            routeOverviewController.tripInfo = trips[sendingTableView.indexPathForSelectedRow!.row]
+            
+            if activeJourney != nil && selectedIndexPath.section == 0 {
+                routeOverviewController.tripInfo = activeJourney
+            } else {
+                routeOverviewController.tripInfo = trips[selectedIndexPath.row]
+            }
+            
+            routeOverviewController.notificationsEnabled = (activeJourney != nil && selectedIndexPath.section == 0)
             
         }
     }
@@ -209,6 +222,11 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
+    func activeJourneyDidChange(newJourney: TripPlannerJourney?) {
+        activeJourney = newJourney
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -223,16 +241,27 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         routeOptionsDataSource.routePlannerController = self
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            if TripPlanner.canAccessServer() == false {
+            if TripPlanner.canAccessServer == false {
                 dispatch_sync(dispatch_get_main_queue()) {
                     self.tripPlannerDidCompleteWithError(nil, error: .ConnectionError)
                 }
             }
         }
         
+        JourneyNotificationManager.sharedInstance.delegate = self
+        
+        activeJourney = JourneyNotificationManager.sharedInstance.activeJourney
+        let currentTime = NSDate()
+        
+        if activeJourney != nil && activeJourney!.finishTime < currentTime {
+            activeJourney = nil
+            JourneyNotificationManager.sharedInstance.removeNotifications()
+        }
+        
     }
 
     override func viewWillAppear(animated: Bool) {
+        
         if routeOptionsTableView.indexPathForSelectedRow != nil {
             routeOptionsTableView.deselectRowAtIndexPath(routeOptionsTableView.indexPathForSelectedRow!, animated: true)
         }
@@ -241,10 +270,19 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         }
         
-        if trip == nil {
+        if trip == nil && dateAutomaticallyInferred {
             startTime = NSDate()
             routeOptionsTableView.reloadData()
         }
+        
+        var notificationJourney = JourneyNotificationManager.sharedInstance.activeJourney
+        let currentTime = NSDate()
+        
+        if notificationJourney != nil && notificationJourney!.finishTime < currentTime {
+            notificationJourney = nil
+            JourneyNotificationManager.sharedInstance.removeNotifications()
+        }
+        
     }
     
     func tripPlannerDidBegin(planner: TripPlanner) {
@@ -285,17 +323,39 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        if activeJourney == nil {
+            return 1
+        } else {
+            return 2
+        }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 && activeJourney != nil {
+            return "Notifications Enabled"
+        }
+        
+        return nil
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if activeJourney != nil && section == 0 {
+            return 1
+        }
+        
         return trips.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("RouteOptionCell", forIndexPath: indexPath) as! RouteOptionTableViewCell
-        let trip = trips[indexPath.row]
+        var trip: TripPlannerJourney
+        
+        if activeJourney != nil && indexPath.section == 0 {
+            trip = activeJourney!
+        } else {
+            trip = trips[indexPath.row]
+        }
         
         let (_, startTime) = trip.startTime.toDateTimeString(true)
         let (_, endTime) = trip.finishTime.toDateTimeString(true)

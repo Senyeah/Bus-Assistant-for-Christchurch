@@ -11,9 +11,10 @@ import UIKit
 class RouteStopTableViewCell: UITableViewCell {
     
     @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var timeRemainingLabel: UILabel!
+    @IBOutlet var detailLabel: UILabel!
     
     @IBOutlet var lineLabel: BusLineLabelView!
+    var tripID: String!
     
     override func awakeFromNib() {
         super.awakeFromNib()

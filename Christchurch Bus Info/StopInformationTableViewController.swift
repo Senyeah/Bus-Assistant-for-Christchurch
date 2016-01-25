@@ -7,38 +7,54 @@
 //
 
 import UIKit
-
-let ARRIVING_BUSES_SECTION = 0
-let UPDATE_FREQUENCY_SECONDS = 15.0
+import MapKit
 
 class StopInformationTableViewController: UITableViewController, StopInformationParserDelegate {
+    
+    static let stopHeaderSection = 0
+    static let arrivingBusesSection = 1
+    static let routesPassingStopSection = 2
+    
+    static let updateFrequencySeconds = 15.0
+    
+    @IBOutlet var headerMapView: MKMapView!
     
     var stopNumber: String!
     var stopInfoParser: StopInformationParser!
     
-    var lineLabelWidth = CGFloat(0.0)
-    var cellContentInset = CGFloat(0.0)
+    var arrivingBusesLineLabelWidth: CGFloat = 0.0
     
     var hasReceivedInfo = false
     var infoUpdateTimer: NSTimer!
     
-    var busArrivalInfo: [[String : AnyObject]] = [] {
+    var busArrivalInfo: [[String: AnyObject]] = [] {
         didSet {
-            let prototypeLineLabelView = BusLineLabelView(lineType: .NumberedRoute(""))
+            let prototypeLineLabelView = BusLineLabelView(lineType: BusLineType(lineAbbreviationString: ""))
             
             for item in busArrivalInfo {
-                
-                let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(item["route_no"]! as! String)
+                let lineType = BusLineType(lineAbbreviationString: item["route_no"]! as! String)
                 prototypeLineLabelView.setLineType(lineType)
                 
-                if prototypeLineLabelView.widthConstraint!.constant > lineLabelWidth {
-                    lineLabelWidth = prototypeLineLabelView.widthConstraint!.constant
-                    cellContentInset = 30 + lineLabelWidth
-                }
-                
+                arrivingBusesLineLabelWidth = max(arrivingBusesLineLabelWidth, prototypeLineLabelView.widthConstraint!.constant)
             }
         }
     }
+    
+    var tripsPassingStop: [TripInformation] = []
+    
+    lazy var routesPassingStopLineLabelWidth: CGFloat = { [unowned self] in
+        
+        var maximum: CGFloat = 0.0
+        let prototypeLineLabelView = BusLineLabelView(lineType: BusLineType(lineAbbreviationString: ""))
+        
+        for trip in self.tripsPassingStop {
+            prototypeLineLabelView.setLineType(trip.lineType)
+            maximum = max(maximum, prototypeLineLabelView.widthConstraint!.constant)
+        }
+        
+        return maximum
+        
+    }()
     
     func formattedStringForArrivalTime(minutes: Int) -> String {
         
@@ -74,117 +90,223 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String: AnyObject]]) {
         
         //Weird things happen if you don't update the UI on the main thread
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        
+        dispatch_async(dispatch_get_main_queue(), { _ -> Void in
+            
             self.busArrivalInfo = info
             self.hasReceivedInfo = true
             
-            self.tableView.reloadData()
+            UIView.performWithoutAnimation {
+                self.tableView.reloadSections(NSIndexSet(index: StopInformationTableViewController.arrivingBusesSection), withRowAnimation: .None)
+            }
+
         })
+        
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return headerMapView.frame.height
+        }
+        
+        return 35.0
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            return headerMapView
+        }
+        
+        return nil
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.layoutMargins = UIEdgeInsets(top: 0.0, left: cellContentInset, bottom: 0.0, right: 0.0)
+
+        if indexPath.section == StopInformationTableViewController.arrivingBusesSection {
+            cell.layoutMargins = UIEdgeInsets(top: 0.0, left: arrivingBusesLineLabelWidth + 30.0, bottom: 0.0, right: 0.0)
+        } else if indexPath.section == StopInformationTableViewController.routesPassingStopSection {
+            cell.layoutMargins = UIEdgeInsets(top: 0.0, left: routesPassingStopLineLabelWidth + 30.0, bottom: 0.0, right: 0.0)
+        }
+
     }
-    
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
 
-    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(1, busArrivalInfo.count)
+        if section == StopInformationTableViewController.stopHeaderSection {
+            return 1
+        } else if section == StopInformationTableViewController.arrivingBusesSection {
+            return max(1, busArrivalInfo.count)
+        } else {
+            return tripsPassingStop.count
+        }
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if busArrivalInfo.count == 0 {
+        if indexPath.section == StopInformationTableViewController.stopHeaderSection {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopIndeterminateCell", forIndexPath: indexPath) as! RouteStopIndeterminateTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("BusStopInfoCell", forIndexPath: indexPath) as! BusStopInfoTableViewCell
             
-            if hasReceivedInfo {
-                cell.titleLabel.text = "No Buses Found"
-            }
+            cell.stopName.text = RouteInformationManager.sharedInstance.displayStringForStopNumber(stopNumber)
+            cell.stopNumber.text = "Stop " + stopNumber
             
             return cell
             
+        } else if indexPath.section == StopInformationTableViewController.arrivingBusesSection {
+         
+            if busArrivalInfo.count == 0 {
+                
+                let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopIndeterminateCell", forIndexPath: indexPath) as! RouteStopIndeterminateTableViewCell
+                
+                if hasReceivedInfo {
+                    cell.titleLabel.text = "No Buses Found"
+                }
+                
+                return cell
+                
+            } else {
+                
+                let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopCell", forIndexPath: indexPath) as! RouteStopTableViewCell
+                let info = busArrivalInfo[indexPath.row]
+                
+                cell.titleLabel.text = info["name"]! as? String
+                cell.detailLabel.text = formattedStringForArrivalTime(Int(info["eta"]! as! NSNumber))
+                
+                let lineType = BusLineType(lineAbbreviationString: info["route_no"]! as! String)
+                
+                cell.lineLabel.setLineType(lineType)
+                
+                cell.lineLabel.widthConstraint!.constant = arrivingBusesLineLabelWidth
+                cell.lineLabel.setNeedsUpdateConstraints()
+                
+                cell.tripID = info["trip_id"]! as! String
+                
+                return cell
+                
+            }
+            
         } else {
             
+            let tripInformation = tripsPassingStop[indexPath.row]
             let cell = tableView.dequeueReusableCellWithIdentifier("RouteStopCell", forIndexPath: indexPath) as! RouteStopTableViewCell
-            let info = busArrivalInfo[indexPath.row]
             
-            cell.titleLabel.text = info["name"]! as? String
-            cell.timeRemainingLabel.text = formattedStringForArrivalTime(Int(info["eta"]! as! NSNumber))
+            cell.titleLabel.text = tripInformation.lineName
+            cell.detailLabel.text = "Towards " + tripInformation.routeName
             
-            let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(info["route_no"]! as! String)
+            cell.lineLabel.setLineType(tripInformation.lineType)
             
-            cell.lineLabel.setLineType(lineType)
-            
-            cell.lineLabel.widthConstraint!.constant = lineLabelWidth
+            cell.lineLabel.widthConstraint!.constant = routesPassingStopLineLabelWidth
             cell.lineLabel.setNeedsUpdateConstraints()
+            
+            cell.tripID = tripInformation.tripID
             
             return cell
             
         }
 
     }
-
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-            case ARRIVING_BUSES_SECTION:
+            case StopInformationTableViewController.arrivingBusesSection:
                 return "Buses approaching this stop"
+            case StopInformationTableViewController.routesPassingStopSection:
+                return "Routes passing this stop"
             default:
                 return nil
         }
     }
     
-    
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == StopInformationTableViewController.stopHeaderSection {
+            return 65.0
+        }
+        
+        return 60.0
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        let tappedIndexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
-        let tappedTripID = busArrivalInfo[tappedIndexPath.row]["trip_id"] as! String
-        
-        print("tapped trip id = \(tappedTripID)")
+        let tappedCell = sender as! RouteStopTableViewCell
         
         //find the route info before we actually segue
         
-        guard let (lineName, routeName, lineType) = DatabaseManager.sharedInstance.infoForTripIdentifier(tappedTripID) else {
+        guard let tripInformation = DatabaseManager.sharedInstance.infoForTripIdentifier(tappedCell.tripID) else {
             return
         }
         
         let destination = segue.destinationViewController as! LineViewTableViewController
         
-        guard let stopsOnRoute = DatabaseManager.sharedInstance.stopsOnRouteWithTripIdentifier(tappedTripID) else {
+        guard let stopsOnRoute = DatabaseManager.sharedInstance.stopsOnRouteWithTripIdentifier(tappedCell.tripID) else {
             return
         }
         
         destination.stopsOnRoute = stopsOnRoute
         
-        destination.lineName = lineName
-        destination.routeName = routeName
-        destination.lineType = lineType
-        destination.tripID = tappedTripID
+        destination.lineName = tripInformation.lineName
+        destination.routeName = tripInformation.routeName
+        destination.lineType = tripInformation.lineType
+        destination.tripID = tappedCell.tripID
         
     }
     
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation.isKindOfClass(BusStopAnnotation) {
+            return MKPinAnnotationView(annotation: annotation, reuseIdentifier: "BusStopLocationPin")
+        }
+        
+        return nil
+        
+    }
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            
+            let tripsThroughStop = DatabaseManager.sharedInstance.routesPassingStop(self.stopNumber) ?? []
+            
+            let indexPaths = tripsThroughStop.indices.map { index in
+                return NSIndexPath(forRow: index, inSection: StopInformationTableViewController.routesPassingStopSection)
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                self.tableView.beginUpdates()
+                
+                self.tripsPassingStop = tripsThroughStop
+                self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                
+                self.tableView.endUpdates()
+                
+            }
+            
+        }
+        
+        let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stopNumber]!
+        let stopAnnotation = BusStopAnnotation(stop: stopInfo)
+        
+        headerMapView.addAnnotation(stopAnnotation)
+        
+        let coordinateRegion = MKCoordinateRegionMake(stopInfo.location.coordinate, MKCoordinateSpanMake(0.005, 0.005))
+        headerMapView.setRegion(coordinateRegion, animated: false)
+        
     }
     
     
     override func viewWillAppear(animated: Bool) {
         
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Stop \(stopNumber)"
         
         if self.tableView.indexPathForSelectedRow != nil {
             self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
@@ -195,7 +317,9 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
         stopInfoParser.updateData()
         
-        infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(UPDATE_FREQUENCY_SECONDS, target: stopInfoParser, selector: "updateData", userInfo: nil, repeats: true)
+        infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(StopInformationTableViewController.updateFrequencySeconds,
+                                                                 target: stopInfoParser, selector: "updateData",
+                                                                 userInfo: nil, repeats: true)
         
     }
     
@@ -211,8 +335,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         busArrivalInfo = []
         hasReceivedInfo = false
         
-        lineLabelWidth = CGFloat(0.0)
-        cellContentInset = CGFloat(0.0)
+        arrivingBusesLineLabelWidth = CGFloat(0.0)
         
         infoUpdateTimer.invalidate()
         

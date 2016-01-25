@@ -23,35 +23,38 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     
     static let sharedInstance = UpdateManager()
     
-    static let downloadedArchiveLocation = DOCUMENTS_DIRECTORY + "/database.zip"
-    static let zipFolderExpandedPath = DOCUMENTS_DIRECTORY + "/database"
+    static let downloadedArchiveLocation = APPLICATION_SUPPORT_DIRECTORY + "/database.zip"
+    static let zipFolderExpandedPath = APPLICATION_SUPPORT_DIRECTORY + "/database"
     
     var delegate: UpdateManagerDelegate?
     
-    func updateAvailable() -> Bool {
-        
-        guard let latestVersionData = NSData(contentsOfURL: NSURL(string: VERSION_URL)!) else {
-            return false
+    var isUpdateAvailable: Bool {
+        get {
+            guard let latestVersionData = NSData(contentsOfURL: NSURL(string: VERSION_URL)!) else {
+                return false
+            }
+            
+            let latestVersion = NSString(data: latestVersionData, encoding: NSUTF8StringEncoding)!
+            return !latestVersion.isEqualToString(self.databaseVersion)
+        }
+    }
+    
+    var hasCopiedBundledDatabase: Bool {
+        get {
+            return NSFileManager.defaultManager().fileExistsAtPath(DatabaseManager.databasePath)
+        }
+    }
+    
+    var databaseVersion: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().objectForKey("database_version") as! String
         }
         
-        let latestVersion = NSString(data: latestVersionData, encoding: NSUTF8StringEncoding)!
-        let currentVersion = NSUserDefaults.standardUserDefaults().objectForKey("database_version")
-        
-        return !latestVersion.isEqualToString(currentVersion as! String)
-        
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "database_version")
+        }
     }
-    
-    func hasCopiedBundledDatabase() -> Bool {
-        
-        let fileManager = NSFileManager.init()
-        return fileManager.fileExistsAtPath(DatabaseManager.databasePath)
-        
-    }
-    
-    func setDatabaseVersion(newVersion: String) {
-        NSUserDefaults.standardUserDefaults().setObject(newVersion, forKey: "database_version")
-    }
-    
+
     func downloadLatestDatabase() {
         
         delegate?.updateManagerWillDownloadFile(self)
@@ -65,11 +68,16 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     }
     
     func copyBundledDatabase() {
-        
-        let fileManager = NSFileManager.init()
-        
+
         let bundledDatabasePath = NSBundle.mainBundle().pathForResource("database", ofType: "zip")!
-        _ = try? fileManager.copyItemAtPath(bundledDatabasePath, toPath: UpdateManager.downloadedArchiveLocation)
+        
+        //make sure the application support directory exists
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(APPLICATION_SUPPORT_DIRECTORY) == false {
+            try! NSFileManager.defaultManager().createDirectoryAtPath(APPLICATION_SUPPORT_DIRECTORY, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        _ = try? NSFileManager.defaultManager().copyItemAtPath(bundledDatabasePath, toPath: UpdateManager.downloadedArchiveLocation)
         
         extractDatabase()
         
@@ -77,13 +85,9 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     
     func removeTemporaryFiles() {
         
-        //The shared manager is not thread safe
-        
-        let fileManager = NSFileManager.init()
-        
         for temporaryFile in [UpdateManager.downloadedArchiveLocation, UpdateManager.zipFolderExpandedPath] {
-            if fileManager.fileExistsAtPath(temporaryFile) {
-                _ = try? fileManager.removeItemAtPath(temporaryFile)
+            if NSFileManager.defaultManager().fileExistsAtPath(temporaryFile) {
+                _ = try? NSFileManager.defaultManager().removeItemAtPath(temporaryFile)
             }
             
         }
@@ -94,7 +98,7 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         
         self.removeTemporaryFiles()
         
-        if hasCopiedBundledDatabase() == false {
+        if self.hasCopiedBundledDatabase == false {
             copyBundledDatabase()
             return
         }
@@ -102,8 +106,8 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         DatabaseManager.sharedInstance.connect()
         DatabaseManager.sharedInstance.parseDatabase()
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            if self.updateAvailable() {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { _ -> Void in
+            if self.isUpdateAvailable {
                 self.downloadLatestDatabase()
             }
         }
@@ -115,22 +119,24 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         //Find the file and get the version number from its filename
         
         let expandedDatabaseDirectory = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(UpdateManager.zipFolderExpandedPath)
-        var expandedDatabasePath: String!
+        var expandedDatabasePath: String?
         
         for file in expandedDatabaseDirectory {
             
             if file.hasSuffix("sqlite3") {
-                
                 expandedDatabasePath = UpdateManager.zipFolderExpandedPath + "/" + file
                 
                 var expandedDatabaseVersion = file.stringByReplacingOccurrencesOfString("database-", withString: "")
                 expandedDatabaseVersion = expandedDatabaseVersion.stringByReplacingOccurrencesOfString(".sqlite3", withString: "")
                 
-                setDatabaseVersion(expandedDatabaseVersion)
+                self.databaseVersion = expandedDatabaseVersion
                 break
-                
             }
             
+        }
+        
+        guard expandedDatabasePath != nil else {
+            fatalError("Downloaded file doesn't contain a valid database version")
         }
         
         if NSFileManager.defaultManager().fileExistsAtPath(DatabaseManager.databasePath) {
@@ -138,12 +144,9 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
             try! NSFileManager.defaultManager().removeItemAtPath(DatabaseManager.databasePath)
         }
         
-        try! NSFileManager.defaultManager().moveItemAtPath(expandedDatabasePath, toPath: DatabaseManager.databasePath)
+        try! NSFileManager.defaultManager().moveItemAtPath(expandedDatabasePath!, toPath: DatabaseManager.databasePath)
         
-        //dispatch_sync(dispatch_get_main_queue()) { () -> Void in
-            self.removeTemporaryFiles()
-        //}
-        
+        self.removeTemporaryFiles()
         initialise(runQueue)
         
     }

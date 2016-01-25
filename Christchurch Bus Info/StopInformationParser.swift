@@ -69,7 +69,7 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         if elementName == "Trip" {
             
             stopInformation.append(currentItem)
-            currentItem = [:]
+            currentItem.removeAll()
             
         } else if elementName == rootNode! {
             

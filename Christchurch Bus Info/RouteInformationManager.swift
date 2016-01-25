@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 struct StopInformation {
     var stopNo: String, stopTag: String
@@ -85,7 +86,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             return nil
         }
     }
-
+    
     
     func linesForStop(stopTag: String) -> [BusLineType] {
         
@@ -96,7 +97,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         var lineArray: [BusLineType] = []
         
         for line in lines {
-            lineArray.append(busLineTypeForString(line))
+            lineArray.append(BusLineType(lineAbbreviationString: line))
         }
         
         lineArray.sortInPlace({
@@ -129,9 +130,25 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
                 
                 return tag1 < tag2
             }
+            
         })
         
         return lineArray
+        
+    }
+    
+    
+    func displayStringForStopNumber(stopNumber: String) -> String {
+        
+        guard let stopInfo = stopInformation![stopNumber] else {
+            return ""
+        }
+        
+        if stopInfo.name == stopInfo.roadName {
+            return stopInfo.name
+        } else {
+            return "\(stopInfo.roadName) near \(stopInfo.name)"
+        }
         
     }
     
@@ -140,21 +157,6 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         return stopInformation?[number]
     }
     
-    
-    func busLineTypeForString(inString: String) -> BusLineType {
-        
-        let linesMap: [String: BusLineType] = ["P": .PurpleLine, "O": .OrangeLine, "Y": .YellowLine, "B": .BlueLine, "Oa": .Orbiter(.AntiClockwise), "Oc": .Orbiter(.Clockwise)]
-        var lineType: BusLineType
-        
-        if linesMap[inString] == nil {
-            lineType = .NumberedRoute(inString)
-        } else {
-            lineType = linesMap[inString]!
-        }
-        
-        return lineType
-        
-    }
     
     //Convert a latitude, longitude coordinate to a point mapping on a cartesian plane
     
@@ -219,7 +221,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         }
         
         return normalisedCoordinates
-
+        
     }
     
     //Constructs a kd-tree of the stops
@@ -227,11 +229,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     private func kdTreeForStops(relativeStops: [(stop: StopInformation, (x: Double, y: Double))]) -> COpaquePointer {
         
         //Create a 2-dimensional tree
-        
         let tree = kd_create(2)
         
         for (stop, coordinate) in relativeStops {
-            
             let coordinatePointer = UnsafeMutablePointer<Double>.alloc(2)
             coordinatePointer.initializeFrom([coordinate.x, coordinate.y])
             
@@ -239,7 +239,6 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             stopPointer.initialize(stop)
             
             kd_insert(tree, coordinatePointer, stopPointer)
-                        
         }
         
         return tree
@@ -268,7 +267,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             
             let distanceFromStop = location.distanceFromLocation(returnedStop.location)
             resultingStopsArray.append((stop: returnedStop, distance: distanceFromStop))
-                        
+            
             kd_res_next(resultingStops)
             
         }
@@ -277,6 +276,50 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         coordinatePointer.dealloc(2)
         
         return resultingStopsArray
+        
+    }
+    
+    func projectedMapSpanForMapRect(mapRect: MKMapRect) -> ProjectedMapSpan {
+        
+        let minLongitude = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMinX(mapRect), MKMapRectGetMidY(mapRect)))
+        let maxLongitude = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(mapRect), MKMapRectGetMidY(mapRect)))
+        
+        let minLonLocation = CLLocation(latitude: minLongitude.latitude, longitude: minLongitude.longitude)
+        let maxLonLocation = CLLocation(latitude: minLongitude.latitude, longitude: maxLongitude.longitude)
+        
+        let longitudeSpan = minLonLocation.distanceFromLocation(maxLonLocation)
+        
+        let minLatitude = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMidX(mapRect), MKMapRectGetMinY(mapRect)))
+        let maxLatitude = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMidX(mapRect), MKMapRectGetMaxY(mapRect)))
+        
+        let minLatLocation = CLLocation(latitude: minLatitude.latitude, longitude: minLatitude.longitude)
+        let maxLatLocation = CLLocation(latitude: maxLatitude.latitude, longitude: maxLatitude.longitude)
+        
+        let latitudeSpan = minLatLocation.distanceFromLocation(maxLatLocation)
+        
+        return (horizontalDistance: longitudeSpan, verticalDistance: latitudeSpan)
+        
+    }
+    
+    func stopsInRegion(region: MKMapRect) -> [StopInformation] {
+        
+        let coordinateRegion = MKCoordinateRegionForMapRect(region)
+        let mapSpan = projectedMapSpanForMapRect(region)
+        
+        let searchRadius = max(mapSpan.horizontalDistance, mapSpan.verticalDistance)
+        
+        let centrePoint = MKMapPointForCoordinate(coordinateRegion.center)
+        let stopsInRadius = self.closestStopsForLocation(searchRadius, location: CLLocation(latitude: coordinateRegion.center.latitude, longitude: coordinateRegion.center.longitude))
+        
+        var stopsInRect: [StopInformation] = []
+        
+        for (stop, _) in stopsInRadius {
+            //if MKMapRectContainsPoint(region, centrePoint) {
+                stopsInRect.append(stop)
+            //}
+        }
+        
+        return stopsInRect
         
     }
     
@@ -294,7 +337,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let rootViewController = appDelegate.window!.rootViewController
             
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) { _ -> Void in
                 rootViewController!.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
             }
             
@@ -304,7 +347,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     func updateManagerIsDownloadingFileWithProgress(manager: UpdateManager, progress: Double, currentSize: Int64, maxSize: Int64) {
         
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) { _ -> Void in
             
             let currentSizeFormatted = NSByteCountFormatter.stringFromByteCount(currentSize, countStyle: .File)
             let totalSizeFormatted = NSByteCountFormatter.stringFromByteCount(maxSize, countStyle: .File)
@@ -319,7 +362,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     func updateManagerDidCompleteDownload(manager: UpdateManager, error: NSError?) {
         print("completed download! yay!")
         
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) { _ -> Void in
             self.delegate?.managerReceivedUpdatedInformation(self)
         }
     }
@@ -332,7 +375,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         print("extracted update with failure = \(extractionFailed)")
         
         if extractionFailed == false {
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) { _ -> Void in
                 self.progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
         }

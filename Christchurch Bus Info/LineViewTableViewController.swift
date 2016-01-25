@@ -220,13 +220,13 @@ class LineViewTableViewController: UITableViewController {
         
         if selectedRowIndexPath.section == 1 {
         
-            let mapViewController = segue.destinationViewController as! RouteMapViewController
-            
-            guard let coordinates = DatabaseManager.sharedInstance.routeCoordinatesForTripIdentifier(tripID) else {
-                return
-            }
-            
-            mapViewController.polylineCoordinates = coordinates
+//            let mapViewController = segue.destinationViewController as! RouteMapViewController
+//            
+//            guard let coordinates = DatabaseManager.sharedInstance.routeCoordinatesForTripIdentifier(tripID) else {
+//                return
+//            }
+//            
+//            mapViewController.polylineCoordinates = coordinates
             
         } else if selectedRowIndexPath.section == 2 {
             
@@ -260,17 +260,23 @@ class LineViewTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
     
     override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if tableView.indexPathForSelectedRow != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        }
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

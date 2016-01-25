@@ -9,48 +9,6 @@
 import UIKit
 import CoreLocation
 
-extension NSDate {
-    func toDateTimeString(twelveHourTime: Bool = false) -> (date: String, time: String) {
-        let formatter = NSDateFormatter()
-        
-        formatter.dateFormat = "YYYY-MM-dd"
-        let dateString = formatter.stringFromDate(self)
-        
-        formatter.dateFormat = twelveHourTime ? "h:mm a" : "HH:mm"
-        let timeString = formatter.stringFromDate(self)
-        
-        return (date: dateString, time: timeString)
-    }
-    
-    public var localisedTimeString: String {
-        get {
-            let formatter = NSDateFormatter()
-            
-            formatter.timeStyle = .ShortStyle
-            formatter.dateStyle = .NoStyle
-            
-            return formatter.stringFromDate(self)
-        }
-    }
-    
-    static func representationToDate(stringRepresentation: String) -> NSDate {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd HH:mm:ss"
-        
-        return formatter.dateFromString(stringRepresentation)!
-    }
-}
-
-func < (lhs: NSDate, rhs: NSDate) -> Bool {
-    return lhs.timeIntervalSinceDate(rhs) < 0
-}
-
-extension CLLocationCoordinate2D {
-    var stringValue: String {
-        return String(self.latitude) + "," + String(self.longitude)
-    }
-}
-
 protocol TripPlannerDelegate {
     func tripPlannerDidBegin(planner: TripPlanner)
     func tripPlannerDidCompleteWithError(planner: TripPlanner?, error: TripPlannerError)
@@ -63,9 +21,10 @@ enum TripPlannerError {
     case ParseError
 }
 
-struct TripPlannerSegment {
+class TripPlannerSegment: NSObject, NSCoding {
+    
     var isBusJourney: Bool
-    var route: BusLineType?
+    var route: BusLineType? = nil
     var tripID: String?
     
     var startTime: NSDate
@@ -79,9 +38,91 @@ struct TripPlannerSegment {
     var endStop: String?
     
     var polylinePoints: [CLLocationCoordinate2D]
+    
+    init(isBusJourney: Bool, route: BusLineType?, tripID: String?,
+         startTime: NSDate, endTime: NSDate, duration: Int,
+         startPosition: CLLocationCoordinate2D, endPosition: CLLocationCoordinate2D,
+         startStop: String?, endStop: String?, polylinePoints: [CLLocationCoordinate2D]) {
+        
+        self.isBusJourney = isBusJourney
+        self.route = route
+        self.tripID = tripID
+            
+        self.startTime = startTime
+        self.endTime = endTime
+        self.duration = duration
+        
+        self.startPosition = startPosition
+        self.endPosition = endPosition
+        
+        self.startStop = startStop
+        self.endStop = endStop
+        
+        self.polylinePoints = polylinePoints
+            
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeBool(self.isBusJourney, forKey: "isBusJourney")
+        aCoder.encodeObject(self.route?.toString, forKey: "route")
+        aCoder.encodeObject(self.tripID, forKey: "tripID")
+        
+        aCoder.encodeObject(self.startTime, forKey: "startTime")
+        aCoder.encodeObject(self.endTime, forKey: "endTime")
+        aCoder.encodeInteger(self.duration, forKey: "duration")
+  
+        aCoder.encodeObject(CLLocation(latitude: self.startPosition.latitude, longitude: self.startPosition.longitude), forKey: "startPosition")
+        aCoder.encodeObject(CLLocation(latitude: self.endPosition.latitude, longitude: self.endPosition.longitude), forKey: "endPosition")
+        
+        aCoder.encodeObject(self.startStop, forKey: "startStop")
+        aCoder.encodeObject(self.endStop, forKey: "endStop")
+        
+        let polylinePointsValuesArray = self.polylinePoints.map { point in
+            return CLLocation(latitude: point.latitude, longitude: point.longitude)
+        }
+        
+        aCoder.encodeObject(polylinePointsValuesArray, forKey: "polylinePoints")
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        self.isBusJourney = aDecoder.decodeBoolForKey("isBusJourney")
+        
+        let segmentRoute = aDecoder.decodeObjectForKey("route") as! String?
+        
+        if segmentRoute != nil {
+            self.route = BusLineType(lineAbbreviationString: segmentRoute!)
+        }
+        
+        self.tripID = aDecoder.decodeObjectForKey("tripID") as! String?
+        
+        self.startTime = aDecoder.decodeObjectForKey("startTime") as! NSDate
+        self.endTime = aDecoder.decodeObjectForKey("endTime") as! NSDate
+        self.duration = aDecoder.decodeIntegerForKey("duration")
+        
+        let startPositionValue = aDecoder.decodeObjectForKey("startPosition") as! CLLocation
+        let endPositionValue = aDecoder.decodeObjectForKey("endPosition") as! CLLocation
+        
+        self.startPosition = startPositionValue.coordinate
+        self.endPosition = endPositionValue.coordinate
+        
+        self.startStop = aDecoder.decodeObjectForKey("startStop") as! String?
+        self.endStop = aDecoder.decodeObjectForKey("endStop") as! String?
+
+        let polylinePointsArray = aDecoder.decodeObjectForKey("polylinePoints") as! [CLLocation]
+
+        self.polylinePoints = polylinePointsArray.map { value in
+            return value.coordinate
+        }
+        
+    }
+    
 }
 
-struct TripPlannerJourney {
+class TripPlannerJourney: NSObject, NSCoding {
+    
     var startTime: NSDate
     var finishTime: NSDate
     
@@ -94,6 +135,71 @@ struct TripPlannerJourney {
     
     var segments: [TripPlannerSegment]
     var routes: [BusLineType]
+    
+    init(startTime: NSDate, finishTime: NSDate,
+         startLocationString: String?, endLocationString: String?,
+         walkTime: Int, transitTime: Int, duration: Int,
+         segments: [TripPlannerSegment], routes: [BusLineType]) {
+            
+        self.startTime = startTime
+        self.finishTime = finishTime
+        
+        self.startLocationString = startLocationString
+        self.endLocationString = endLocationString
+        
+        self.walkTime = walkTime
+        self.transitTime = transitTime
+        self.duration = duration
+        
+        self.segments = segments
+        self.routes = routes
+        
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        
+        aCoder.encodeObject(self.startTime, forKey: "startTime")
+        aCoder.encodeObject(self.finishTime, forKey: "finishTime")
+        
+        aCoder.encodeObject(self.startLocationString, forKey: "startLocationString")
+        aCoder.encodeObject(self.endLocationString, forKey: "endLocationString")
+        
+        aCoder.encodeInteger(self.walkTime, forKey: "walkTime")
+        aCoder.encodeInteger(self.transitTime, forKey: "transitTime")
+        aCoder.encodeInteger(self.duration, forKey: "duration")
+        
+        aCoder.encodeObject(self.segments, forKey: "segments")
+        
+        let encodedRoutes = self.routes.map { route in
+            return route.toString
+        }
+        
+        aCoder.encodeObject(encodedRoutes, forKey: "routes")
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        self.startTime = aDecoder.decodeObjectForKey("startTime") as! NSDate
+        self.finishTime = aDecoder.decodeObjectForKey("finishTime") as! NSDate
+        
+        self.startLocationString = aDecoder.decodeObjectForKey("startLocationString") as! String?
+        self.endLocationString = aDecoder.decodeObjectForKey("endLocationString") as! String?
+        
+        self.walkTime = aDecoder.decodeIntegerForKey("walkTime")
+        self.transitTime = aDecoder.decodeIntegerForKey("transitTime")
+        self.duration = aDecoder.decodeIntegerForKey("duration")
+        
+        self.segments = aDecoder.decodeObjectForKey("segments") as! [TripPlannerSegment]
+        
+        let encodedRoutes = aDecoder.decodeObjectForKey("routes") as! [String]
+        
+        self.routes = encodedRoutes.map { route in
+            return BusLineType(lineAbbreviationString: route)
+        }
+        
+    }
+    
 }
 
 class TripPlanner: NSObject {
@@ -111,7 +217,7 @@ class TripPlanner: NSObject {
         return NSURL(string: "https://metro.miyazudesign.co.nz/trip_planner.php?from=\(startPosString)&to=\(endPosString)&date=\(dateString)&time=\(timeString)")!
     }()
     
-    static func canAccessServer() -> Bool {
+    static var canAccessServer: Bool {
         guard let _ = NSData(contentsOfURL: NSURL(string: "https://metro.miyazudesign.co.nz/")!) else {
             return false
         }
@@ -199,7 +305,7 @@ class TripPlanner: NSObject {
                             
                             tripID = segmentInfo["trip_id"] as? String
                             
-                            guard let (_, _, type) = DatabaseManager.sharedInstance.infoForTripIdentifier(tripID!) else {
+                            guard let tripInformation = DatabaseManager.sharedInstance.infoForTripIdentifier(tripID!) else {
                                 dispatch_async(dispatch_get_main_queue()) {
                                     self.delegate.tripPlannerDidCompleteWithError(self, error: .VersionError)
                                 }
@@ -207,11 +313,11 @@ class TripPlanner: NSObject {
                                 return
                             }
                             
-                            if routes.last == nil || routes.last!.toString != type.toString {
-                                routes.append(type)
+                            if routes.last == nil || routes.last!.toString != tripInformation.lineType.toString {
+                                routes.append(tripInformation.lineType)
                             }
                             
-                            routeType = type
+                            routeType = tripInformation.lineType
                             
                         }
                         

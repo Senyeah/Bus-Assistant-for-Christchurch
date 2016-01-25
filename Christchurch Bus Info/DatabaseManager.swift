@@ -10,24 +10,6 @@ import UIKit
 import SQLite
 import CoreLocation
 
-extension UIColor {
-    convenience init(hex: String, alpha: CGFloat = 1) {
-        assert(hex[hex.startIndex] == "#", "Expected hex string of format #RRGGBB")
-        
-        let scanner = NSScanner(string: hex)
-        scanner.scanLocation = 1  // skip #
-        
-        var rgb: UInt32 = 0
-        scanner.scanHexInt(&rgb)
-        
-        self.init(
-            red:   CGFloat((rgb & 0xFF0000) >> 16)/255.0,
-            green: CGFloat((rgb &   0xFF00) >>  8)/255.0,
-            blue:  CGFloat((rgb &     0xFF)      )/255.0,
-            alpha: alpha)
-    }
-}
-
 struct StopOnRoute {
     var stopName: String
     var stopNumber: String
@@ -36,22 +18,72 @@ struct StopOnRoute {
 }
 
 protocol DatabaseManagerDelegate {
-    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String : StopInformation])
+    func databaseManagerDidParseDatabase(manager: DatabaseManager, database: [String: StopInformation])
 }
 
-let DOCUMENTS_DIRECTORY = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+let APPLICATION_SUPPORT_DIRECTORY = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, .UserDomainMask, true).last!
 
 class DatabaseManager: NSObject {
 
     static let sharedInstance = DatabaseManager()
-    static let databasePath = DOCUMENTS_DIRECTORY + "/database.sqlite3"
+    static let databasePath = APPLICATION_SUPPORT_DIRECTORY + "/database.sqlite3"
+    
+    private var routesPassingStopQuery: NSString
+    private var stopsForTripQuery: NSString
+    private var tripIDForRouteQuery: NSString
     
     var delegate: DatabaseManagerDelegate?
     
     var database: Connection?
     var isConnected = false
     
-    var stopTagNumbers: [String: String] = [:]
+    lazy var allRoutes: [RouteInformation]? = { [unowned self] in
+        
+        if self.isConnected == false {
+            return nil
+        }
+        
+        let results = self.database?.prepare("SELECT route_id, route_long_name FROM routes")
+        var routes: [RouteInformation] = []
+            
+        for row in results! {
+            let routeNumber = row[0] as! String
+            let routeName = row[1] as! String
+            
+            routes.append((lineType: BusLineType(lineAbbreviationString: routeNumber), routeName: routeName))
+        }
+        
+        return routes
+        
+    }()
+    
+    lazy var allStops: [[String]]? = { [unowned self] in
+        
+        if self.isConnected == false {
+            return nil
+        }
+        
+        guard let statement = self.database?.prepare("SELECT * FROM stops") else {
+            return nil
+        }
+        
+        var returnedColumns: [[String]] = []
+        
+        for row in statement {
+            
+            var temp: [String] = []
+            
+            for column in row {
+                let columnValue = column as! String? ?? ""
+                temp.append(columnValue)
+            }
+            
+            returnedColumns.append(temp)
+        }
+        
+        return returnedColumns
+        
+    }()
     
     func parseDatabase(runQueue: dispatch_queue_t = dispatch_get_main_queue()) {
         
@@ -61,13 +93,12 @@ class DatabaseManager: NSObject {
         
         let parseBlock: () -> Void = {
             
-            guard let stops = self.listStops() else {
+            guard let stops = self.allStops else {
                 return
             }
             
             let stopAttributes = ["stop_id", "stop_code", "stop_name", "stop_lat", "stop_lon", "stop_url", "road_name"]
-            
-            var stopInformation: [String : StopInformation] = [:]
+            var stopInformation: [String: StopInformation] = [:]
             
             for stop in stops {
                 
@@ -79,8 +110,6 @@ class DatabaseManager: NSObject {
                 let stopNo = stop[stopAttributes.indexOf("stop_code")!]
                 let stopTag = stop[stopAttributes.indexOf("stop_id")!]
                 let stopName = stop[stopAttributes.indexOf("stop_name")!]
-                
-                self.stopTagNumbers[stopTag] = stopNo
                 
                 //Figure out the road name
                 let roadName = stop[stopAttributes.indexOf("road_name")!]
@@ -107,7 +136,17 @@ class DatabaseManager: NSObject {
             return nil
         }
         
-        guard let statement = database?.prepare("SELECT latitude, longitude FROM polyline_points") else {
+        var routeTag: String?
+        
+        for row in (database?.prepare("SELECT shape_id FROM trips WHERE trip_id='\(tripID)'"))! {
+            routeTag = row[0] as? String
+        }
+        
+        guard routeTag != nil else {
+            return nil
+        }
+        
+        guard let statement = database?.prepare("SELECT latitude, longitude FROM polyline_points WHERE route_tag='\(routeTag!)'") else {
             return nil
         }
         
@@ -131,7 +170,7 @@ class DatabaseManager: NSObject {
         
     }
     
-    func infoForTripIdentifier(tripID: String) -> (lineName: String, routeName: String, lineType: BusLineType)? {
+    func infoForTripIdentifier(tripID: String) -> TripInformation? {
         
         if isConnected == false {
             return nil
@@ -143,12 +182,45 @@ class DatabaseManager: NSObject {
 
         let line = Array(statement)[0][2] as! String
         let routeName = Array(statement)[0][1] as! String
-        let lineType = RouteInformationManager.sharedInstance.busLineTypeForString(Array(statement)[0][0] as! String)
+        let lineType = BusLineType(lineAbbreviationString: Array(statement)[0][0] as! String)
         
-        return (lineName: line, routeName: routeName, lineType: lineType)
+        return (lineName: line, routeName: routeName, lineType: lineType, tripID: tripID)
         
     }
     
+    
+    func routesPassingStop(stopNumber: String) -> [TripInformation]? {
+        
+        if isConnected == false {
+            return nil
+        }
+        
+        guard let stopTag = RouteInformationManager.sharedInstance.stopInformation?[stopNumber]?.stopTag else {
+            return nil
+        }
+        
+        let routesPassingStopQuery = self.routesPassingStopQuery.stringByReplacingOccurrencesOfString("[stopTag]", withString: stopTag)
+        
+        guard let statement = database?.prepare(routesPassingStopQuery as String) else {
+            return nil
+        }
+        
+        var result: [TripInformation] = []
+        
+        for row in statement {
+            
+            let tripID = row[0] as! String
+            let routeID = row[1] as! String
+            let lineName = row[2] as! String
+            let routeName = row[3] as! String
+            
+            result.append((lineType: BusLineType(lineAbbreviationString: routeID), lineName: lineName, routeName: routeName, tripID: tripID))
+            
+        }
+        
+        return result
+        
+    }
     
     func stopsOnRouteWithTripIdentifier(tripID: String) -> [StopOnRoute]? {
         
@@ -158,8 +230,7 @@ class DatabaseManager: NSObject {
         
         //Load the query as it's so big it can't be inlined
         
-        var query = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
-        query = query.stringByReplacingOccurrencesOfString("[tripID]", withString: tripID)
+        let query = self.stopsForTripQuery.stringByReplacingOccurrencesOfString("[tripID]", withString: tripID)
         
         guard let statement = database?.prepare(query as String) else {
             return nil
@@ -178,6 +249,55 @@ class DatabaseManager: NSObject {
         }
         
         return result
+        
+    }
+    
+    
+    func coordinatesForRoutes(filterRoutes: [BusLineType] = []) -> [RoutePolylineCoordinates]? {
+        
+        if isConnected == false {
+            return nil
+        }
+        
+        let filterRoutesStringRepresentation = filterRoutes.map { current in
+            return current.toString
+        }
+        
+        var values: [RoutePolylineCoordinates] = []
+        
+        guard let routes = database?.prepare("SELECT route_id FROM routes") else {
+            return nil
+        }
+
+        try! database?.execute("CREATE TEMPORARY TABLE IF NOT EXISTS results (trip_id)")
+        
+        for route in routes {
+            
+            let routeName = route[0] as! String
+            
+            if filterRoutesStringRepresentation.contains(routeName) == false {
+                continue
+            }
+            
+            let lineType = BusLineType(lineAbbreviationString: routeName)
+            var points: [[CLLocationCoordinate2D]] = []
+            
+            for direction in [0, 1] {
+                let query = self.tripIDForRouteQuery.stringByReplacingOccurrencesOfString("[routeID]", withString: routeName)
+                try! database?.execute(query.stringByReplacingOccurrencesOfString("[direction]", withString: String(direction)))
+            }
+
+            for tripRow in (database?.prepare("SELECT * FROM results"))! {
+                points.append(routeCoordinatesForTripIdentifier(tripRow[0] as! String)!)
+            }
+            
+            values.append((route: lineType, points: points))
+            
+            try! database?.execute("DELETE FROM results")
+            
+        }
+        
+        return values
         
     }
     
@@ -227,34 +347,6 @@ class DatabaseManager: NSObject {
         
     }
     
-    func listStops() -> [[String]]? {
-        
-        if isConnected == false {
-            return nil
-        }
-        
-        guard let statement = database?.prepare("SELECT * FROM stops") else {
-            return nil
-        }
-        
-        var returnedColumns: [[String]] = []
-        
-        for row in statement {
-            
-            var temp: [String] = []
-            
-            for column in row {
-                let columnValue = column as! String? ?? ""
-                temp.append(columnValue)
-            }
-            
-            returnedColumns.append(temp)
-        }
-        
-        return returnedColumns
-        
-    }
-    
     func executeQuery(sqlQuery: String, completion: Statement -> ()) {
         if isConnected == false {
             return
@@ -289,7 +381,13 @@ class DatabaseManager: NSObject {
     }
     
     override init() {
+        
+        routesPassingStopQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("routes_passing_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        stopsForTripQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        tripIDForRouteQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("trip_id_for_route", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        
         super.init()
+        
     }
     
 }

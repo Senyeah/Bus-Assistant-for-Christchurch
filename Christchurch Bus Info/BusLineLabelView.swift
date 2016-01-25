@@ -44,13 +44,22 @@ enum BusLineType {
         let colours = DatabaseManager.sharedInstance.lineColourForRoute(self)
         return (text: colours.text, background: colours.background)
     }
+    
+    init(lineAbbreviationString: String) {
+        let linesMap: [String: BusLineType] = ["P": .PurpleLine, "O": .OrangeLine, "Y": .YellowLine, "B": .BlueLine, "Oa": .Orbiter(.AntiClockwise), "Oc": .Orbiter(.Clockwise)]
+
+        if linesMap[lineAbbreviationString] == nil {
+            self = .NumberedRoute(lineAbbreviationString)
+        } else {
+            self = linesMap[lineAbbreviationString]!
+        }
+    }
 }
 
 
 
 class BusLineLabelView: UIView {
     
-    var lineType: BusLineType?
     var cellBackgroundColour: UIColor?
     
     var viewConstraints: [NSLayoutConstraint]!
@@ -62,20 +71,12 @@ class BusLineLabelView: UIView {
     var yConstraint: NSLayoutConstraint?
     
     let label = UILabel()
-    
-    override func intrinsicContentSize() -> CGSize {
-        if widthConstraint == nil || heightConstraint == nil {
-            return CGSizeMake(40.0, 30.0)
-        } else {
-            return CGSizeMake(widthConstraint!.constant, heightConstraint!.constant)
-        }
-    }
-    
+    var lineType: BusLineType?
     
     func setLineType(lineType: BusLineType) {
         
-        self.invalidateIntrinsicContentSize()
         self.lineType = lineType
+        self.invalidateIntrinsicContentSize()
         
         label.layer.backgroundColor = (lineType.colours().background ?? UIColor.clearColor()).CGColor
         label.textColor = lineType.colours().text ?? self.tintColor
@@ -123,7 +124,15 @@ class BusLineLabelView: UIView {
         
     }
     
+    override func intrinsicContentSize() -> CGSize {
+        if widthConstraint == nil || heightConstraint == nil {
+            return CGSizeMake(40.0, 30.0)
+        } else {
+            return CGSizeMake(widthConstraint!.constant, heightConstraint!.constant)
+        }
+    }
     
+
     func initView() {
         
         self.setContentCompressionResistancePriority(1000, forAxis: .Vertical)

@@ -1,37 +1,190 @@
 //
 //  RouteMapViewController.swift
-//  Christchurch Bus Info
+//  Bus Assistant
 //
-//  Created by Jack Greenhill on 26/11/15.
-//  Copyright © 2015 Miyazu App + Web Design. All rights reserved.
+//  Created by Jack Greenhill on 17/01/16.
+//  Copyright © 2016 Miyazu App + Web Design. All rights reserved.
 //
 
 import UIKit
 import MapKit
-import CoreLocation
 
-class RouteMapViewController: UIViewController, MKMapViewDelegate {
-    
+class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilterUpdateDelegate {
+
     @IBOutlet var mapView: MKMapView!
-
-    var polylineColour: UIColor!
-    var polylineCoordinates: [CLLocationCoordinate2D] = []
+    @IBOutlet var detailInformationView: UIView!    
+    @IBOutlet var routesDisplayedInfoLabel: UILabel!
     
+    var visibleAnnotations: [CLLocationCoordinate2D: MKAnnotation] = [:]
+    
+    var overlays: [MKOverlay] = []
+    var routesToDisplay: [BusLineType] = [] {
+        didSet {
+            //account for there being 2 orbiters
+            let totalNumberOfRoutes = DatabaseManager.sharedInstance.allRoutes!.count - 1
+            routesDisplayedInfoLabel.text = "\(routesToDisplay.count) of \(totalNumberOfRoutes) routes"
+        }
+    }
+    
+    func selectedRoutesDidChange(routes: [BusLineType]) {
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.routesToDisplay = routes
+            
+            self.mapView.removeOverlays(self.overlays)
+            self.overlays.removeAll()
+            
+            self.processRoutePolylines()
+        }
+        
+    }
+    
+    func selectedRoutes() -> [BusLineType] {
+        return routesToDisplay
+    }
+    
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+            
+            let zoomLevel = mapView.visibleMapRect.size.width / Double(mapView.bounds.size.width)
+            
+            if zoomLevel > BusStopAnnotationController.MIN_ZOOM_LEVEL_FOR_STOPS {
+                
+                for (_, annotation) in self.visibleAnnotations {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        mapView.removeAnnotation(annotation)
+                    }
+                }
+                
+                self.visibleAnnotations.removeAll()
+                return
+                
+            }
+            
+            let annotationsToDisplay = BusStopAnnotationController.annotationsForRegion(self.mapView.visibleMapRect).filter { annotation in
+                return self.visibleAnnotations.keys.contains(annotation.coordinate) == false
+            }
+            
+            for (coordinate, annotation) in self.visibleAnnotations {
+                
+                if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coordinate)) == false {
+                    self.visibleAnnotations.removeValueForKey(coordinate)
 
+                    dispatch_async(dispatch_get_main_queue()) {
+                        mapView.removeAnnotation(annotation)
+                    }
+                }
+                
+            }
+            
+            for annotation in annotationsToDisplay {
+                self.visibleAnnotations[annotation.coordinate] = annotation
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    mapView.addAnnotation(annotation)
+                }
+            }
+        }
         
+    }
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation.isKindOfClass(BusStopAnnotation) {
+            
+            let view = BusStopAnnotationView(annotation: annotation, reuseIdentifier: "BusStopLocationPin")
+            view.canShowCallout = true
+            
+            if view.rightCalloutAccessoryView == nil {
+                view.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+            }
+            
+            return view
+            
+        }
+        
+        return nil
+        
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        self.performSegueWithIdentifier("StopInfoPressedSegue", sender: view)
+    }
+    
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        
+        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
+        let colourRepresentation = UIColor(hex: overlay.title!!)
+        
+        polylineRenderer.strokeColor = colourRepresentation
+        polylineRenderer.lineWidth = 8.0
+        polylineRenderer.alpha = 1.0
+        
+        return polylineRenderer
+        
+    }
+    
+    func processRoutePolylines() {
+        
+        guard let polylineCoordinatesForRoutes = DatabaseManager.sharedInstance.coordinatesForRoutes(routesToDisplay) else {
+            return
+        }
+        
+        for (route, directionCoordinates) in polylineCoordinatesForRoutes {
+            
+            for coordinate in directionCoordinates {
+                var polylinePoints = coordinate
+                let polyline = MKPolyline(coordinates: &polylinePoints, count: polylinePoints.count)
+                
+                polyline.title = (route.colours().background ?? mapView.tintColor)?.hexString
+                
+                mapView.addOverlay(polyline, level: .AboveRoads)
+                overlays.append(polyline)
+            }
+            
+        }
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if sender != nil && sender!.isKindOfClass(BusStopAnnotationView) {
+            
+            let destinationViewController = segue.destinationViewController as! StopInformationTableViewController
+            
+            let selectedAnnotationView = sender as! BusStopAnnotationView
+            let selectedAnnotation = selectedAnnotationView.annotation as! BusStopAnnotation
+            
+            destinationViewController.stopNumber = selectedAnnotation.stop.stopNo
+            
+        } else {
+            let destinationViewController = segue.destinationViewController as! RouteMapLineFilterTableViewController
+            destinationViewController.delegate = self
+        }
+
+    }
+    
     override func viewDidLoad() {
-        
+
         super.viewDidLoad()
+        routesToDisplay = [.PurpleLine, .OrangeLine, .YellowLine, .BlueLine, .Orbiter(.Clockwise)]
         
-        mapView.delegate = self
+        dispatch_async(dispatch_get_main_queue()) {
+            self.processRoutePolylines()
+            self.mapView.setRegion(INITIAL_REGION, animated: false)
+        }
         
-        let polyline = MKPolyline(coordinates: &polylineCoordinates, count: polylineCoordinates.count)
-        mapView.addOverlay(polyline, level: .AboveRoads)
+        let borderLayer = CALayer()
         
-//        mapView.setVisibleMapRect(polyline.boundingMapRect, edgePadding: UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0), animated: false)
+        borderLayer.frame = CGRectMake(0.0, 0.0, detailInformationView.frame.width, 1.0 / UIScreen.mainScreen().scale)
+        borderLayer.backgroundColor = UIColor(hex: "#a8acac").CGColor
         
-        mapView.setRegion(mapView.regionThatFits(MKCoordinateRegionForMapRect(polyline.boundingMapRect)), animated: false)
+        detailInformationView.layer.addSublayer(borderLayer)
         
     }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
 }

@@ -18,6 +18,8 @@ protocol PlaceSearchResultDelegate {
     func locationWasChosenWithName(name: String, coordinate: CLLocationCoordinate2D)
 }
 
+let INITIAL_REGION = MKCoordinateRegion(center: CLLocationCoordinate2DMake(-43.5308976282826, 172.631358772907), span: MKCoordinateSpanMake(0.266642872868438, 0.255848180836665))
+
 class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewControllerDelegate, MKMapViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet var searchBarView: UIView!
@@ -29,8 +31,6 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
     
     let placesAutocompleteController = GMSAutocompleteResultsViewController()
     let geocoder = CLGeocoder()
-    
-    let initialRegion = MKCoordinateRegion(center: CLLocationCoordinate2DMake(-43.5308976282826, 172.631358772907), span: MKCoordinateSpanMake(0.266642872868438, 0.255848180836665))
     
     var locationPinVisibleOnMap = false
     var locationPinName: String?
@@ -46,7 +46,7 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
     var delegate: PlaceSearchResultDelegate?
     
     @IBAction func dismissButtonPressed(sender: AnyObject?) {
-        let pinStringRepresentation = locationPinName ?? locationPinAnnotation!.coordinate.stringValue
+        let pinStringRepresentation = locationPinName ?? "Unknown Location"
         delegate?.locationWasChosenWithName(pinStringRepresentation, coordinate: locationPinAnnotation!.coordinate)
         
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -173,8 +173,7 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
         pinGestureRecogniser?.minimumPressDuration = 0.7
         
         mapView.addGestureRecognizer(pinGestureRecogniser!)
-        
-        mapView.setRegion(initialRegion, animated: false)
+        mapView.setRegion(INITIAL_REGION, animated: false)
         
         searchResultsController = UISearchController(searchResultsController: placesAutocompleteController)
         searchResultsController.dimsBackgroundDuringPresentation = true
