@@ -95,7 +95,7 @@ class BusStopTableViewCell: UITableViewCell {
         }
         
         bottomConstraint = NSLayoutConstraint(item: lineThumbnailLabels.last!, attribute: .Bottom, relatedBy: .Equal, toItem: lineThumbnailView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
-        bottomConstraint!.priority = 250
+        bottomConstraint!.priority = 999
         
         lineThumbnailView.addConstraint(bottomConstraint!)
 
@@ -103,6 +103,8 @@ class BusStopTableViewCell: UITableViewCell {
     
     
     func setStopLines(lines: [BusLineType]) {
+        
+        lineThumbnailView.translatesAutoresizingMaskIntoConstraints = false
         
         if lines.count == 0 {
             return

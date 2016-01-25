@@ -32,6 +32,8 @@ class DatabaseManager: NSObject {
     private var stopsForTripQuery: NSString
     private var tripIDForRouteQuery: NSString
     
+    private var stopUpdateURLs: [String: NSURL] = [:]
+    
     var delegate: DatabaseManagerDelegate?
     
     var database: Connection?
@@ -84,6 +86,22 @@ class DatabaseManager: NSObject {
         return returnedColumns
         
     }()
+    
+    func updateURLForStop(stopNumber: String) -> NSURL {
+        
+        if stopUpdateURLs.keys.contains(stopNumber) {
+            return stopUpdateURLs[stopNumber]!
+        }
+        
+        let statement = database?.prepare("SELECT stop_url FROM stops WHERE stop_code='\(stopNumber)'")
+        let urlString = Array(statement!)[0][0] as! String
+        
+        let url = NSURL(string: urlString)!
+        stopUpdateURLs[stopNumber] = url
+        
+        return url
+        
+    }
     
     func parseDatabase(runQueue: dispatch_queue_t = dispatch_get_main_queue()) {
         
@@ -332,7 +350,6 @@ class DatabaseManager: NSObject {
         }
         
         //Good thing SQL injection here is impossible and useless
-        
         guard let statement = database?.prepare("SELECT route_no FROM stop_lines WHERE stop_id='\(stopTag)'") else {
             return nil
         }
@@ -363,7 +380,6 @@ class DatabaseManager: NSObject {
         database = nil
         isConnected = false
     }
-
     
     func connect() {
         if isConnected {

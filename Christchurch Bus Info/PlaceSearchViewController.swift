@@ -35,7 +35,7 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
     var locationPinVisibleOnMap = false
     var locationPinName: String?
     
-    var locationPinAnnotation: MKPointAnnotation? {
+    var locationPinAnnotation: MKAnnotation? {
         didSet {
             if locationPinAnnotation != nil {
                 doneBarButton.enabled = true
@@ -108,6 +108,17 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
         }
     }
     
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
+        guard let viewAnnotation = view.annotation else {
+            return
+        }
+        
+        if viewAnnotation.isKindOfClass(MKUserLocation) {
+            self.locationPinAnnotation = viewAnnotation
+            self.locationPinName = "Current Location"
+        }
+    }
+    
     func resultsController(resultsController: GMSAutocompleteResultsViewController!, didFailAutocompleteWithError error: NSError!) {
         
     }
@@ -125,8 +136,8 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
             
             self.locationPinAnnotation = MKPointAnnotation()
             
-            self.locationPinAnnotation!.coordinate = place.coordinate
-            self.locationPinAnnotation!.title = place.name
+            (self.locationPinAnnotation! as! MKPointAnnotation).coordinate = place.coordinate
+            (self.locationPinAnnotation! as! MKPointAnnotation).title = place.name
             
             self.locationPinName = place.name
             
@@ -149,10 +160,11 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
             let touchCoordinates = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
             
             reverseGeocodeCoordinate(touchCoordinates) { displayString in
+                
                 self.locationPinAnnotation = MKPointAnnotation()
                 
-                self.locationPinAnnotation!.coordinate = touchCoordinates
-                self.locationPinAnnotation!.title = displayString
+                (self.locationPinAnnotation! as! MKPointAnnotation).coordinate = touchCoordinates
+                (self.locationPinAnnotation! as! MKPointAnnotation).title = displayString
                 
                 self.locationPinName = displayString
                 
@@ -160,6 +172,7 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
                 self.locationPinVisibleOnMap = true
                 
                 self.mapView.selectAnnotation(self.locationPinAnnotation!, animated: true)
+                
             }
         }
         

@@ -45,6 +45,8 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
     
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
+        mapView.layoutMargins = UIEdgeInsetsMake(mapView.layoutMargins.top, mapView.layoutMargins.left, -70.0, mapView.layoutMargins.right)
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             
             let zoomLevel = mapView.visibleMapRect.size.width / Double(mapView.bounds.size.width)
@@ -165,9 +167,24 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
 
     }
     
+    func layoutLegalAttributionLabel() {
+        
+        let attributionLabel = mapView.subviews[1]
+        let calculated = self.view.frame.height - detailInformationView.frame.height - 64.0
+        
+        attributionLabel.center = CGPointMake(attributionLabel.center.x, calculated)
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        layoutLegalAttributionLabel()
+    }
+    
     override func viewDidLoad() {
 
         super.viewDidLoad()
+        layoutLegalAttributionLabel()
+        
         routesToDisplay = [.PurpleLine, .OrangeLine, .YellowLine, .BlueLine, .Orbiter(.Clockwise)]
         
         dispatch_async(dispatch_get_main_queue()) {

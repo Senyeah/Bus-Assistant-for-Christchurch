@@ -72,6 +72,7 @@ class BusStopAnnotationView: MKAnnotationView {
 class BusStopAnnotationController: NSObject, MKMapViewDelegate {
 
     static let MIN_ZOOM_LEVEL_FOR_STOPS = 100.0
+    static let ROUTE_PLANNER_STOP_ZOOM_LEVEL = 50.0
     
     class func annotationsForRegion(region: MKMapRect) -> [BusStopAnnotation] {
         return RouteInformationManager.sharedInstance.stopsInRegion(region).map { stop in

@@ -25,7 +25,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     var distanceFromStop: [String: CLLocationDistance] = [:]
     
     func managerReceivedUpdatedInformation(manager: RouteInformationManager) {
-        self.tableView.reloadData()
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
     }
     
     func processLocationUpdate() {
@@ -105,7 +105,6 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.tableView.rowHeight = UITableViewAutomaticDimension
 
         if CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted {
             displayNoAuthorisationMessage()
@@ -153,15 +152,19 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
         let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stop.stopTag)
         cell.setStopLines(stopLinesForStop)
-            
-        cell.layoutSubviews()
+        
+        cell.layoutIfNeeded()
             
         return cell
         
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 130.0
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

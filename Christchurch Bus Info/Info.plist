@@ -52,7 +52,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your current location is used to determine the closest bus stops to you.</string>
+	<string>Your current location is used to determine where you are located on the route map, and the closest bus stops to you.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

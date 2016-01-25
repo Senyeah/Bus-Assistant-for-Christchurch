@@ -12,8 +12,6 @@ protocol StopInformationParserDelegate {
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String: AnyObject]])
 }
 
-let STOP_ARRIVAL_INFO_URL = "http://rtt.metroinfo.org.nz/rtt/public/utility/file.aspx?ContentType=SQLXML&Name=JPRoutePositionET2&PlatformNo="
-
 class StopInformationParser: NSObject, NSXMLParserDelegate {
     
     var delegate: StopInformationParserDelegate?
@@ -91,7 +89,7 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         
         stopInformation = []
         
-        let updateURL = NSURL(string: STOP_ARRIVAL_INFO_URL + stopNumber)!
+        let updateURL = DatabaseManager.sharedInstance.updateURLForStop(stopNumber)
         let request = NSURLRequest(URL: updateURL)
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in

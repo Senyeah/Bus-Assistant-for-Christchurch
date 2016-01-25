@@ -22,11 +22,27 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
     var tripInfo: TripPlannerJourney?
     var prioritisedPolyline: MKPolyline?
     
-    var pinOverlays: [MKAnnotation] = []
+    var pinAnnotations: [MKAnnotation] = []
+    var visibleAnnotations: [CLLocationCoordinate2D: MKAnnotation] = [:]
+    
+    func layoutLegalAttributionLabel() {
+        
+        let attributionLabel = mapView.subviews[1]
+        let calculated = self.view.frame.height - detailInformationView.frame.height - 64.0
+
+        attributionLabel.center = CGPointMake(attributionLabel.center.x, calculated)
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        layoutLegalAttributionLabel()
+    }
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        layoutLegalAttributionLabel()
         layoutPolylines()
         
         if let segmentRoutes = tripInfo?.routes {
@@ -43,6 +59,52 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         borderLayer.backgroundColor = UIColor(hex: "#a8acac").CGColor
         
         detailInformationView.layer.addSublayer(borderLayer)
+        
+    }
+    
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+            
+            let zoomLevel = mapView.visibleMapRect.size.width / Double(mapView.bounds.size.width)
+            
+            if zoomLevel > BusStopAnnotationController.ROUTE_PLANNER_STOP_ZOOM_LEVEL {
+                
+                for (_, annotation) in self.visibleAnnotations {
+                    dispatch_async(dispatch_get_main_queue()) {
+                        mapView.removeAnnotation(annotation)
+                    }
+                }
+                
+                self.visibleAnnotations.removeAll()
+                return
+                
+            }
+            
+            let annotationsToDisplay = BusStopAnnotationController.annotationsForRegion(self.mapView.visibleMapRect).filter { annotation in
+                return self.visibleAnnotations.keys.contains(annotation.coordinate) == false
+            }
+            
+            for (coordinate, annotation) in self.visibleAnnotations {
+                
+                if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coordinate)) == false {
+                    self.visibleAnnotations.removeValueForKey(coordinate)
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        mapView.removeAnnotation(annotation)
+                    }
+                }
+                
+            }
+            
+            for annotation in annotationsToDisplay {
+                self.visibleAnnotations[annotation.coordinate] = annotation
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    mapView.addAnnotation(annotation)
+                }
+            }
+        }
         
     }
     
@@ -69,7 +131,14 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
 
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-        if annotation.isKindOfClass(MKUserLocation) == false {
+        if annotation.isKindOfClass(BusStopAnnotation) {
+            
+            let view = BusStopAnnotationView(annotation: annotation, reuseIdentifier: "BusStopLocationPin")
+            view.canShowCallout = true
+            
+            return view
+            
+        } else if annotation.isKindOfClass(MKUserLocation) == false {
             let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "PinAnnotation")
             
             annotationView.enabled = true
@@ -124,6 +193,9 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
     
     func routeDetailController(controller: RouteDetailTableViewController, didSelectTripInfoSegment segmentOffset: Int) {
         
+        mapView.removeAnnotations(pinAnnotations)
+        pinAnnotations.removeAll()
+        
         var detailPolylineCoordinates = tripInfo!.segments[segmentOffset].polylinePoints
 
         addInformationPinWithCoordinate(detailPolylineCoordinates.first!, title: "Start", subtitle: nil)
@@ -145,15 +217,15 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         annotation.subtitle = subtitle
         annotation.coordinate = coordinate
         
-        pinOverlays.append(annotation)
+        pinAnnotations.append(annotation)
         mapView.addAnnotation(annotation)
         
     }
     
     func routeDetailController(controller: RouteDetailTableViewController, didSelectInfoForStartStopOnSegment segmentOffset: Int) {
         
-        mapView.removeAnnotations(pinOverlays)
-        pinOverlays.removeAll()
+        mapView.removeAnnotations(pinAnnotations)
+        pinAnnotations.removeAll()
         
         let segment = tripInfo!.segments[segmentOffset]
         
@@ -168,8 +240,8 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
     
     func routeDetailController(controller: RouteDetailTableViewController, didSelectInfoForEndStopOnSegment segmentOffset: Int) {
         
-        mapView.removeAnnotations(pinOverlays)
-        pinOverlays.removeAll()
+        mapView.removeAnnotations(pinAnnotations)
+        pinAnnotations.removeAll()
         
         let segment = tripInfo!.segments[segmentOffset]
         
