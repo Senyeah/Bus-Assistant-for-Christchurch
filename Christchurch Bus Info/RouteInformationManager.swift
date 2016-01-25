@@ -245,8 +245,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
     }
     
-    
-    func closestStopsForLocation(radiusInMetres: Double, location: CLLocation) -> [(stop: StopInformation, distance: CLLocationDistance)] {
+    func closestStopsForLocation(radiusInMetres: Double, location: CLLocation) -> NearbyStopInformation {
         
         let normalisedCoordinate = self.normaliseCoordinate(location.coordinate, coverage: self.coverageInformation)
         
@@ -258,7 +257,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         let radius = radiusInMetres / min(self.coverageInformation.coverageWidth, self.coverageInformation.coverageHeight)
         
         let resultingStops = kd_nearest_range(stopsKdTree, coordinatePointer, radius)
-        var resultingStopsArray: [(stop: StopInformation, distance: CLLocationDistance)] = []
+        var resultingStopsArray: NearbyStopInformation = []
         
         while kd_res_end(resultingStops) == 0 {
             
@@ -275,7 +274,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         kd_res_free(resultingStops)
         coordinatePointer.dealloc(2)
         
-        return resultingStopsArray
+        return resultingStopsArray.sort {
+            return $0.0.distance < $0.1.distance
+        }
         
     }
     
@@ -314,9 +315,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         var stopsInRect: [StopInformation] = []
         
         for (stop, _) in stopsInRadius {
-            //if MKMapRectContainsPoint(region, centrePoint) {
+            if MKMapRectContainsPoint(region, centrePoint) {
                 stopsInRect.append(stop)
-            //}
+            }
         }
         
         return stopsInRect

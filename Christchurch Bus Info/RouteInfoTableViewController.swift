@@ -21,7 +21,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     var lastLocationUpdated: CLLocation?
     var hasObtainedInitialLocation = false
     
-    var groupedStops: [String: [String]] = [:]
+    var nearbyStops: NearbyStopInformation = []
     var distanceFromStop: [String: CLLocationDistance] = [:]
     
     func managerReceivedUpdatedInformation(manager: RouteInformationManager) {
@@ -30,31 +30,13 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     
     func processLocationUpdate() {
         
-        groupedStops.removeAll()
+        nearbyStops.removeAll()
         
         guard let currentLocation = locationManager.location else {
             return
         }
         
-        let nearestStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: currentLocation)
-        
-        var groupOrdering: [String] = []
-        
-        for (stop, distance) in nearestStops {
-            
-            if groupedStops[stop.roadName] == nil {
-                groupedStops[stop.roadName] = []
-            }
-            
-            groupedStops[stop.roadName]!.append(stop.stopNo)
-            
-            if groupOrdering.contains(stop.roadName) == false {
-                groupOrdering.append(stop.roadName)
-            }
-            
-            distanceFromStop[stop.stopNo] = distance
-            
-        }
+        nearbyStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: currentLocation)
         
     }
     
@@ -73,7 +55,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             hasObtainedInitialLocation = true
             
-            if self.groupedStops.count == 0 {
+            if self.nearbyStops.count == 0 {
                 let noStopsMessage = TableViewErrorBackgroundView.initView("No Bus Stops Nearby", errorDetail: "No bus stops were found within 500 metres of your location.")
                 tableView.backgroundView = noStopsMessage
             } else {
@@ -94,7 +76,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
         if status == .Denied || status == .Restricted {
-            groupedStops.removeAll()
+            nearbyStops.removeAll()
             tableView.reloadData()
             
             displayNoAuthorisationMessage()
@@ -148,51 +130,33 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return groupedStops.count
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        let key = Array(groupedStops.keys)[section]
-        return groupedStops[key]!.count + 1
-        
+        return nearbyStops.count
     }
         
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
-
-            let cell = tableView.dequeueReusableCellWithIdentifier("GroupHeadingCell", forIndexPath: indexPath)
-            cell.textLabel?.text = Array(groupedStops.keys)[indexPath.section]
+        let cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell", forIndexPath: indexPath) as! BusStopTableViewCell
             
-            return cell
+        let stopInfo = nearbyStops[indexPath.row]
         
-        } else {
-    
-            let cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell", forIndexPath: indexPath) as! BusStopTableViewCell
+        cell.stopName.text = "\(stopInfo.stop.roadName) near \(stopInfo.stop.name)"
+        cell.stopNumber.text = String(stopInfo.stop.stopNo)
             
-            let groupName = Array(groupedStops.keys)[indexPath.section]
-            let stopNumber = groupedStops[groupName]![indexPath.row - 1] 
+        cell.setDistance(stopInfo.distance)
             
-            let stopInfo = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber)!
+        let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stop.stopTag)
+        cell.setStopLines(stopLinesForStop)
             
-            cell.stopName.text = stopInfo.name
-            cell.stopNumber.text = String(stopNumber)
+        cell.layoutSubviews()
             
-            cell.setDistance(distanceFromStop[stopNumber]!)
-            
-            let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stopTag)
-            cell.setStopLines(stopLinesForStop)
-            
-            cell.layoutSubviews()
-            
-            return cell
-            
-        }
+        return cell
         
     }
     
@@ -200,18 +164,15 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         return UITableViewAutomaticDimension
     }
 
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        
+
         locationManager.stopUpdatingLocation()
         
         let destinationController = segue.destinationViewController as! StopInformationTableViewController
         let indexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
         
-        let groupName = Array(groupedStops.keys)[indexPath.section]
-        destinationController.stopNumber = groupedStops[groupName]![indexPath.row - 1] 
+        let stopInfo = nearbyStops[indexPath.row].stop
+        destinationController.stopNumber = stopInfo.stopNo
         
     }
 

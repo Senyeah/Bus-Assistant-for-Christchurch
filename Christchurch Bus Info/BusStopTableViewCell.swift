@@ -150,11 +150,6 @@ class BusStopTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        let preferredFontDescriptor = UIFontDescriptor.preferredFontDescriptorWithTextStyle(UIFontTextStyleBody)
-        let pointSize = preferredFontDescriptor.pointSize
-        
-        stopName.font = UIFont.systemFontOfSize(pointSize, weight: UIFontWeightMedium)
     }
     
 }

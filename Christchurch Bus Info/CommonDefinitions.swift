@@ -10,6 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
+typealias NearbyStopInformation = [(stop: StopInformation, distance: CLLocationDistance)]
 typealias RoutePolylineCoordinates = (route: BusLineType, points: [[CLLocationCoordinate2D]])
 typealias LineSectionInformation = [(sectionTitle: String, routes: [RouteInformation])]
 typealias RouteInformation = (lineType: BusLineType, routeName: String)
