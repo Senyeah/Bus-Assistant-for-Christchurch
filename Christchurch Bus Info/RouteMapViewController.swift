@@ -16,8 +16,8 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
     @IBOutlet var routesDisplayedInfoLabel: UILabel!
     
     var visibleAnnotations: [CLLocationCoordinate2D: MKAnnotation] = [:]
-    
     var overlays: [MKOverlay] = []
+    
     var routesToDisplay: [BusLineType] = [] {
         didSet {
             //account for there being 2 orbiters
@@ -26,15 +26,20 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         }
     }
     
+    var prioritisedRoute: BusLineType?
+    
     func selectedRoutesDidChange(routes: [BusLineType]) {
         
         dispatch_async(dispatch_get_main_queue()) {
+            
             self.routesToDisplay = routes
+            Preferences.mapRoutes = routes
             
             self.mapView.removeOverlays(self.overlays)
             self.overlays.removeAll()
             
             self.processRoutePolylines()
+            
         }
         
     }
@@ -121,7 +126,12 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         
         polylineRenderer.strokeColor = colourRepresentation
         polylineRenderer.lineWidth = 8.0
-        polylineRenderer.alpha = 1.0
+        
+        if prioritisedRoute != nil && overlay.subtitle!! != prioritisedRoute!.toString {
+            polylineRenderer.alpha = 0.4
+        } else {
+            polylineRenderer.alpha = 1.0
+        }        
         
         return polylineRenderer
         
@@ -135,14 +145,42 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         
         for (route, directionCoordinates) in polylineCoordinatesForRoutes {
             
+            if prioritisedRoute != nil && prioritisedRoute! == route {
+                continue
+            }
+            
             for coordinate in directionCoordinates {
+                
                 var polylinePoints = coordinate
                 let polyline = MKPolyline(coordinates: &polylinePoints, count: polylinePoints.count)
                 
                 polyline.title = (route.colours().background ?? mapView.tintColor)?.hexString
+                polyline.subtitle = route.toString
                 
                 mapView.addOverlay(polyline, level: .AboveRoads)
                 overlays.append(polyline)
+                
+            }
+            
+        }
+        
+        if prioritisedRoute != nil {
+            
+            guard let prioritisedPolylineCoordinates = DatabaseManager.sharedInstance.coordinatesForRoutes([prioritisedRoute!]) else {
+                return
+            }
+            
+            for coordinate in prioritisedPolylineCoordinates[0].points {
+                
+                var polylinePoints = coordinate
+                let polyline = MKPolyline(coordinates: &polylinePoints, count: polylinePoints.count)
+                
+                polyline.title = (prioritisedRoute!.colours().background ?? mapView.tintColor)?.hexString
+                polyline.subtitle = prioritisedRoute!.toString
+                
+                mapView.addOverlay(polyline, level: .AboveRoads)
+                overlays.append(polyline)
+                
             }
             
         }
@@ -185,7 +223,7 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         super.viewDidLoad()
         layoutLegalAttributionLabel()
         
-        routesToDisplay = [.PurpleLine, .OrangeLine, .YellowLine, .BlueLine, .Orbiter(.Clockwise)]
+        routesToDisplay = Preferences.mapRoutes
         
         dispatch_async(dispatch_get_main_queue()) {
             self.processRoutePolylines()

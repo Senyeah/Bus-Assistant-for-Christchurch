@@ -56,7 +56,9 @@ enum BusLineType {
     }
 }
 
-
+func == (lhs: BusLineType, rhs: BusLineType) -> Bool {
+    return lhs.toString == rhs.toString
+}
 
 class BusLineLabelView: UIView {
     

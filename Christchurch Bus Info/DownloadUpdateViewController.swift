@@ -8,14 +8,20 @@
 
 import UIKit
 
+protocol DownloadUpdateViewControllerDelegate {
+    func currentlyDownloadingUpdateShouldCancel()
+}
+
 class DownloadUpdateViewController: UIViewController {
     
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var progressLabel: UILabel!
     @IBOutlet var progressBar: UIProgressView!
     
-    @IBAction func dismissButtonPressed() {
-        
+    var delegate: DownloadUpdateViewControllerDelegate?
+    
+    @IBAction func cancelButtonPressed() {
+        delegate?.currentlyDownloadingUpdateShouldCancel()
     }
     
 }

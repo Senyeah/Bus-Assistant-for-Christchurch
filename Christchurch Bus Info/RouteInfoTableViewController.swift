@@ -42,6 +42,10 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
+        if newLocation.horizontalAccuracy >= 65.0 && nearbyStops.count > 0 {
+            return
+        }
+        
         var distanceMoved: CLLocationDistance = 0.0
         
         if lastLocationUpdated != nil {
@@ -62,7 +66,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
                 tableView.backgroundView = nil
             }
             
-            self.tableView.reloadData()
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
             
         }
         

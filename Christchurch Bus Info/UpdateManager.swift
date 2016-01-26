@@ -12,14 +12,15 @@ let UPDATE_URL = "https://metro.miyazudesign.co.nz/latest.php"
 let VERSION_URL = "https://metro.miyazudesign.co.nz/version.php"
 
 protocol UpdateManagerDelegate {
-    func updateManagerWillDownloadFile(manager: UpdateManager)
+    func updateManagerWillDownloadFile(manager: UpdateManager, displayModalController: Bool)
     func updateManagerIsDownloadingFileWithProgress(manager: UpdateManager, progress: Double, currentSize: Int64, maxSize: Int64)
     func updateManagerDidCompleteDownload(manager: UpdateManager, error: NSError?)
     func updateManagerWillExtractUpdate(manager: UpdateManager)
     func updateManagerDidExtractUpdate(manager: UpdateManager, extractionFailed: Bool)
+    func updateManagerDidCancelUpdate(manager: UpdateManager)
 }
 
-class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegate {
+class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegate, DownloadUpdateViewControllerDelegate {
     
     static let sharedInstance = UpdateManager()
     
@@ -27,6 +28,9 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
     static let zipFolderExpandedPath = APPLICATION_SUPPORT_DIRECTORY + "/database"
     
     var delegate: UpdateManagerDelegate?
+    
+    var updateDownloadTask: NSURLSessionDownloadTask?
+    var updateCompletionHandlers: [() -> Void] = []
     
     var isUpdateAvailable: Bool {
         get {
@@ -54,16 +58,40 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
             NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "database_version")
         }
     }
-
-    func downloadLatestDatabase() {
+    
+    func resetDatabase(completion: (() -> Void)?) {
         
-        delegate?.updateManagerWillDownloadFile(self)
+        DatabaseManager.sharedInstance.disconnect()
+        removeTemporaryFiles()
+        
+        _ = try? NSFileManager.defaultManager().removeItemAtPath(DatabaseManager.databasePath)
+        
+        copyBundledDatabase()
+        
+        if let completionHandler = completion {
+            completionHandler()
+        }
+        
+    }
+    
+    func currentlyDownloadingUpdateShouldCancel() {
+        updateDownloadTask!.cancel()
+        delegate?.updateManagerDidCancelUpdate(self)
+    }
+
+    func downloadLatestDatabase(displayModalProgressView: Bool = false, completion: (() -> Void)?) {
+        
+        delegate?.updateManagerWillDownloadFile(self, displayModalController: displayModalProgressView)
         
         let sessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session = NSURLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
         
-        let downloadTask = session.downloadTaskWithURL(NSURL(string: UPDATE_URL)!)
-        downloadTask.resume()
+        updateDownloadTask = session.downloadTaskWithURL(NSURL(string: UPDATE_URL)!)
+        updateDownloadTask!.resume()
+        
+        if let completionHandler = completion {
+            updateCompletionHandlers.append(completionHandler)
+        }
         
     }
     
@@ -89,7 +117,6 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
             if NSFileManager.defaultManager().fileExistsAtPath(temporaryFile) {
                 _ = try? NSFileManager.defaultManager().removeItemAtPath(temporaryFile)
             }
-            
         }
         
     }
@@ -106,9 +133,19 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         DatabaseManager.sharedInstance.connect()
         DatabaseManager.sharedInstance.parseDatabase()
         
+        dispatch_async(dispatch_get_main_queue()) {
+            
+            for handler in self.updateCompletionHandlers {
+                handler()
+            }
+            
+            self.updateCompletionHandlers.removeAll()
+            
+        }
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { _ -> Void in
-            if self.isUpdateAvailable {
-                self.downloadLatestDatabase()
+            if Preferences.shouldAutomaticallyUpdate && self.isUpdateAvailable {
+                self.downloadLatestDatabase(completion: nil)
             }
         }
         

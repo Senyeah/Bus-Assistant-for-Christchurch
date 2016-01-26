@@ -10,9 +10,16 @@ import UIKit
 
 class RootTabBarController: UITabBarController {
     
+    var progressViewControllerDelegate: DownloadUpdateViewControllerDelegate?
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         let routeInformationManager = sender as! RouteInformationManager
-        routeInformationManager.progressViewController = segue.destinationViewController as? DownloadUpdateViewController
+        let downloadProgressViewController = segue.destinationViewController as! DownloadUpdateViewController
+        
+        downloadProgressViewController.delegate = progressViewControllerDelegate
+        routeInformationManager.progressViewController = downloadProgressViewController
+        
     }
     
 }

@@ -1,0 +1,883 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		040D641B1C01C1B2009BF2C8 /* kdtree.c in Sources */ = {isa = PBXBuildFile; fileRef = 040D64191C01C1B2009BF2C8 /* kdtree.c */; };
+		040D641D1C03653B009BF2C8 /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D641C1C03653B009BF2C8 /* UpdateManager.swift */; };
+		040D64201C03A3CD009BF2C8 /* DownloadUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D641F1C03A3CD009BF2C8 /* DownloadUpdateViewController.swift */; };
+		040D64231C03A7E7009BF2C8 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D64221C03A7E7009BF2C8 /* RootTabBarController.swift */; };
+		0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */; };
+		042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5A51BEB2D910093EB77 /* AppDelegate.swift */; };
+		042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5A91BEB2D910093EB77 /* Main.storyboard */; };
+		042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AC1BEB2D910093EB77 /* Assets.xcassets */; };
+		042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */; };
+		042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */; };
+		042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */; };
+		0437768F1C1BD67200AE4815 /* RouteOptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0437768E1C1BD67200AE4815 /* RouteOptionTableViewCell.swift */; };
+		043776911C1C2CF800AE4815 /* TripPlanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043776901C1C2CF800AE4815 /* TripPlanner.swift */; };
+		043D31571C20AF1200B4C08B /* PlaceSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D31561C20AF1200B4C08B /* PlaceSearchViewController.swift */; };
+		04412F0B1C51E82700F94CAC /* BusStopAnnotationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04412F0A1C51E82700F94CAC /* BusStopAnnotationController.swift */; };
+		0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */; };
+		044E10BF1C57842900D3AE32 /* MoreInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */; };
+		044E10C11C578CD700D3AE32 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10C01C578CD700D3AE32 /* Preferences.swift */; };
+		044E10C31C5794F900D3AE32 /* attribution.html in Resources */ = {isa = PBXBuildFile; fileRef = 044E10C21C5794F900D3AE32 /* attribution.html */; };
+		044E10C51C57950F00D3AE32 /* ImageAttributionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */; };
+		044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */; };
+		0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC8B1BF600F600794D4C /* StopInformationParser.swift */; };
+		0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */; };
+		0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */; };
+		0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0455D0AD1C05FCA700134810 /* MapKit.framework */; };
+		0462C2B21C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462C2B11C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift */; };
+		04688E8E1BF6339C006A1DFA /* info.xml in Resources */ = {isa = PBXBuildFile; fileRef = 04688E8D1BF6339C006A1DFA /* info.xml */; };
+		046B0E091C254B340051B686 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E081C254B340051B686 /* Podfile */; };
+		046B0E141C254FE00051B686 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E121C254FE00051B686 /* SSZipArchive.m */; };
+		046B0E1F1C254FEF0051B686 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E1B1C254FEF0051B686 /* ioapi.c */; };
+		046B0E201C254FEF0051B686 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E1C1C254FEF0051B686 /* mztools.c */; };
+		046B0E211C254FEF0051B686 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E1D1C254FEF0051B686 /* unzip.c */; };
+		046B0E221C254FEF0051B686 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E1E1C254FEF0051B686 /* zip.c */; };
+		046B0E571C2550270051B686 /* aescrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E4E1C2550270051B686 /* aescrypt.c */; };
+		046B0E581C2550270051B686 /* aeskey.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E4F1C2550270051B686 /* aeskey.c */; };
+		046B0E591C2550270051B686 /* aestab.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E501C2550270051B686 /* aestab.c */; };
+		046B0E5A1C2550270051B686 /* entropy.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E511C2550270051B686 /* entropy.c */; };
+		046B0E5B1C2550270051B686 /* fileenc.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E521C2550270051B686 /* fileenc.c */; };
+		046B0E5C1C2550270051B686 /* hmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E531C2550270051B686 /* hmac.c */; };
+		046B0E5D1C2550270051B686 /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E541C2550270051B686 /* prng.c */; };
+		046B0E5E1C2550270051B686 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E551C2550270051B686 /* pwd2key.c */; };
+		046B0E5F1C2550270051B686 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E561C2550270051B686 /* sha1.c */; };
+		046B0E641C2562940051B686 /* interchange.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E601C2562940051B686 /* interchange.gpx */; };
+		046B0E651C2562940051B686 /* home.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E611C2562940051B686 /* home.gpx */; };
+		046B0E671C2562940051B686 /* riccarton.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E631C2562940051B686 /* riccarton.gpx */; };
+		046B0E6A1C25BDD30051B686 /* TableViewLoadingBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E691C25BDD30051B686 /* TableViewLoadingBackgroundView.swift */; };
+		046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */; };
+		046B0E6E1C25C8060051B686 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */; };
+		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
+		048223821C25ED51004EAF1B /* RouteOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */; };
+		048223871C272160004EAF1B /* RouteDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223861C272160004EAF1B /* RouteDetailTableViewController.swift */; };
+		048223891C27218A004EAF1B /* JourneyStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */; };
+		0482238B1C272302004EAF1B /* JourneyTransitTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0482238A1C272302004EAF1B /* JourneyTransitTableViewCell.swift */; };
+		04842F4A1C52206B000C9775 /* BusStopInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04842F491C52206B000C9775 /* BusStopInfoTableViewCell.swift */; };
+		04842F4C1C52472E000C9775 /* routes_passing_stop.sql in Resources */ = {isa = PBXBuildFile; fileRef = 04842F4B1C52472E000C9775 /* routes_passing_stop.sql */; };
+		04842F4E1C531434000C9775 /* CommonDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04842F4D1C531434000C9775 /* CommonDefinitions.swift */; };
+		049C3B451C1B3789001848B7 /* RoutePlannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049C3B441C1B3789001848B7 /* RoutePlannerViewController.swift */; };
+		04BBC0791C31575C001D09B4 /* JourneySegmentIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BBC0781C31575C001D09B4 /* JourneySegmentIndicator.swift */; };
+		04BD5F631C3AB4E100253434 /* TripSegmentVisualisationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BD5F621C3AB4E100253434 /* TripSegmentVisualisationView.swift */; };
+		04BDA2F51C4BA93D00F0D061 /* RouteMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BDA2F41C4BA93D00F0D061 /* RouteMapViewController.swift */; };
+		04BDA2F71C4BB46300F0D061 /* trip_id_for_route.sql in Resources */ = {isa = PBXBuildFile; fileRef = 04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */; };
+		04BDA2FA1C4C646700F0D061 /* JourneyNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BDA2F91C4C646700F0D061 /* JourneyNotificationManager.swift */; };
+		04BDA2FB1C4DC6BB00F0D061 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 04BF2AFF1C208C4E003D5699 /* database.zip */; };
+		04BF2AFC1C1F515F003D5699 /* TableViewErrorBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF2AFB1C1F515F003D5699 /* TableViewErrorBackgroundView.swift */; };
+		04BF2AFE1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04BF2AFD1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib */; };
+		04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */; };
+		04D6FAF61BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */; };
+		04D6FAF81BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */; };
+		04D6FB191BF887A5001BFC49 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */; };
+		04EF5CDC1C51172D004A4DC6 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF5CDB1C51172D004A4DC6 /* RouteInformationManager.swift */; };
+		04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */; };
+		04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */; };
+		F8C78015E87987709A1B14EF /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0F7FBDB4B89852FC71D038 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04C151F31C562D08007C4DF4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04D6FB2A1BF88E16001BFC49 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04EBE0D81C354D750041C1F7 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		040D64191C01C1B2009BF2C8 /* kdtree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kdtree.c; sourceTree = "<group>"; };
+		040D641A1C01C1B2009BF2C8 /* kdtree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdtree.h; sourceTree = "<group>"; };
+		040D641C1C03653B009BF2C8 /* UpdateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
+		040D641F1C03A3CD009BF2C8 /* DownloadUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadUpdateViewController.swift; sourceTree = "<group>"; };
+		040D64221C03A7E7009BF2C8 /* RootTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
+		0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopIndeterminateTableViewCell.swift; sourceTree = "<group>"; };
+		042ED5A21BEB2D910093EB77 /* Bus Assistant for Christchurch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bus Assistant for Christchurch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		042ED5A51BEB2D910093EB77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		042ED5AA1BEB2D910093EB77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		042ED5AC1BEB2D910093EB77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		042ED5AF1BEB2D910093EB77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		042ED5B11BEB2D910093EB77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInfoTableViewController.swift; sourceTree = "<group>"; };
+		042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
+		0437768E1C1BD67200AE4815 /* RouteOptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOptionTableViewCell.swift; sourceTree = "<group>"; };
+		043776901C1C2CF800AE4815 /* TripPlanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripPlanner.swift; sourceTree = "<group>"; };
+		043D31561C20AF1200B4C08B /* PlaceSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlaceSearchViewController.swift; sourceTree = "<group>"; };
+		04412F0A1C51E82700F94CAC /* BusStopAnnotationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopAnnotationController.swift; sourceTree = "<group>"; };
+		0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewTableViewController.swift; sourceTree = "<group>"; };
+		044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInformationTableViewController.swift; sourceTree = "<group>"; };
+		044E10C01C578CD700D3AE32 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		044E10C21C5794F900D3AE32 /* attribution.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = attribution.html; sourceTree = "<group>"; };
+		044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAttributionViewController.swift; sourceTree = "<group>"; };
+		044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopTableViewCell.swift; sourceTree = "<group>"; };
+		0451FC8B1BF600F600794D4C /* StopInformationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationParser.swift; sourceTree = "<group>"; };
+		0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationTableViewController.swift; sourceTree = "<group>"; };
+		0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopTableViewCell.swift; sourceTree = "<group>"; };
+		0455D0AD1C05FCA700134810 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0462C2B11C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMapLineFilterTableViewController.swift; sourceTree = "<group>"; };
+		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
+		046B0E081C254B340051B686 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		046B0E0F1C254FE00051B686 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		046B0E101C254FE00051B686 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		046B0E111C254FE00051B686 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		046B0E121C254FE00051B686 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		046B0E161C254FEF0051B686 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		046B0E171C254FEF0051B686 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		046B0E181C254FEF0051B686 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		046B0E191C254FEF0051B686 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		046B0E1A1C254FEF0051B686 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		046B0E1B1C254FEF0051B686 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		046B0E1C1C254FEF0051B686 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		046B0E1D1C254FEF0051B686 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		046B0E1E1C254FEF0051B686 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		046B0E421C2550270051B686 /* aes_via_ace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes_via_ace.h; sourceTree = "<group>"; };
+		046B0E431C2550270051B686 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aes.h; sourceTree = "<group>"; };
+		046B0E441C2550270051B686 /* aesopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aesopt.h; sourceTree = "<group>"; };
+		046B0E451C2550270051B686 /* aestab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aestab.h; sourceTree = "<group>"; };
+		046B0E461C2550270051B686 /* brg_endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_endian.h; sourceTree = "<group>"; };
+		046B0E471C2550270051B686 /* brg_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = brg_types.h; sourceTree = "<group>"; };
+		046B0E481C2550270051B686 /* entropy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entropy.h; sourceTree = "<group>"; };
+		046B0E491C2550270051B686 /* fileenc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileenc.h; sourceTree = "<group>"; };
+		046B0E4A1C2550270051B686 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
+		046B0E4B1C2550270051B686 /* prng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prng.h; sourceTree = "<group>"; };
+		046B0E4C1C2550270051B686 /* pwd2key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwd2key.h; sourceTree = "<group>"; };
+		046B0E4D1C2550270051B686 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		046B0E4E1C2550270051B686 /* aescrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aescrypt.c; sourceTree = "<group>"; };
+		046B0E4F1C2550270051B686 /* aeskey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aeskey.c; sourceTree = "<group>"; };
+		046B0E501C2550270051B686 /* aestab.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aestab.c; sourceTree = "<group>"; };
+		046B0E511C2550270051B686 /* entropy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = entropy.c; sourceTree = "<group>"; };
+		046B0E521C2550270051B686 /* fileenc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fileenc.c; sourceTree = "<group>"; };
+		046B0E531C2550270051B686 /* hmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hmac.c; sourceTree = "<group>"; };
+		046B0E541C2550270051B686 /* prng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prng.c; sourceTree = "<group>"; };
+		046B0E551C2550270051B686 /* pwd2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pwd2key.c; sourceTree = "<group>"; };
+		046B0E561C2550270051B686 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
+		046B0E601C2562940051B686 /* interchange.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = interchange.gpx; sourceTree = "<group>"; };
+		046B0E611C2562940051B686 /* home.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = home.gpx; sourceTree = "<group>"; };
+		046B0E631C2562940051B686 /* riccarton.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = riccarton.gpx; sourceTree = "<group>"; };
+		046B0E691C25BDD30051B686 /* TableViewLoadingBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingBackgroundView.swift; sourceTree = "<group>"; };
+		046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewLoadingBackgroundView.xib; sourceTree = "<group>"; };
+		046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
+		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
+		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOverviewViewController.swift; sourceTree = "<group>"; };
+		048223861C272160004EAF1B /* RouteDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewController.swift; sourceTree = "<group>"; };
+		048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyStopTableViewCell.swift; sourceTree = "<group>"; };
+		0482238A1C272302004EAF1B /* JourneyTransitTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyTransitTableViewCell.swift; sourceTree = "<group>"; };
+		04842F491C52206B000C9775 /* BusStopInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopInfoTableViewCell.swift; sourceTree = "<group>"; };
+		04842F4B1C52472E000C9775 /* routes_passing_stop.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = routes_passing_stop.sql; sourceTree = "<group>"; };
+		04842F4D1C531434000C9775 /* CommonDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonDefinitions.swift; sourceTree = "<group>"; };
+		049C3B441C1B3789001848B7 /* RoutePlannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePlannerViewController.swift; sourceTree = "<group>"; };
+		04BBC0781C31575C001D09B4 /* JourneySegmentIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneySegmentIndicator.swift; sourceTree = "<group>"; };
+		04BD5F621C3AB4E100253434 /* TripSegmentVisualisationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TripSegmentVisualisationView.swift; sourceTree = "<group>"; };
+		04BDA2F41C4BA93D00F0D061 /* RouteMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMapViewController.swift; sourceTree = "<group>"; };
+		04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = trip_id_for_route.sql; sourceTree = "<group>"; };
+		04BDA2F91C4C646700F0D061 /* JourneyNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyNotificationManager.swift; sourceTree = "<group>"; };
+		04BF2AFB1C1F515F003D5699 /* TableViewErrorBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewErrorBackgroundView.swift; sourceTree = "<group>"; };
+		04BF2AFD1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewErrorBackgroundView.xib; sourceTree = "<group>"; };
+		04BF2AFF1C208C4E003D5699 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
+		04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMajorStopTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMinorStopTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		04EF5CDB1C51172D004A4DC6 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
+		04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopIndicator.swift; sourceTree = "<group>"; };
+		04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusLineLabelView.swift; sourceTree = "<group>"; };
+		346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		6E0F7FBDB4B89852FC71D038 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		042ED59F1BEB2D910093EB77 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */,
+				F8C78015E87987709A1B14EF /* Pods.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0403FDFD1C1B3076002B467C /* Route Planner */ = {
+			isa = PBXGroup;
+			children = (
+				04BDA2F81C4C644800F0D061 /* Notifications */,
+				048223851C271907004EAF1B /* Route Details Scene */,
+				048223841C2718F5004EAF1B /* Overview Scene */,
+				048223831C2718D7004EAF1B /* Planner Scene */,
+				043776901C1C2CF800AE4815 /* TripPlanner.swift */,
+				04BD5F621C3AB4E100253434 /* TripSegmentVisualisationView.swift */,
+			);
+			name = "Route Planner";
+			sourceTree = "<group>";
+		};
+		040D64181C01C1A6009BF2C8 /* kdtree */ = {
+			isa = PBXGroup;
+			children = (
+				040D64191C01C1B2009BF2C8 /* kdtree.c */,
+				040D641A1C01C1B2009BF2C8 /* kdtree.h */,
+			);
+			name = kdtree;
+			sourceTree = "<group>";
+		};
+		040D641E1C03A3A9009BF2C8 /* Updates */ = {
+			isa = PBXGroup;
+			children = (
+				040D641C1C03653B009BF2C8 /* UpdateManager.swift */,
+				040D641F1C03A3CD009BF2C8 /* DownloadUpdateViewController.swift */,
+			);
+			name = Updates;
+			sourceTree = "<group>";
+		};
+		040D64211C03A7BD009BF2C8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5B91BEB31260093EB77 /* RouteInfoTableViewController.swift */,
+				040D64221C03A7E7009BF2C8 /* RootTabBarController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		042ED5991BEB2D910093EB77 = {
+			isa = PBXGroup;
+			children = (
+				046B0E601C2562940051B686 /* interchange.gpx */,
+				046B0E611C2562940051B686 /* home.gpx */,
+				046B0E631C2562940051B686 /* riccarton.gpx */,
+				046B0E081C254B340051B686 /* Podfile */,
+				0455D0AD1C05FCA700134810 /* MapKit.framework */,
+				040D64181C01C1A6009BF2C8 /* kdtree */,
+				046B0E0E1C254FCE0051B686 /* SSZipArchive */,
+				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
+				042ED5A31BEB2D910093EB77 /* Products */,
+				C3308B84B30E91DBA4E54190 /* Pods */,
+				92AC6A45FD2C0A4DB0E16675 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		042ED5A31BEB2D910093EB77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5A21BEB2D910093EB77 /* Bus Assistant for Christchurch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */ = {
+			isa = PBXGroup;
+			children = (
+				044E10BD1C57841300D3AE32 /* More Information */,
+				04BDA2F31C4BA6DA00F0D061 /* Route Map */,
+				046B0E681C25BDAD0051B686 /* TableView Background Views */,
+				0403FDFD1C1B3076002B467C /* Route Planner */,
+				0445E2CD1BF73C4E00A3D416 /* Line Visualisation */,
+				0451FC8F1BF60A9B00794D4C /* Stop Info */,
+				04FF5B361BECA79200A69C9C /* Bus Stop Resources */,
+				042ED5BF1BEB5C500093EB77 /* Data Management */,
+				040D641E1C03A3A9009BF2C8 /* Updates */,
+				040D64211C03A7BD009BF2C8 /* Controllers */,
+				042ED5C21BEB5FF20093EB77 /* Resources */,
+				042ED5A51BEB2D910093EB77 /* AppDelegate.swift */,
+				044E10C01C578CD700D3AE32 /* Preferences.swift */,
+				04842F4D1C531434000C9775 /* CommonDefinitions.swift */,
+				047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */,
+				042ED5A91BEB2D910093EB77 /* Main.storyboard */,
+				042ED5AC1BEB2D910093EB77 /* Assets.xcassets */,
+				042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */,
+				042ED5B11BEB2D910093EB77 /* Info.plist */,
+			);
+			path = "Christchurch Bus Info";
+			sourceTree = "<group>";
+		};
+		042ED5BF1BEB5C500093EB77 /* Data Management */ = {
+			isa = PBXGroup;
+			children = (
+				0451FC8B1BF600F600794D4C /* StopInformationParser.swift */,
+				04D6FB181BF887A5001BFC49 /* DatabaseManager.swift */,
+				04EF5CDB1C51172D004A4DC6 /* RouteInformationManager.swift */,
+			);
+			name = "Data Management";
+			sourceTree = "<group>";
+		};
+		042ED5C21BEB5FF20093EB77 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				04BF2AFF1C208C4E003D5699 /* database.zip */,
+				04688E8D1BF6339C006A1DFA /* info.xml */,
+				044E10C21C5794F900D3AE32 /* attribution.html */,
+				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
+				04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */,
+				04842F4B1C52472E000C9775 /* routes_passing_stop.sql */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		0445E2CD1BF73C4E00A3D416 /* Line Visualisation */ = {
+			isa = PBXGroup;
+			children = (
+				0445E2CE1BF73C6700A3D416 /* LineViewTableViewController.swift */,
+				04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */,
+				044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */,
+				04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */,
+				04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */,
+				04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */,
+			);
+			name = "Line Visualisation";
+			sourceTree = "<group>";
+		};
+		044E10BD1C57841300D3AE32 /* More Information */ = {
+			isa = PBXGroup;
+			children = (
+				044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */,
+				044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */,
+			);
+			name = "More Information";
+			sourceTree = "<group>";
+		};
+		0451FC8F1BF60A9B00794D4C /* Stop Info */ = {
+			isa = PBXGroup;
+			children = (
+				0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */,
+				0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */,
+				0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */,
+				04842F491C52206B000C9775 /* BusStopInfoTableViewCell.swift */,
+			);
+			name = "Stop Info";
+			sourceTree = "<group>";
+		};
+		046B0E0E1C254FCE0051B686 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				046B0E411C2550210051B686 /* aes */,
+				046B0E161C254FEF0051B686 /* crypt.h */,
+				046B0E171C254FEF0051B686 /* ioapi.h */,
+				046B0E181C254FEF0051B686 /* mztools.h */,
+				046B0E191C254FEF0051B686 /* unzip.h */,
+				046B0E1A1C254FEF0051B686 /* zip.h */,
+				046B0E1B1C254FEF0051B686 /* ioapi.c */,
+				046B0E1C1C254FEF0051B686 /* mztools.c */,
+				046B0E1D1C254FEF0051B686 /* unzip.c */,
+				046B0E1E1C254FEF0051B686 /* zip.c */,
+				046B0E0F1C254FE00051B686 /* Common.h */,
+				046B0E101C254FE00051B686 /* SSZipArchive.h */,
+				046B0E111C254FE00051B686 /* ZipArchive.h */,
+				046B0E121C254FE00051B686 /* SSZipArchive.m */,
+			);
+			name = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		046B0E411C2550210051B686 /* aes */ = {
+			isa = PBXGroup;
+			children = (
+				046B0E421C2550270051B686 /* aes_via_ace.h */,
+				046B0E431C2550270051B686 /* aes.h */,
+				046B0E441C2550270051B686 /* aesopt.h */,
+				046B0E451C2550270051B686 /* aestab.h */,
+				046B0E461C2550270051B686 /* brg_endian.h */,
+				046B0E471C2550270051B686 /* brg_types.h */,
+				046B0E481C2550270051B686 /* entropy.h */,
+				046B0E491C2550270051B686 /* fileenc.h */,
+				046B0E4A1C2550270051B686 /* hmac.h */,
+				046B0E4B1C2550270051B686 /* prng.h */,
+				046B0E4C1C2550270051B686 /* pwd2key.h */,
+				046B0E4D1C2550270051B686 /* sha1.h */,
+				046B0E4E1C2550270051B686 /* aescrypt.c */,
+				046B0E4F1C2550270051B686 /* aeskey.c */,
+				046B0E501C2550270051B686 /* aestab.c */,
+				046B0E511C2550270051B686 /* entropy.c */,
+				046B0E521C2550270051B686 /* fileenc.c */,
+				046B0E531C2550270051B686 /* hmac.c */,
+				046B0E541C2550270051B686 /* prng.c */,
+				046B0E551C2550270051B686 /* pwd2key.c */,
+				046B0E561C2550270051B686 /* sha1.c */,
+			);
+			name = aes;
+			sourceTree = "<group>";
+		};
+		046B0E681C25BDAD0051B686 /* TableView Background Views */ = {
+			isa = PBXGroup;
+			children = (
+				04BF2AFB1C1F515F003D5699 /* TableViewErrorBackgroundView.swift */,
+				04BF2AFD1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib */,
+				046B0E691C25BDD30051B686 /* TableViewLoadingBackgroundView.swift */,
+				046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */,
+			);
+			name = "TableView Background Views";
+			sourceTree = "<group>";
+		};
+		048223831C2718D7004EAF1B /* Planner Scene */ = {
+			isa = PBXGroup;
+			children = (
+				046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */,
+				043D31561C20AF1200B4C08B /* PlaceSearchViewController.swift */,
+				049C3B441C1B3789001848B7 /* RoutePlannerViewController.swift */,
+				0437768E1C1BD67200AE4815 /* RouteOptionTableViewCell.swift */,
+			);
+			name = "Planner Scene";
+			sourceTree = "<group>";
+		};
+		048223841C2718F5004EAF1B /* Overview Scene */ = {
+			isa = PBXGroup;
+			children = (
+				048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */,
+			);
+			name = "Overview Scene";
+			sourceTree = "<group>";
+		};
+		048223851C271907004EAF1B /* Route Details Scene */ = {
+			isa = PBXGroup;
+			children = (
+				048223861C272160004EAF1B /* RouteDetailTableViewController.swift */,
+				048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */,
+				0482238A1C272302004EAF1B /* JourneyTransitTableViewCell.swift */,
+				04BBC0781C31575C001D09B4 /* JourneySegmentIndicator.swift */,
+			);
+			name = "Route Details Scene";
+			sourceTree = "<group>";
+		};
+		04BDA2F31C4BA6DA00F0D061 /* Route Map */ = {
+			isa = PBXGroup;
+			children = (
+				04BDA2F41C4BA93D00F0D061 /* RouteMapViewController.swift */,
+				0462C2B11C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift */,
+				04412F0A1C51E82700F94CAC /* BusStopAnnotationController.swift */,
+			);
+			name = "Route Map";
+			sourceTree = "<group>";
+		};
+		04BDA2F81C4C644800F0D061 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				04BDA2F91C4C646700F0D061 /* JourneyNotificationManager.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
+		04FF5B361BECA79200A69C9C /* Bus Stop Resources */ = {
+			isa = PBXGroup;
+			children = (
+				042ED5BB1BEB317F0093EB77 /* BusStopTableViewCell.swift */,
+				04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */,
+			);
+			name = "Bus Stop Resources";
+			sourceTree = "<group>";
+		};
+		92AC6A45FD2C0A4DB0E16675 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E0F7FBDB4B89852FC71D038 /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C3308B84B30E91DBA4E54190 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */,
+				68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		042ED5A11BEB2D910093EB77 /* Bus Assistant for Christchurch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 042ED5B41BEB2D910093EB77 /* Build configuration list for PBXNativeTarget "Bus Assistant for Christchurch" */;
+			buildPhases = (
+				0C5D3B226A1A35595FA096B8 /* Check Pods Manifest.lock */,
+				042ED59E1BEB2D910093EB77 /* Sources */,
+				042ED59F1BEB2D910093EB77 /* Frameworks */,
+				042ED5A01BEB2D910093EB77 /* Resources */,
+				04D6FB2A1BF88E16001BFC49 /* Embed Frameworks */,
+				545BF141FC714CA217B10591 /* Copy Pods Resources */,
+				7591021681E280ADE3FD82A7 /* Embed Pods Frameworks */,
+				04EBE0D81C354D750041C1F7 /* Embed Watch Content */,
+				04C151F31C562D08007C4DF4 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bus Assistant for Christchurch";
+			productName = "Christchurch Bus Info";
+			productReference = 042ED5A21BEB2D910093EB77 /* Bus Assistant for Christchurch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		042ED59A1BEB2D910093EB77 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Miyazu App + Web Design";
+				TargetAttributes = {
+					042ED5A11BEB2D910093EB77 = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 852KAA63GE;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 042ED59D1BEB2D910093EB77 /* Build configuration list for PBXProject "Bus Assistant for Christchurch" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 042ED5991BEB2D910093EB77;
+			productRefGroup = 042ED5A31BEB2D910093EB77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				042ED5A11BEB2D910093EB77 /* Bus Assistant for Christchurch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		042ED5A01BEB2D910093EB77 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04BDA2FB1C4DC6BB00F0D061 /* database.zip in Resources */,
+				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
+				044E10C31C5794F900D3AE32 /* attribution.html in Resources */,
+				04842F4C1C52472E000C9775 /* routes_passing_stop.sql in Resources */,
+				046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */,
+				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
+				04BF2AFE1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib in Resources */,
+				04BDA2F71C4BB46300F0D061 /* trip_id_for_route.sql in Resources */,
+				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
+				046B0E671C2562940051B686 /* riccarton.gpx in Resources */,
+				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
+				046B0E091C254B340051B686 /* Podfile in Resources */,
+				046B0E641C2562940051B686 /* interchange.gpx in Resources */,
+				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
+				046B0E651C2562940051B686 /* home.gpx in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0C5D3B226A1A35595FA096B8 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		545BF141FC714CA217B10591 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7591021681E280ADE3FD82A7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		042ED59E1BEB2D910093EB77 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0482238B1C272302004EAF1B /* JourneyTransitTableViewCell.swift in Sources */,
+				046B0E5E1C2550270051B686 /* pwd2key.c in Sources */,
+				046B0E5C1C2550270051B686 /* hmac.c in Sources */,
+				048223821C25ED51004EAF1B /* RouteOverviewViewController.swift in Sources */,
+				046B0E6E1C25C8060051B686 /* DatePickerViewController.swift in Sources */,
+				046B0E221C254FEF0051B686 /* zip.c in Sources */,
+				0462C2B21C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift in Sources */,
+				044E10C11C578CD700D3AE32 /* Preferences.swift in Sources */,
+				04842F4E1C531434000C9775 /* CommonDefinitions.swift in Sources */,
+				040D64231C03A7E7009BF2C8 /* RootTabBarController.swift in Sources */,
+				04BF2AFC1C1F515F003D5699 /* TableViewErrorBackgroundView.swift in Sources */,
+				043D31571C20AF1200B4C08B /* PlaceSearchViewController.swift in Sources */,
+				044E10BF1C57842900D3AE32 /* MoreInformationTableViewController.swift in Sources */,
+				04D6FB191BF887A5001BFC49 /* DatabaseManager.swift in Sources */,
+				046B0E141C254FE00051B686 /* SSZipArchive.m in Sources */,
+				04EF5CDC1C51172D004A4DC6 /* RouteInformationManager.swift in Sources */,
+				0437768F1C1BD67200AE4815 /* RouteOptionTableViewCell.swift in Sources */,
+				046B0E571C2550270051B686 /* aescrypt.c in Sources */,
+				04412F0B1C51E82700F94CAC /* BusStopAnnotationController.swift in Sources */,
+				042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */,
+				04D6FAF81BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift in Sources */,
+				04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */,
+				048223891C27218A004EAF1B /* JourneyStopTableViewCell.swift in Sources */,
+				04BDA2F51C4BA93D00F0D061 /* RouteMapViewController.swift in Sources */,
+				04842F4A1C52206B000C9775 /* BusStopInfoTableViewCell.swift in Sources */,
+				046B0E6A1C25BDD30051B686 /* TableViewLoadingBackgroundView.swift in Sources */,
+				04BDA2FA1C4C646700F0D061 /* JourneyNotificationManager.swift in Sources */,
+				046B0E591C2550270051B686 /* aestab.c in Sources */,
+				046B0E5A1C2550270051B686 /* entropy.c in Sources */,
+				0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */,
+				046B0E5F1C2550270051B686 /* sha1.c in Sources */,
+				046B0E581C2550270051B686 /* aeskey.c in Sources */,
+				04D6FAF61BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift in Sources */,
+				042ED5BD1BEB317F0093EB77 /* BusStopTableViewCell.swift in Sources */,
+				04BBC0791C31575C001D09B4 /* JourneySegmentIndicator.swift in Sources */,
+				048223871C272160004EAF1B /* RouteDetailTableViewController.swift in Sources */,
+				046B0E211C254FEF0051B686 /* unzip.c in Sources */,
+				046B0E5B1C2550270051B686 /* fileenc.c in Sources */,
+				0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */,
+				0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */,
+				04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */,
+				043776911C1C2CF800AE4815 /* TripPlanner.swift in Sources */,
+				044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */,
+				0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */,
+				04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */,
+				040D64201C03A3CD009BF2C8 /* DownloadUpdateViewController.swift in Sources */,
+				044E10C51C57950F00D3AE32 /* ImageAttributionViewController.swift in Sources */,
+				046B0E5D1C2550270051B686 /* prng.c in Sources */,
+				040D641D1C03653B009BF2C8 /* UpdateManager.swift in Sources */,
+				046B0E1F1C254FEF0051B686 /* ioapi.c in Sources */,
+				04BD5F631C3AB4E100253434 /* TripSegmentVisualisationView.swift in Sources */,
+				042ED5BA1BEB31260093EB77 /* RouteInfoTableViewController.swift in Sources */,
+				0445E2CF1BF73C6700A3D416 /* LineViewTableViewController.swift in Sources */,
+				049C3B451C1B3789001848B7 /* RoutePlannerViewController.swift in Sources */,
+				040D641B1C01C1B2009BF2C8 /* kdtree.c in Sources */,
+				046B0E201C254FEF0051B686 /* mztools.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		042ED5A91BEB2D910093EB77 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				042ED5AA1BEB2D910093EB77 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		042ED5AE1BEB2D910093EB77 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				042ED5AF1BEB2D910093EB77 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		042ED5B21BEB2D910093EB77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		042ED5B31BEB2D910093EB77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		042ED5B51BEB2D910093EB77 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = fast;
+				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.bus-assistant";
+				PRODUCT_NAME = "Bus Assistant for Christchurch";
+				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		042ED5B61BEB2D910093EB77 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_OPTIMIZATION_LEVEL = fast;
+				INFOPLIST_FILE = "Christchurch Bus Info/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.miyazu.bus-assistant";
+				PRODUCT_NAME = "Bus Assistant for Christchurch";
+				SWIFT_OBJC_BRIDGING_HEADER = "Christchurch Bus Info-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		042ED59D1BEB2D910093EB77 /* Build configuration list for PBXProject "Bus Assistant for Christchurch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				042ED5B21BEB2D910093EB77 /* Debug */,
+				042ED5B31BEB2D910093EB77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		042ED5B41BEB2D910093EB77 /* Build configuration list for PBXNativeTarget "Bus Assistant for Christchurch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				042ED5B51BEB2D910093EB77 /* Debug */,
+				042ED5B61BEB2D910093EB77 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 042ED59A1BEB2D910093EB77 /* Project object */;
+}

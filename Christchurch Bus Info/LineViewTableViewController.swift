@@ -16,7 +16,7 @@ class LineViewTableViewController: UITableViewController {
     
     var lineColour: UIColor!
     
-    var lineType: BusLineType = .NumberedRoute("error") {
+    var lineType: BusLineType = .NumberedRoute("") {
         didSet {
             lineColour = lineType.colours().background
         }
@@ -92,26 +92,25 @@ class LineViewTableViewController: UITableViewController {
         
         if indexPath.section == 0 {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("LineViewHeaderCell", forIndexPath: indexPath) as! LineViewHeaderTableViewCell
-            
-            cell.lineNameLabel.text = lineName
-            cell.routeNameLabel.text = "Towards \(routeName)"
-            
-            cell.lineLabel.setLineType(lineType)
-            
-            return cell
-            
-        } else if indexPath.section == 1 {
-        
-            let cell = tableView.dequeueReusableCellWithIdentifier("BasicDetailCell", forIndexPath: indexPath)
-            
             if indexPath.row == 0 {
-                cell.textLabel?.text = "Route Map"
+            
+                let cell = tableView.dequeueReusableCellWithIdentifier("LineViewHeaderCell", forIndexPath: indexPath) as! LineViewHeaderTableViewCell
+                
+                cell.lineNameLabel.text = lineName
+                cell.routeNameLabel.text = "Towards \(routeName)"
+                
+                cell.lineLabel.setLineType(lineType)
+                
+                return cell
+                
             } else {
-                cell.textLabel?.text = "Other Routes On This Line"
+                
+                let cell = tableView.dequeueReusableCellWithIdentifier("BasicDetailCell", forIndexPath: indexPath)
+                cell.textLabel?.text = "Route Map"
+                
+                return cell
+                
             }
-                        
-            return cell
             
         } else {
             
@@ -164,7 +163,11 @@ class LineViewTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.section == 2 && stopsToShow.keys.contains(indexPath.row) == false {
+        if indexPath.section == 0 && indexPath.row == 1 {
+            
+            self.performSegueWithIdentifier("RouteMapViewSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
+        
+        } else if indexPath.section == 1 && stopsToShow.keys.contains(indexPath.row) == false {
             
             //we need to expand this collapsed section of stops
             
@@ -201,14 +204,8 @@ class LineViewTableViewController: UITableViewController {
             
             tableView.endUpdates()
             
-        } else if indexPath.section == 2 && stopsToShow.keys.contains(indexPath.row) {
-            
+        } else if indexPath.section == 1 && stopsToShow.keys.contains(indexPath.row) {
             self.performSegueWithIdentifier("LineStopInfoSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
-            
-        } else if indexPath.section == 1 && indexPath.row == 0 {
-            
-            self.performSegueWithIdentifier("RouteMapViewSegue", sender: tableView.cellForRowAtIndexPath(indexPath))
-            
         }
         
     }
@@ -218,17 +215,12 @@ class LineViewTableViewController: UITableViewController {
         
         let selectedRowIndexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
         
-        if selectedRowIndexPath.section == 1 {
+        if selectedRowIndexPath.section == 0 {
         
-//            let mapViewController = segue.destinationViewController as! RouteMapViewController
-//            
-//            guard let coordinates = DatabaseManager.sharedInstance.routeCoordinatesForTripIdentifier(tripID) else {
-//                return
-//            }
-//            
-//            mapViewController.polylineCoordinates = coordinates
+            let mapViewController = segue.destinationViewController as! RouteMapViewController
+            mapViewController.prioritisedRoute = lineType
             
-        } else if selectedRowIndexPath.section == 2 {
+        } else if selectedRowIndexPath.section == 1 {
             
             let stopInfoViewController = segue.destinationViewController as! StopInformationTableViewController
             let stopInfo = stopsToShow[selectedRowIndexPath.row]!
@@ -244,16 +236,13 @@ class LineViewTableViewController: UITableViewController {
         return false
     }
     
-    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 1
-        } else if section == 1 {
             return 2
         } else {
             return stopsToShow.count + intermediateSectionCount

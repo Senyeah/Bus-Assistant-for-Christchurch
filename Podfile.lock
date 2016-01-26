@@ -1,0 +1,22 @@
+PODS:
+  - GoogleMaps (1.11.1)
+  - SQLite.swift (1.0.0)
+
+DEPENDENCIES:
+  - GoogleMaps
+  - SQLite.swift (from `https://github.com/stephencelis/SQLite.swift.git`)
+
+EXTERNAL SOURCES:
+  SQLite.swift:
+    :git: https://github.com/stephencelis/SQLite.swift.git
+
+CHECKOUT OPTIONS:
+  SQLite.swift:
+    :commit: da2d43422a72ae0e91356fccfde1959d43b97385
+    :git: https://github.com/stephencelis/SQLite.swift.git
+
+SPEC CHECKSUMS:
+  GoogleMaps: c947160008f414c66707a5ea60f35e92055c7670
+  SQLite.swift: 3bb75f5a650f08673276bc6d3fb1de1b542b8f4d
+
+COCOAPODS: 0.38.2

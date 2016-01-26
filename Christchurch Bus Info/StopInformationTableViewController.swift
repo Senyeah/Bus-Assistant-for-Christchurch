@@ -293,6 +293,8 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             
         }
         
+        print("stop number = \(stopNumber)")
+        
         let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stopNumber]!
         let stopAnnotation = BusStopAnnotation(stop: stopInfo)
         

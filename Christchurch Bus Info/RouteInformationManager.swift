@@ -329,17 +329,21 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         delegate?.managerReceivedUpdatedInformation(self)
     }
     
-    func updateManagerWillDownloadFile(manager: UpdateManager) {
+    func updateManagerDidCancelUpdate(manager: UpdateManager) {
+        self.progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func updateManagerWillDownloadFile(manager: UpdateManager, displayModalController: Bool) {
         
-        let shouldDisplayProgressView = false
-        
-        if shouldDisplayProgressView {
+        if displayModalController {
             
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let rootViewController = appDelegate.window!.rootViewController
+            
+            let rootViewController = appDelegate.window!.rootViewController as! RootTabBarController
+            rootViewController.progressViewControllerDelegate = manager
             
             dispatch_async(dispatch_get_main_queue()) { _ -> Void in
-                rootViewController!.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
+                rootViewController.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
             }
             
         }
