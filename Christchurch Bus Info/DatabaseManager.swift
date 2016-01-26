@@ -87,22 +87,6 @@ class DatabaseManager: NSObject {
         
     }()
     
-    func updateURLForStop(stopNumber: String) -> NSURL {
-        
-        if stopUpdateURLs.keys.contains(stopNumber) {
-            return stopUpdateURLs[stopNumber]!
-        }
-        
-        let statement = database?.prepare("SELECT stop_url FROM stops WHERE stop_code='\(stopNumber)'")
-        let urlString = Array(statement!)[0][0] as! String
-        
-        let url = NSURL(string: urlString)!
-        stopUpdateURLs[stopNumber] = url
-        
-        return url
-        
-    }
-    
     func parseDatabase(runQueue: dispatch_queue_t = dispatch_get_main_queue()) {
         
         if isConnected == false {

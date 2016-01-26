@@ -43,7 +43,7 @@
         <!--Route Map-->
         <scene sceneID="8rW-Ga-sgh">
             <objects>
-                <viewController id="qmT-tq-XCk" customClass="RouteMapViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="qmT-tq-XCk" customClass="RouteMapViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="c0G-d4-0AT"/>
                         <viewControllerLayoutGuide type="bottom" id="YsS-Bk-3hf"/>
@@ -118,13 +118,13 @@
         <!--Routes-->
         <scene sceneID="siz-x7-3vx">
             <objects>
-                <tableViewController id="oqw-Bh-fmV" customClass="RouteMapLineFilterTableViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="oqw-Bh-fmV" customClass="RouteMapLineFilterTableViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bx4-fh-ZzL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineFilterCell" id="5sQ-IZ-UaX" customClass="LineFilterTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineFilterCell" id="5sQ-IZ-UaX" customClass="LineFilterTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5sQ-IZ-UaX" id="uYp-ef-2qh">
@@ -137,7 +137,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIt-Jj-P4R" customClass="BusLineLabelView" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIt-Jj-P4R" customClass="BusLineLabelView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="15" y="7" width="30" height="30"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -176,13 +176,13 @@
         <!--Route Information-->
         <scene sceneID="Z2Q-ud-l2A">
             <objects>
-                <tableViewController title="Route Information" id="kj9-rZ-Hhw" customClass="RouteInfoTableViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Route Information" id="kj9-rZ-Hhw" customClass="RouteInfoTableViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="yqh-rp-sWZ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="15" reuseIdentifier="GroupStopCell" rowHeight="116" id="WJf-hu-naX" customClass="BusStopTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="15" reuseIdentifier="GroupStopCell" rowHeight="116" id="WJf-hu-naX" customClass="BusStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="600" height="116"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalCompressionResistancePriority="1000" tableViewCell="WJf-hu-naX" id="KqS-l3-FF3">
@@ -296,14 +296,14 @@
         <!--Stop Information-->
         <scene sceneID="waS-Vi-dzt">
             <objects>
-                <tableViewController title="Stop Information" id="Aft-Di-Ohz" customClass="StopInformationTableViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Stop Information" id="Aft-Di-Ohz" customClass="StopInformationTableViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="18" sectionFooterHeight="18" id="wYK-mw-g1x">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusStopInfoCell" rowHeight="63" id="c5x-DT-wJm" customClass="BusStopInfoTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="63"/>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusStopInfoCell" rowHeight="63" id="c5x-DT-wJm" customClass="BusStopInfoTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="600" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c5x-DT-wJm" id="320-fe-vdy">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="62"/>
@@ -337,8 +337,8 @@
                                     <outlet property="stopNumber" destination="jLt-hl-64P" id="U9C-Gh-3IT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteStopCell" rowHeight="58" id="0Q3-Ob-24f" customClass="RouteStopTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="113" width="600" height="58"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteStopCell" rowHeight="58" id="0Q3-Ob-24f" customClass="RouteStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="177" width="600" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalCompressionResistancePriority="1000" tableViewCell="0Q3-Ob-24f" id="12u-nr-aye">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="57"/>
@@ -356,7 +356,7 @@
                                             <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TEo-G7-aaq" customClass="BusLineLabelView" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="TEo-G7-aaq" customClass="BusLineLabelView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="15" y="14" width="30" height="30"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -388,8 +388,8 @@
                                     </segue>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="171" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="235" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t0a-zb-fhk" id="aS0-g5-78m">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -437,7 +437,7 @@
         <!--Route Overview-->
         <scene sceneID="rof-Cw-4oS">
             <objects>
-                <viewController title="Route Overview" id="5JS-mj-kZl" customClass="RouteOverviewViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Route Overview" id="5JS-mj-kZl" customClass="RouteOverviewViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fHk-Ea-h6f"/>
                         <viewControllerLayoutGuide type="bottom" id="Wf2-ZJ-WvO"/>
@@ -475,7 +475,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zSV-l1-AJE" customClass="TripSegmentVisualisationView" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zSV-l1-AJE" customClass="TripSegmentVisualisationView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="15" y="45" width="570" height="40"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -529,7 +529,7 @@
         <!--Search-->
         <scene sceneID="z5c-u9-5R3">
             <objects>
-                <viewController title="Search" id="AJo-vV-ECI" customClass="PlaceSearchViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Search" id="AJo-vV-ECI" customClass="PlaceSearchViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T6T-VK-K3O"/>
                         <viewControllerLayoutGuide type="bottom" id="eO4-nk-COe"/>
@@ -588,14 +588,14 @@
         <!--Route Information-->
         <scene sceneID="3Cu-9q-Fe5">
             <objects>
-                <tableViewController id="BTN-KZ-czy" customClass="LineViewTableViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="BTN-KZ-czy" customClass="LineViewTableViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="65" sectionHeaderHeight="18" sectionFooterHeight="18" id="VcI-8c-e4R">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineViewHeaderCell" rowHeight="80" id="AIO-TC-jHD" customClass="LineViewHeaderTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineViewHeaderCell" rowHeight="80" id="AIO-TC-jHD" customClass="LineViewHeaderTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AIO-TC-jHD" id="SL4-Fn-LCW">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="79"/>
@@ -607,7 +607,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HiD-Qh-TlR" customClass="BusLineLabelView" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HiD-Qh-TlR" customClass="BusLineLabelView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="20" y="25" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="30" placeholder="YES" id="8CM-zj-y8Q"/>
@@ -640,7 +640,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicDetailCell" textLabel="PY8-E8-KKU" rowHeight="44" style="IBUITableViewCellStyleDefault" id="5NK-yp-GF5">
-                                <rect key="frame" x="0.0" y="130" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="194" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5NK-yp-GF5" id="ccP-QM-eAv">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -656,18 +656,18 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LineMajorStopCell" rowHeight="44" id="xct-pU-KnK" customClass="LineMajorStopTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="174" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMajorStopCell" rowHeight="44" id="xct-pU-KnK" customClass="LineMajorStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="238" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xct-pU-KnK" id="93v-te-1n8">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJq-DA-Rze" customClass="LineStopIndicator" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LJq-DA-Rze" customClass="LineStopIndicator" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="43"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="3 stops" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DyY-Aa-oaj">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="3 stops" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DyY-Aa-oaj">
                                             <rect key="frame" x="50" y="12" width="509" height="19"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <nil key="highlightedColor"/>
@@ -690,18 +690,18 @@
                                     <segue destination="Aft-Di-Ohz" kind="show" identifier="LineStopInfoSegue" id="ApD-Dq-SBi"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218" width="600" height="40"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="282" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bF8-UI-nYJ" id="j4Q-D4-Iif">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="39"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XzA-zL-udK" customClass="LineStopIndicator" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XzA-zL-udK" customClass="LineStopIndicator" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="39"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="3 stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gbc-Te-V8L">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" misplaced="YES" text="3 stops" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gbc-Te-V8L">
                                             <rect key="frame" x="50" y="6" width="509" height="26"/>
                                             <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
                                             <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -740,13 +740,13 @@
         <!--Route Details-->
         <scene sceneID="n83-cf-GjA">
             <objects>
-                <tableViewController title="Route Details" id="9TP-sq-rwr" customClass="RouteDetailTableViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Route Details" id="9TP-sq-rwr" customClass="RouteDetailTableViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="l7W-pr-jCL">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JourneyStopCell" id="D6o-GO-6JY" customClass="JourneyStopTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JourneyStopCell" id="D6o-GO-6JY" customClass="JourneyStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D6o-GO-6JY" id="vGn-M0-NRx">
@@ -762,7 +762,7 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNW-Mk-Zy3" customClass="JourneySegmentIndicator" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNW-Mk-Zy3" customClass="JourneySegmentIndicator" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="80" y="0.0" width="15" height="44"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -797,14 +797,14 @@
                                     <outlet property="timeLabel" destination="4ja-P7-QsM" id="jFY-6c-zss"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JourneyTransitCell" rowHeight="103" id="cNi-JW-ys7" customClass="JourneyTransitTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="JourneyTransitCell" rowHeight="103" id="cNi-JW-ys7" customClass="JourneyTransitTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="136" width="600" height="103"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cNi-JW-ys7" id="d4D-8t-iTV">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="103"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5RA-rw-NpF" customClass="JourneySegmentIndicator" customModule="Bus_Assistant" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5RA-rw-NpF" customClass="JourneySegmentIndicator" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                             <rect key="frame" x="80" y="0.0" width="15" height="103"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -832,7 +832,7 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AeU-Fy-ATr" customClass="BusLineLabelView" customModule="Bus_Assistant" customModuleProvider="target">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AeU-Fy-ATr" customClass="BusLineLabelView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="10" width="40" height="30"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -915,7 +915,7 @@
         <!--Route Planner-->
         <scene sceneID="0Rm-om-gaV">
             <objects>
-                <viewController title="Route Planner" automaticallyAdjustsScrollViewInsets="NO" id="Dnx-h0-hJn" customClass="RoutePlannerViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Route Planner" automaticallyAdjustsScrollViewInsets="NO" id="Dnx-h0-hJn" customClass="RoutePlannerViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="51a-zQ-5nb"/>
                         <viewControllerLayoutGuide type="bottom" id="ejU-K8-479"/>
@@ -1005,7 +1005,7 @@
                                 <rect key="frame" x="0.0" y="196" width="600" height="355"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteOptionCell" rowHeight="131" id="wDp-0G-ZlM" customClass="RouteOptionTableViewCell" customModule="Bus_Assistant" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteOptionCell" rowHeight="131" id="wDp-0G-ZlM" customClass="RouteOptionTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="600" height="131"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wDp-0G-ZlM" id="w0y-uF-aOH">
@@ -1024,7 +1024,7 @@
                                                     <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kf0-81-cA5" customClass="TripSegmentVisualisationView" customModule="Bus_Assistant" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kf0-81-cA5" customClass="TripSegmentVisualisationView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="45" width="550" height="40"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -1126,7 +1126,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="igg-sL-CaB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="lTr-xG-xxT" customClass="TableViewErrorBackgroundView" customModule="Bus_Assistant" customModuleProvider="target">
+                <view contentMode="scaleToFill" id="lTr-xG-xxT" customClass="TableViewErrorBackgroundView" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="111"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -1165,7 +1165,7 @@
                         <outlet property="title" destination="iVr-Rf-9ya" id="DIp-FE-Lvz"/>
                     </connections>
                 </view>
-                <customObject id="Yuf-Ql-Jli" customClass="RouteOptionsDataSource" customModule="Bus_Assistant" customModuleProvider="target"/>
+                <customObject id="Yuf-Ql-Jli" customClass="RouteOptionsDataSource" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="270" y="945.99999999999989"/>
         </scene>
@@ -1189,7 +1189,7 @@
         <!--Download Update View Controller-->
         <scene sceneID="Ari-bN-hFI">
             <objects>
-                <viewController id="ZtN-ll-dgC" customClass="DownloadUpdateViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZtN-ll-dgC" customClass="DownloadUpdateViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="R8f-7X-f0O"/>
                         <viewControllerLayoutGuide type="bottom" id="PCn-zh-HMc"/>
@@ -1255,7 +1255,7 @@
         <!--Root Tab Bar Controller-->
         <scene sceneID="lKr-93-i24">
             <objects>
-                <tabBarController id="z6t-8U-N5F" customClass="RootTabBarController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController id="z6t-8U-N5F" customClass="RootTabBarController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="a0C-ug-KOc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -1517,7 +1517,7 @@
         <!--Choose Date-->
         <scene sceneID="K0h-Gs-001">
             <objects>
-                <viewController id="Mup-Xy-KrU" customClass="DatePickerViewController" customModule="Bus_Assistant" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Mup-Xy-KrU" customClass="DatePickerViewController" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x1Q-AG-zx9"/>
                         <viewControllerLayoutGuide type="bottom" id="wLR-9E-kA8"/>
@@ -1648,9 +1648,9 @@
         <image name="RouteMap" width="32" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="mgN-cp-QeB"/>
+        <segue reference="g4y-Us-3ot"/>
         <segue reference="haP-pH-21s"/>
         <segue reference="dNU-7m-S7i"/>
-        <segue reference="vgy-k6-HAr"/>
-        <segue reference="g4y-Us-3ot"/>
     </inferredMetricsTieBreakers>
 </document>
