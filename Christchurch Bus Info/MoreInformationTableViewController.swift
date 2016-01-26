@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class CheckUpdateTableViewCell: UITableViewCell {
     
@@ -30,11 +31,31 @@ class MoreInformationTableViewController: UITableViewController {
     @IBOutlet var checkForUpdateCell: CheckUpdateTableViewCell!
     
     @IBOutlet var updateAutomaticallySwitch: UISwitch!
+    @IBOutlet var miyazuHeaderView: UIView!
     
-    static let databaseInformationSection = 1
+    static let databaseInformationSection = 0
+    static let aboutMiyazuSection = 1
+    static let contactMiyazuSection = 2
+    static let attributionSection = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == MoreInformationTableViewController.aboutMiyazuSection {
+            return miyazuHeaderView
+        }
+        
+        return nil
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == MoreInformationTableViewController.aboutMiyazuSection {
+            return 130.0
+        } else {
+            return UITableViewAutomaticDimension
+        }
     }
     
     @IBAction func updateAutomaticallySwitchValueChanged(sender: AnyObject?) {
@@ -112,6 +133,49 @@ class MoreInformationTableViewController: UITableViewController {
                 confirmDatabaseReset()
             }
             
+        } else if indexPath.section == MoreInformationTableViewController.aboutMiyazuSection {
+            
+            if indexPath.row == 0 {
+                self.performSegueWithIdentifier("ShowInformationWebViewSegue", sender: nil)
+            } else {
+                let webViewController = SFSafariViewController(URL: NSURL(string: "http://miyazudesign.co.nz")!)
+                self.presentViewController(webViewController, animated: true, completion: nil)
+            }
+            
+        } else if indexPath.section == MoreInformationTableViewController.contactMiyazuSection {
+        
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+            
+            var url = NSURL(string: "tel:+6421309285")!
+            
+            if indexPath.row == 1 {
+                url = NSURL(string: "mailto:contact@miyazudesign.co.nz")!
+            }
+            
+            if UIApplication.sharedApplication().canOpenURL(url) {
+                UIApplication.sharedApplication().openURL(url)
+            }
+            
+        } else if indexPath.section == MoreInformationTableViewController.attributionSection {
+            self.performSegueWithIdentifier("ShowInformationWebViewSegue", sender: nil)
+        }
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            
+            let destinationWebViewController = segue.destinationViewController as! MoreInformationWebViewController
+            
+            if selectedIndexPath.section == MoreInformationTableViewController.aboutMiyazuSection {
+                destinationWebViewController.filePath = NSBundle.mainBundle().pathForResource("about_miyazu", ofType: "html")!
+                destinationWebViewController.pageTitle = "About Miyazu"
+            } else {
+                destinationWebViewController.filePath = NSBundle.mainBundle().pathForResource("attribution", ofType: "html")!
+                destinationWebViewController.pageTitle = "Image Attribution"
+            }
+
         }
         
     }

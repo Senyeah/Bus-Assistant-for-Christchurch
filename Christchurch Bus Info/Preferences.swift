@@ -12,6 +12,10 @@ struct Preferences {
     
     static var shouldAutomaticallyUpdate: Bool {
         get {
+            if NSUserDefaults.standardUserDefaults().objectForKey("shouldAutomaticallyUpdate") == nil {
+                return true
+            }
+        
             return NSUserDefaults.standardUserDefaults().boolForKey("shouldAutomaticallyUpdate")
         }
         

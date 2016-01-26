@@ -144,6 +144,8 @@ class UpdateManager: NSObject, SSZipArchiveDelegate, NSURLSessionDownloadDelegat
         }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { _ -> Void in
+            print(Preferences.shouldAutomaticallyUpdate)
+            
             if Preferences.shouldAutomaticallyUpdate && self.isUpdateAvailable {
                 self.downloadLatestDatabase(completion: nil)
             }

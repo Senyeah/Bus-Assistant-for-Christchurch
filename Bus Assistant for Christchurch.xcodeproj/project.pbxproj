@@ -26,7 +26,7 @@
 		044E10BF1C57842900D3AE32 /* MoreInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */; };
 		044E10C11C578CD700D3AE32 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10C01C578CD700D3AE32 /* Preferences.swift */; };
 		044E10C31C5794F900D3AE32 /* attribution.html in Resources */ = {isa = PBXBuildFile; fileRef = 044E10C21C5794F900D3AE32 /* attribution.html */; };
-		044E10C51C57950F00D3AE32 /* ImageAttributionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */; };
+		044E10C51C57950F00D3AE32 /* MoreInformationWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E10C41C57950F00D3AE32 /* MoreInformationWebViewController.swift */; };
 		044FD2A11BFB8724007E0C50 /* LineStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */; };
 		0451FC8C1BF600F600794D4C /* StopInformationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC8B1BF600F600794D4C /* StopInformationParser.swift */; };
 		0451FC911BF60AB100794D4C /* StopInformationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */; };
@@ -56,6 +56,8 @@
 		046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */; };
 		046B0E6E1C25C8060051B686 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */; };
 		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
+		0479EE011C57D5BA00A2D470 /* about_miyazu.html in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE001C57D5BA00A2D470 /* about_miyazu.html */; };
+		0479EE031C57D70500A2D470 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE021C57D70500A2D470 /* database.zip */; };
 		048223821C25ED51004EAF1B /* RouteOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */; };
 		048223871C272160004EAF1B /* RouteDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223861C272160004EAF1B /* RouteDetailTableViewController.swift */; };
 		048223891C27218A004EAF1B /* JourneyStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */; };
@@ -69,7 +71,6 @@
 		04BDA2F51C4BA93D00F0D061 /* RouteMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BDA2F41C4BA93D00F0D061 /* RouteMapViewController.swift */; };
 		04BDA2F71C4BB46300F0D061 /* trip_id_for_route.sql in Resources */ = {isa = PBXBuildFile; fileRef = 04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */; };
 		04BDA2FA1C4C646700F0D061 /* JourneyNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BDA2F91C4C646700F0D061 /* JourneyNotificationManager.swift */; };
-		04BDA2FB1C4DC6BB00F0D061 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 04BF2AFF1C208C4E003D5699 /* database.zip */; };
 		04BF2AFC1C1F515F003D5699 /* TableViewErrorBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF2AFB1C1F515F003D5699 /* TableViewErrorBackgroundView.swift */; };
 		04BF2AFE1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04BF2AFD1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib */; };
 		04D6FAF41BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */; };
@@ -138,7 +139,7 @@
 		044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInformationTableViewController.swift; sourceTree = "<group>"; };
 		044E10C01C578CD700D3AE32 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		044E10C21C5794F900D3AE32 /* attribution.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = attribution.html; sourceTree = "<group>"; };
-		044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAttributionViewController.swift; sourceTree = "<group>"; };
+		044E10C41C57950F00D3AE32 /* MoreInformationWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreInformationWebViewController.swift; sourceTree = "<group>"; };
 		044FD2A01BFB8724007E0C50 /* LineStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopTableViewCell.swift; sourceTree = "<group>"; };
 		0451FC8B1BF600F600794D4C /* StopInformationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationParser.swift; sourceTree = "<group>"; };
 		0451FC901BF60AB100794D4C /* StopInformationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopInformationTableViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +190,8 @@
 		046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
 		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		0479EE001C57D5BA00A2D470 /* about_miyazu.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about_miyazu.html; sourceTree = "<group>"; };
+		0479EE021C57D70500A2D470 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
 		048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOverviewViewController.swift; sourceTree = "<group>"; };
 		048223861C272160004EAF1B /* RouteDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewController.swift; sourceTree = "<group>"; };
 		048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyStopTableViewCell.swift; sourceTree = "<group>"; };
@@ -204,7 +207,6 @@
 		04BDA2F91C4C646700F0D061 /* JourneyNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyNotificationManager.swift; sourceTree = "<group>"; };
 		04BF2AFB1C1F515F003D5699 /* TableViewErrorBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewErrorBackgroundView.swift; sourceTree = "<group>"; };
 		04BF2AFD1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewErrorBackgroundView.xib; sourceTree = "<group>"; };
-		04BF2AFF1C208C4E003D5699 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
 		04D6FAF31BF75A8C001BFC49 /* LineMajorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMajorStopTableViewCell.swift; sourceTree = "<group>"; };
 		04D6FAF51BF75A9A001BFC49 /* LineMinorStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineMinorStopTableViewCell.swift; sourceTree = "<group>"; };
 		04D6FAF71BF77D1D001BFC49 /* LineViewHeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineViewHeaderTableViewCell.swift; sourceTree = "<group>"; };
@@ -334,12 +336,13 @@
 		042ED5C21BEB5FF20093EB77 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				04BF2AFF1C208C4E003D5699 /* database.zip */,
+				0479EE021C57D70500A2D470 /* database.zip */,
 				04688E8D1BF6339C006A1DFA /* info.xml */,
 				044E10C21C5794F900D3AE32 /* attribution.html */,
 				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
 				04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */,
 				04842F4B1C52472E000C9775 /* routes_passing_stop.sql */,
+				0479EE001C57D5BA00A2D470 /* about_miyazu.html */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -361,7 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				044E10BE1C57842900D3AE32 /* MoreInformationTableViewController.swift */,
-				044E10C41C57950F00D3AE32 /* ImageAttributionViewController.swift */,
+				044E10C41C57950F00D3AE32 /* MoreInformationWebViewController.swift */,
 			);
 			name = "More Information";
 			sourceTree = "<group>";
@@ -581,9 +584,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04BDA2FB1C4DC6BB00F0D061 /* database.zip in Resources */,
 				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
 				044E10C31C5794F900D3AE32 /* attribution.html in Resources */,
+				0479EE031C57D70500A2D470 /* database.zip in Resources */,
 				04842F4C1C52472E000C9775 /* routes_passing_stop.sql in Resources */,
 				046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
@@ -594,6 +597,7 @@
 				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
 				046B0E091C254B340051B686 /* Podfile in Resources */,
 				046B0E641C2562940051B686 /* interchange.gpx in Resources */,
+				0479EE011C57D5BA00A2D470 /* about_miyazu.html in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
 				046B0E651C2562940051B686 /* home.gpx in Resources */,
 			);
@@ -700,7 +704,7 @@
 				0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */,
 				04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */,
 				040D64201C03A3CD009BF2C8 /* DownloadUpdateViewController.swift in Sources */,
-				044E10C51C57950F00D3AE32 /* ImageAttributionViewController.swift in Sources */,
+				044E10C51C57950F00D3AE32 /* MoreInformationWebViewController.swift in Sources */,
 				046B0E5D1C2550270051B686 /* prng.c in Sources */,
 				040D641D1C03653B009BF2C8 /* UpdateManager.swift in Sources */,
 				046B0E1F1C254FEF0051B686 /* ioapi.c in Sources */,
