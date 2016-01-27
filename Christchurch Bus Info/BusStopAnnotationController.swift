@@ -45,10 +45,17 @@ class BusStopAnnotationView: MKAnnotationView {
         let context = UIGraphicsGetCurrentContext()
         let shadowColour = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
         
+        CGContextSaveGState(context)
+        
         CGContextSetShadowWithColor(context, CGSizeMake(0.0, 2.0), 3.0, shadowColour.CGColor)
         
-        CGContextSetFillColorWithColor(context, self.tintColor.CGColor)
+        CGContextSetFillColorWithColor(context, UIColor.lightGrayColor().CGColor)
         CGContextFillEllipseInRect(context, CGRectMake(drawRadius / 2.0, 0.0, drawRadius, drawRadius))
+
+        CGContextRestoreGState(context)
+        
+        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        CGContextStrokeEllipseInRect(context, CGRectMake(drawRadius / 2.0, 0.5, drawRadius, drawRadius))
         
     }
     

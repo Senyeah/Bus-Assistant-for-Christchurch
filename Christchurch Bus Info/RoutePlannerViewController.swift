@@ -216,7 +216,7 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
         
-        returnString += "\(minutesAway)m"
+        returnString += "\(minutesAway) min" + ((minutesAway > 1) ? "s" : "")
         
         return returnString
         

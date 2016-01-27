@@ -57,7 +57,7 @@
 		046B0E6E1C25C8060051B686 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */; };
 		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
 		0479EE011C57D5BA00A2D470 /* about_miyazu.html in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE001C57D5BA00A2D470 /* about_miyazu.html */; };
-		0479EE031C57D70500A2D470 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE021C57D70500A2D470 /* database.zip */; };
+		0479EE051C591BAF00A2D470 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE041C591BAF00A2D470 /* database.zip */; };
 		048223821C25ED51004EAF1B /* RouteOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */; };
 		048223871C272160004EAF1B /* RouteDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223861C272160004EAF1B /* RouteDetailTableViewController.swift */; };
 		048223891C27218A004EAF1B /* JourneyStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */; };
@@ -191,7 +191,7 @@
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
 		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		0479EE001C57D5BA00A2D470 /* about_miyazu.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about_miyazu.html; sourceTree = "<group>"; };
-		0479EE021C57D70500A2D470 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
+		0479EE041C591BAF00A2D470 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
 		048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOverviewViewController.swift; sourceTree = "<group>"; };
 		048223861C272160004EAF1B /* RouteDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewController.swift; sourceTree = "<group>"; };
 		048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyStopTableViewCell.swift; sourceTree = "<group>"; };
@@ -336,8 +336,8 @@
 		042ED5C21BEB5FF20093EB77 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0479EE021C57D70500A2D470 /* database.zip */,
 				04688E8D1BF6339C006A1DFA /* info.xml */,
+				0479EE041C591BAF00A2D470 /* database.zip */,
 				044E10C21C5794F900D3AE32 /* attribution.html */,
 				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
 				04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */,
@@ -586,7 +586,7 @@
 			files = (
 				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
 				044E10C31C5794F900D3AE32 /* attribution.html in Resources */,
-				0479EE031C57D70500A2D470 /* database.zip in Resources */,
+				0479EE051C591BAF00A2D470 /* database.zip in Resources */,
 				04842F4C1C52472E000C9775 /* routes_passing_stop.sql in Resources */,
 				046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,

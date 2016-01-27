@@ -163,7 +163,7 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
                 strokeColour = UIColor(hex: overlay.title!!)
                 polylineRenderer.alpha = self.prioritisedPolyline == nil ? 0.8 : 0.4
             } else {
-                polylineRenderer.lineDashPattern = [15, 30]
+                polylineRenderer.lineDashPattern = [20, 13]
                 polylineRenderer.alpha = self.prioritisedPolyline == nil ? 1.0 : 0.5
             }
             

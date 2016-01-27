@@ -52,13 +52,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BK9-Fh-H6s">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BK9-Fh-H6s">
                                 <rect key="frame" x="0.0" y="-44" width="600" height="688"/>
                                 <connections>
                                     <outlet property="delegate" destination="qmT-tq-XCk" id="F3y-sS-dXW"/>
                                 </connections>
                             </mapView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-7P-0cI">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-7P-0cI">
                                 <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="MQZ-Bp-tAd">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
@@ -125,7 +125,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineFilterCell" id="5sQ-IZ-UaX" customClass="LineFilterTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5sQ-IZ-UaX" id="uYp-ef-2qh">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -197,7 +197,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vTW-gs-73u">
-                                            <rect key="frame" x="20" y="40" width="539" height="39"/>
+                                            <rect key="frame" x="20" y="40" width="539" height="38"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="12345" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VwR-nI-90H">
@@ -208,29 +208,29 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xm1-lQ-J1p">
-                                            <rect key="frame" x="20" y="89" width="539" height="16"/>
+                                            <rect key="frame" x="20" y="88" width="539" height="17"/>
                                             <subviews>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" image="CurrentLocation" translatesAutoresizingMaskIntoConstraints="NO" id="NOC-tl-vOp">
-                                                    <rect key="frame" x="0.0" y="3" width="10" height="10"/>
+                                                    <rect key="frame" x="0.0" y="4" width="10" height="10"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="10" id="T89-FB-EUY"/>
                                                         <constraint firstAttribute="height" constant="10" id="VzG-mZ-u8l"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.6 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D44-AR-TaZ">
-                                                    <rect key="frame" x="16" y="0.0" width="39" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="16" y="0.0" width="42" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5m" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdZ-3n-Hed">
-                                                    <rect key="frame" x="89" y="0.0" width="20" height="16"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <rect key="frame" x="92" y="0.0" width="21" height="17"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" image="Person" translatesAutoresizingMaskIntoConstraints="NO" id="cM5-hI-6Dv">
-                                                    <rect key="frame" x="75" y="1" width="8" height="14"/>
+                                                    <rect key="frame" x="78" y="2" width="8" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="8" id="k2O-tF-avC"/>
                                                         <constraint firstAttribute="height" constant="14" id="rrA-4S-EVl"/>
@@ -303,7 +303,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusStopInfoCell" rowHeight="63" id="c5x-DT-wJm" customClass="BusStopInfoTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="63"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="63"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c5x-DT-wJm" id="320-fe-vdy">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="62"/>
@@ -338,7 +338,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteStopCell" rowHeight="58" id="0Q3-Ob-24f" customClass="RouteStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="113" width="600" height="58"/>
+                                <rect key="frame" x="0.0" y="177" width="600" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalCompressionResistancePriority="1000" tableViewCell="0Q3-Ob-24f" id="12u-nr-aye">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="57"/>
@@ -389,7 +389,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteStopIndeterminateCell" rowHeight="44" id="t0a-zb-fhk" customClass="RouteStopIndeterminateTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="171" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="235" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t0a-zb-fhk" id="aS0-g5-78m">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -595,7 +595,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="LineViewHeaderCell" rowHeight="80" id="AIO-TC-jHD" customClass="LineViewHeaderTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AIO-TC-jHD" id="SL4-Fn-LCW">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="79"/>
@@ -640,7 +640,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="BasicDetailCell" textLabel="PY8-E8-KKU" rowHeight="44" style="IBUITableViewCellStyleDefault" id="5NK-yp-GF5">
-                                <rect key="frame" x="0.0" y="130" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="194" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5NK-yp-GF5" id="ccP-QM-eAv">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -663,7 +663,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMajorStopCell" rowHeight="44" id="xct-pU-KnK" customClass="LineMajorStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="174" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="238" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xct-pU-KnK" id="93v-te-1n8">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -697,7 +697,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LineMinorStopCell" rowHeight="40" id="bF8-UI-nYJ" customClass="LineMinorStopTableViewCell" customModule="Bus_Assistant_for_Christchurch" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="218" width="600" height="40"/>
+                                <rect key="frame" x="0.0" y="282" width="600" height="40"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bF8-UI-nYJ" id="j4Q-D4-Iif">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="39"/>
@@ -1767,10 +1767,10 @@
         <image name="RouteMap" width="32" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="mgN-cp-QeB"/>
+        <segue reference="g4y-Us-3ot"/>
+        <segue reference="xrw-0P-jpv"/>
         <segue reference="haP-pH-21s"/>
         <segue reference="LD1-hl-Nq9"/>
-        <segue reference="muM-3K-cap"/>
-        <segue reference="xrw-0P-jpv"/>
-        <segue reference="g4y-Us-3ot"/>
     </inferredMetricsTieBreakers>
 </document>
