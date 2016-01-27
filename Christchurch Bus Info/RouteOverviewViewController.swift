@@ -114,12 +114,14 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
     
     @IBAction func notifyMeButtonPressed(sender: AnyObject?) {
         
-        let actionSheet = UIAlertController(title: nil, message: "Enabling notifications will alert you of actions you need to take as this journey progresses.", preferredStyle: .ActionSheet)
+        let notificationMessage: String? = !notificationsEnabled ? "Enabling notifications will alert you of actions you need to take as this journey progresses." : nil
+        let actionSheet = UIAlertController(title: nil, message: notificationMessage, preferredStyle: .ActionSheet)
         
         if notificationsEnabled {
             actionSheet.addAction(UIAlertAction(title: "Disable Notifications", style: .Default) { _ -> Void in
                 JourneyNotificationManager.sharedInstance.removeNotifications()
                 JourneyNotificationManager.sharedInstance.activeJourney = nil
+                self.notificationsEnabled = false
             })
         } else {
             actionSheet.addAction(UIAlertAction(title: "Enable Notifications", style: .Default) { _ -> Void in
