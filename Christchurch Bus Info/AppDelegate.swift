@@ -25,6 +25,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        
+        if application.applicationState == .Active {
+            
+            let alert = UIAlertController(title: notification.alertAction, message: notification.alertBody, preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            
+            let controller = application.delegate!.window!!.rootViewController!
+            controller.presentViewController(alert, animated: true, completion: nil)
+            
+        }
+        
+    }
+    
     func application(app: UIApplication, openURL url: NSURL, options: [String: AnyObject]) -> Bool {
         
         if MKDirectionsRequest.isDirectionsRequestURL(url) {

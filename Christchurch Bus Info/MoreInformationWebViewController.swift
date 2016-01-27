@@ -24,8 +24,6 @@ class MoreInformationWebViewController: UIViewController {
             webView.loadHTMLString(pageSource, baseURL: nil)
         }
         
-        //let pageSourcePath = NSBundle.mainBundle().pathForResource("attribution", ofType: "html")!
-        
     }
     
 }

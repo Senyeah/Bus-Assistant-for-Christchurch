@@ -34,6 +34,10 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        notificationsEnabled = false
+    }
+    
     override func viewDidAppear(animated: Bool) {
         layoutLegalAttributionLabel()
     }
@@ -120,6 +124,7 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         } else {
             actionSheet.addAction(UIAlertAction(title: "Enable Notifications", style: .Default) { _ -> Void in
                 JourneyNotificationManager.sharedInstance.activeJourney = self.tripInfo!
+                self.notificationsEnabled = true
             })
         }
         
@@ -229,12 +234,17 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         
         let segment = tripInfo!.segments[segmentOffset]
         
-        guard let stop = segment.startStop else {
-            return
+        if let stop = segment.endStop {
+            
+            let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stop]!
+            
+            addInformationPinWithCoordinate(stopInfo.location.coordinate, title: "\(stopInfo.roadName) near \(stopInfo.name)", subtitle: "Stop \(stopInfo.stopNo)")
+            zoomIntoCoordinatePin(stopInfo.location.coordinate)
+            
+        } else {
+            addInformationPinWithCoordinate(segment.endPosition, title: "Start", subtitle: nil)
+            zoomIntoCoordinatePin(segment.endPosition)
         }
-        
-        let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stop]!
-        addInformationPinWithCoordinate(stopInfo.location.coordinate, title: "\(stopInfo.roadName) near \(stopInfo.name)", subtitle: "Stop \(stopInfo.stopNo)")
         
     }
     
@@ -245,13 +255,23 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         
         let segment = tripInfo!.segments[segmentOffset]
         
-        guard let stop = segment.endStop else {
-            return
+        if let stop = segment.endStop {
+            
+            let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stop]!
+            
+            addInformationPinWithCoordinate(stopInfo.location.coordinate, title: "\(stopInfo.roadName) near \(stopInfo.name)", subtitle: "Stop \(stopInfo.stopNo)")
+            zoomIntoCoordinatePin(stopInfo.location.coordinate)
+            
+        } else {
+            addInformationPinWithCoordinate(segment.endPosition, title: "Destination", subtitle: nil)
+            zoomIntoCoordinatePin(segment.endPosition)
         }
         
-        let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stop]!
-        addInformationPinWithCoordinate(stopInfo.location.coordinate, title: "\(stopInfo.roadName) near \(stopInfo.name)", subtitle: "Stop \(stopInfo.stopNo)")
-        
+    }
+    
+    func zoomIntoCoordinatePin(location: CLLocationCoordinate2D) {
+        let coordinateRegion = MKCoordinateRegionMake(location, MKCoordinateSpanMake(0.005, 0.005))
+        mapView.setRegion(coordinateRegion, animated: true)
     }
     
     func layoutPolylines() {

@@ -38,7 +38,7 @@ class BusStopAnnotation: NSObject, MKAnnotation {
 
 class BusStopAnnotationView: MKAnnotationView {
     
-    var drawRadius: CGFloat = CGFloat(8.0)
+    var drawRadius: CGFloat = CGFloat(10.0)
     
     override func drawRect(frame: CGRect) {
         
