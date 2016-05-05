@@ -119,11 +119,11 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
         }
     }
     
-    func resultsController(resultsController: GMSAutocompleteResultsViewController!, didFailAutocompleteWithError error: NSError!) {
+    func resultsController(resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: NSError) {
         
     }
     
-    func resultsController(resultsController: GMSAutocompleteResultsViewController!, didAutocompleteWithPlace place: GMSPlace!) {
+    func resultsController(resultsController: GMSAutocompleteResultsViewController, didAutocompleteWithPlace place: GMSPlace) {
         
         if self.locationPinVisibleOnMap == true {
             self.mapView.removeAnnotation(self.locationPinAnnotation!)
@@ -163,8 +163,8 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
                 
                 self.locationPinAnnotation = MKPointAnnotation()
                 
-                (self.locationPinAnnotation! as! MKPointAnnotation).coordinate = touchCoordinates
-                (self.locationPinAnnotation! as! MKPointAnnotation).title = displayString
+                (self.locationPinAnnotation as! MKPointAnnotation).coordinate = touchCoordinates
+                (self.locationPinAnnotation as! MKPointAnnotation).title = displayString
                 
                 self.locationPinName = displayString
                 
@@ -182,7 +182,7 @@ class PlaceSearchViewController: UIViewController, GMSAutocompleteResultsViewCon
         
         super.viewDidLoad()
         
-        pinGestureRecogniser = UILongPressGestureRecognizer(target: self, action: "longPressWasReceived:")
+        pinGestureRecogniser = UILongPressGestureRecognizer(target: self, action: #selector(PlaceSearchViewController.longPressWasReceived(_:)))
         pinGestureRecogniser?.minimumPressDuration = 0.7
         
         mapView.addGestureRecognizer(pinGestureRecogniser!)

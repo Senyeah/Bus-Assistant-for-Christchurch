@@ -14,35 +14,6 @@ protocol RouteDetailSegmentInfoDelegate {
     func routeDetailController(controller: RouteDetailTableViewController, didSelectInfoForEndStopOnSegment segmentOffset: Int)
 }
 
-func formattedTimeStringForDuration(duration: Int) -> String {
-    
-    let hours = Int(floor(Double(duration / 60)))
-    var minutes = duration
-    
-    var returnString: String = ""
-    
-    if hours > 0 {
-        minutes %= 60
-        
-        returnString = "\(hours) hour"
-        
-        if hours > 1 {
-            returnString += "s"
-        }
-        
-        returnString += " "
-    }
-    
-    if minutes > 1 {
-        returnString += "\(minutes) minutes"
-    } else if minutes == 1 {
-        returnString += "1 minute"
-    }
-    
-    return returnString
-    
-}
-
 class RouteDetailTableViewController: UITableViewController {
     
     var tripInfo: TripPlannerJourney!
@@ -127,7 +98,7 @@ class RouteDetailTableViewController: UITableViewController {
             cell.lineLabel.setNeedsLayout()
             
             cell.tripStopIndicator.segmentType = .TransitSegment
-            cell.routeInfoLabel.text = formattedTimeStringForDuration(segment.duration)
+            cell.routeInfoLabel.text = segment.duration.minuteDurationStringRepresentation(true)
             
             return cell
             

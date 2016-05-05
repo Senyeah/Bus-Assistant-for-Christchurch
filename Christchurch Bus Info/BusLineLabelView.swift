@@ -15,7 +15,7 @@ enum OrbiterDirection {
     case AntiClockwise
 }
 
-enum BusLineType {
+enum BusLineType: Equatable {
     case PurpleLine
     case OrangeLine
     case BlueLine
@@ -25,18 +25,18 @@ enum BusLineType {
     
     var toString: String {
         switch self {
-        case .PurpleLine:
-            return "P"
-        case .OrangeLine:
-            return "O"
-        case .BlueLine:
-            return "B"
-        case .YellowLine:
-            return "Y"
-        case .Orbiter(let direction):
-            return (direction == .Clockwise) ? "Oc" : "Oa"
-        case .NumberedRoute(let routeNo):
-            return routeNo
+            case .PurpleLine:
+                return "P"
+            case .OrangeLine:
+                return "O"
+            case .BlueLine:
+                return "B"
+            case .YellowLine:
+                return "Y"
+            case .Orbiter(let direction):
+                return (direction == .Clockwise) ? "Oc" : "Oa"
+            case .NumberedRoute(let routeNo):
+                return routeNo
         }
     }
     
@@ -47,16 +47,11 @@ enum BusLineType {
     
     init(lineAbbreviationString: String) {
         let linesMap: [String: BusLineType] = ["P": .PurpleLine, "O": .OrangeLine, "Y": .YellowLine, "B": .BlueLine, "Oa": .Orbiter(.AntiClockwise), "Oc": .Orbiter(.Clockwise)]
-
-        if linesMap[lineAbbreviationString] == nil {
-            self = .NumberedRoute(lineAbbreviationString)
-        } else {
-            self = linesMap[lineAbbreviationString]!
-        }
+        self = linesMap[lineAbbreviationString] ?? .NumberedRoute(lineAbbreviationString)
     }
 }
 
-func == (lhs: BusLineType, rhs: BusLineType) -> Bool {
+func ==(lhs: BusLineType, rhs: BusLineType) -> Bool {
     return lhs.toString == rhs.toString
 }
 

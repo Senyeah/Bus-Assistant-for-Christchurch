@@ -18,4 +18,5 @@ class TableViewLoadingBackgroundView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
 }

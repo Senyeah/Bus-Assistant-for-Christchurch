@@ -51,10 +51,10 @@ class RouteOptionsDataSource: NSObject, UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCellWithIdentifier("RouteOptionsCell", forIndexPath: indexPath)
             
             if indexPath.row == 0 {
-                cell.detailTextLabel?.text = routePlannerController?.startLabel ?? "Choose…"
+                cell.detailTextLabel?.text = routePlannerController?.startLabel
             } else {
                 cell.textLabel?.text = "End"
-                cell.detailTextLabel?.text = routePlannerController?.finishLabel ?? "Choose…"
+                cell.detailTextLabel?.text = routePlannerController?.finishLabel
             }
             
             cell.layoutMargins = UIEdgeInsetsZero
@@ -81,6 +81,8 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet var tableView: UITableView!
     @IBOutlet var routeOptionsTableView: UITableView!
     
+    @IBOutlet var swapStartEndBarButtonItem: UIBarButtonItem!
+    
     var startCoordinate: CLLocationCoordinate2D?
     var finishCoordinate: CLLocationCoordinate2D?
     
@@ -103,6 +105,7 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     var activeJourney: TripPlannerJourney?
     
     private var viewHasLoaded = false
+    
     var deferredDirectionsRequest: MKDirectionsRequest? {
         didSet {
             if viewHasLoaded {
@@ -116,6 +119,16 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    @IBAction func swapStartEndItemPressed() {
+        
+        (startCoordinate, finishCoordinate) = (finishCoordinate, startCoordinate)
+        (startLabel, finishLabel) = (finishLabel, startLabel)
+        
+        routeOptionsTableView.reloadData()
+        checkForValidJourney()
+        
     }
     
     func processDirectionsRequest(request: MKDirectionsRequest) {
@@ -200,28 +213,6 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
-    func formattedDuration(minutes: Int) -> String {
-        
-        let hoursAway = Int(floor(Double(minutes / 60)))
-        var minutesAway = minutes
-        
-        var returnString: String = ""
-        
-        if hoursAway > 0 {
-            minutesAway %= 60
-            returnString = "\(hoursAway)h" + (minutesAway > 0 ? " " : "")
-            
-            if minutesAway == 0 {
-                return returnString
-            }
-        }
-        
-        returnString += "\(minutesAway) min" + ((minutesAway > 1) ? "s" : "")
-        
-        return returnString
-        
-    }
-    
     func activeJourneyDidChange(newJourney: TripPlannerJourney?) {
         activeJourney = newJourney
         tableView.reloadData()
@@ -239,14 +230,6 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         
         var routeOptionsDataSource = routeOptionsTableView.delegate! as! PlaceSearchResultDelegate
         routeOptionsDataSource.routePlannerController = self
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            if TripPlanner.canAccessServer == false {
-                dispatch_sync(dispatch_get_main_queue()) {
-                    self.tripPlannerDidCompleteWithError(nil, error: .ConnectionError)
-                }
-            }
-        }
         
         JourneyNotificationManager.sharedInstance.delegate = self
         
@@ -257,6 +240,8 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             activeJourney = nil
             JourneyNotificationManager.sharedInstance.removeNotifications()
         }
+        
+        self.navigationItem.leftBarButtonItem = nil
         
     }
 
@@ -283,6 +268,14 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
             JourneyNotificationManager.sharedInstance.removeNotifications()
         }
         
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            if TripPlanner.canAccessServer == false && self.activeJourney == nil {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.tripPlannerDidCompleteWithError(nil, error: .ConnectionError)
+                }
+            }
+        }
+        
     }
     
     func tripPlannerDidBegin(planner: TripPlanner) {
@@ -296,10 +289,10 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         switch error {
         case .ConnectionError:
             errorTitle = "Connection Error"
-            errorMessage = "The route planner service could not be accessed. Check that you have a connection to the Internet."
+            errorMessage = "The journey planner service could not be accessed. Check that you have a connection to the Internet."
         case .ParseError:
             errorTitle = "Unavailable"
-            errorMessage = "The route planner service is temporarily unavailable."
+            errorMessage = "The journey planner service is temporarily unavailable."
         case .VersionError:
             errorTitle = "Outdated Database"
             errorMessage = "The database needs to be updated before this journey can be planned."
@@ -310,7 +303,7 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
     
     func tripPlannerDidCompleteSuccessfully(planner: TripPlanner, journey: [TripPlannerJourney]) {
         if journey.count == 0 {
-            tableView.backgroundView = TableViewErrorBackgroundView.initView("No Trips Found", errorDetail: "No trips could be found which match the specified criteria.")
+            tableView.backgroundView = TableViewErrorBackgroundView.initView("No Journey Found", errorDetail: "A journey could not be found which matched the specified criteria.")
         } else {
             tableView.backgroundView = nil
         }
@@ -318,6 +311,8 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         trips = journey.sort {
             return $0.0.finishTime < $0.1.finishTime
         }
+        
+        self.navigationItem.leftBarButtonItem = swapStartEndBarButtonItem
         
         tableView.reloadData()
     }
@@ -361,10 +356,10 @@ class RoutePlannerViewController: UIViewController, UITableViewDelegate, UITable
         let (_, endTime) = trip.finishTime.toDateTimeString(true)
         
         cell.timeLabel.text = startTime + " – " + endTime
-        cell.durationLabel.text = formattedDuration(trip.duration)
+        cell.durationLabel.text = trip.duration.minuteDurationStringRepresentation()
         
-        cell.transitTimeLabel.text = formattedDuration(trip.transitTime)
-        cell.walkTimeLabel.text = formattedDuration(trip.walkTime)
+        cell.transitTimeLabel.text = trip.transitTime.minuteDurationStringRepresentation()
+        cell.walkTimeLabel.text = trip.walkTime.minuteDurationStringRepresentation()
         
         cell.tripSegmentsView.routes = trip.routes
         

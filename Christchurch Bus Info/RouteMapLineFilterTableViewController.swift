@@ -23,36 +23,28 @@ class RouteMapLineFilterTableViewController: UITableViewController {
     var lineLabelWidth: CGFloat = CGFloat(0.0)
     var delegate: RouteMapFilterUpdateDelegate?
     
-    private lazy var lineSections: LineSectionInformation = { [unowned self] in
-        
-        var result: LineSectionInformation = [(sectionTitle: "Metro Lines", routes: []),
-                                              (sectionTitle: "City Connectors", routes: []),
-                                              (sectionTitle: "Suburban Links", routes: [])]
-        
-        for (lineType, routeName) in DatabaseManager.sharedInstance.allRoutes! {
-            switch lineType {
-                case .Orbiter(let direction):
-                    if direction == .AntiClockwise {
-                        continue
-                    } else {
-                        fallthrough
+    private var selectedRoutes: [BusLineType] {
+        get {
+            //future me: using map is impossible here, good luck is all I say if you try
+            var items: [BusLineType] = []
+            
+            for (_, routes) in lineSections {
+                for (route, isChecked) in routes {
+                    if isChecked {
+                        items.append(route.lineType)
                     }
-                case .PurpleLine, .OrangeLine, .BlueLine, .YellowLine:
-                    result[0].routes.append(lineType: lineType, routeName: routeName)
-                    continue
-                default:
-                    break
+                }
             }
             
-            //Two digit lines are city connectors
-            
-            let index = lineType.toString.characters.count == 2 ? 1 : 2
-            result[index].routes.append(lineType: lineType, routeName: routeName)
+            return items
         }
-        
-        return result
-        
-    }()
+    }
+    
+    private var lineSections: LineSectionInformation = [] {
+        didSet {
+            Preferences.mapRoutes = selectedRoutes
+        }
+    }
     
     override func viewDidLoad() {
         
@@ -69,6 +61,39 @@ class RouteMapLineFilterTableViewController: UITableViewController {
             lineLabelWidth = max(lineLabelWidth, prototypeLabelView.widthConstraint!.constant)
         }
         
+        //Set the line section information to values saved
+        
+        var defaultValues: LineSectionInformation = [(sectionTitle: "Metro Lines", routes: []),
+                                                     (sectionTitle: "City Connectors", routes: []),
+                                                     (sectionTitle: "Suburban Links", routes: [])]
+        
+        for (lineType, routeName) in allRoutes {
+            let routeIsSaved = delegate!.selectedRoutes().contains(lineType)
+            
+            switch lineType {
+            case .Orbiter(let direction):
+                if direction == .AntiClockwise {
+                    continue
+                } else {
+                    fallthrough
+                }
+            case .PurpleLine, .OrangeLine, .BlueLine, .YellowLine:
+                defaultValues[0].routes.append((route: (lineType: lineType, routeName: routeName), isChecked: routeIsSaved))
+                continue
+            default:
+                break
+            }
+            
+            let index = lineType.toString.characters.count == 2 ? 1 : 2
+            defaultValues[index].routes.append((route: (lineType: lineType, routeName: routeName), isChecked: routeIsSaved))
+        }
+        
+        lineSections = defaultValues
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.delegate?.selectedRoutesDidChange(selectedRoutes)
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,14 +127,14 @@ class RouteMapLineFilterTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("LineFilterCell", forIndexPath: indexPath) as! LineFilterTableViewCell
-        let (lineType, routeName) = lineSections[indexPath.section].routes[indexPath.row]
+        let (routeInfo, isChecked) = lineSections[indexPath.section].routes[indexPath.row]
         
-        cell.lineLabelView.setLineType(lineType)
-        cell.lineNameLabel.text = routeName
+        cell.lineLabelView.setLineType(routeInfo.lineType)
+        cell.lineNameLabel.text = routeInfo.routeName
         
         //hack to display only one orbiter
         
-        switch lineType {
+        switch routeInfo.lineType {
             case .Orbiter(_):
                 cell.lineLabelView.label.text = "Or"
             default:
@@ -117,16 +142,7 @@ class RouteMapLineFilterTableViewController: UITableViewController {
         }
         
         cell.lineLabelView.widthConstraint!.constant = lineLabelWidth
-
-        let selectedRoutesStringRepresentation = delegate!.selectedRoutes().map { current in
-            return current.toString
-        }
-        
-        if selectedRoutesStringRepresentation.contains(lineType.toString) {
-            cell.accessoryType = .Checkmark
-        } else {
-            cell.accessoryType = .None
-        }
+        cell.accessoryType = isChecked ? .Checkmark : .None
         
         return cell
         
@@ -137,33 +153,15 @@ class RouteMapLineFilterTableViewController: UITableViewController {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
         let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! LineFilterTableViewCell
-        let (lineType, _) = lineSections[indexPath.section].routes[indexPath.row]
+        let (_, isChecked) = lineSections[indexPath.section].routes[indexPath.row]
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            
-            var selectedRoutesStringRepresentation = self.delegate!.selectedRoutes().map { current in
-                return current.toString
-            }
-            
-            if selectedRoutesStringRepresentation.contains(lineType.toString) {
-                
-                selectedCell.accessoryType = .None
-                
-                let index = selectedRoutesStringRepresentation.indexOf(lineType.toString)!
-                selectedRoutesStringRepresentation.removeAtIndex(index)
-                
-            } else {
-                selectedCell.accessoryType = .Checkmark
-                selectedRoutesStringRepresentation.append(lineType.toString)
-            }
-            
-            let selectedRoutes = selectedRoutesStringRepresentation.map { current in
-                return BusLineType(lineAbbreviationString: current)
-            }
-            
-            self.delegate?.selectedRoutesDidChange(selectedRoutes)
-            
+        if isChecked {
+            selectedCell.accessoryType = .None
+        } else {
+            selectedCell.accessoryType = .Checkmark
         }
+        
+        lineSections[indexPath.section].routes[indexPath.row].isChecked = !isChecked
         
     }
 

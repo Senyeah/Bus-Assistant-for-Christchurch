@@ -12,8 +12,6 @@ import CoreLocation
 let STOPS_TO_LOAD_RADIUS = 500.0
 let MIN_UPDATE_DISTANCE_DELTA = 5.0
 
-var currentIndex: Int = 0
-
 class RouteInfoTableViewController: UITableViewController, CLLocationManagerDelegate, RouteInformationManagerDelegate {
 
     let locationManager = CLLocationManager()
@@ -22,7 +20,9 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     var hasObtainedInitialLocation = false
     
     var nearbyStops: NearbyStopInformation = []
-    var distanceFromStop: [String: CLLocationDistance] = [:]
+    var favouriteStops: NearbyStopInformation = []
+    
+    var displayedNumberOfFavouriteStops = 0
     
     func managerReceivedUpdatedInformation(manager: RouteInformationManager) {
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
@@ -35,14 +35,15 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         guard let currentLocation = locationManager.location else {
             return
         }
-        
+
         nearbyStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: currentLocation)
+        favouriteStops = RouteInformationManager.sharedInstance.nearbyStopInformationForStops(Preferences.favouriteStops, location: currentLocation)
         
     }
     
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
-        if newLocation.horizontalAccuracy >= 65.0 && nearbyStops.count > 0 {
+        if newLocation.horizontalAccuracy > 20.0 && nearbyStops.count > 0 {
             return
         }
         
@@ -59,31 +60,47 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             
             hasObtainedInitialLocation = true
             
-            if self.nearbyStops.count == 0 {
-                let noStopsMessage = TableViewErrorBackgroundView.initView("No Bus Stops Nearby", errorDetail: "No bus stops were found within 500 metres of your location.")
-                tableView.backgroundView = noStopsMessage
+            if self.nearbyStops.count == 0 && displayedNumberOfFavouriteStops == 0 {
+                displayNoStopsNearbyMessage()
             } else {
                 tableView.backgroundView = nil
             }
             
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+            if favouriteStops.count == 0 {
+                self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+            } else {
+                self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, 2)), withRowAnimation: .Automatic)
+            }
             
         }
         
     }
     
-    func displayNoAuthorisationMessage() {
-        let noStopsMessage = TableViewErrorBackgroundView.initView("Enable Location Services", errorDetail: "You must enable Location Services in order to determine the bus stops nearest to you.")
-        tableView.backgroundView = noStopsMessage
+    func displayBackgroundErrorMessageWithTitle(title: String, errorDetail: String) {
+        let messageView = TableViewErrorBackgroundView.initView(title, errorDetail: errorDetail)
+        tableView.backgroundView = messageView
     }
+    
+    func displayNoAuthorisationMessage() {
+        displayBackgroundErrorMessageWithTitle("Enable Location Services", errorDetail: "You must enable Location Services in order to determine the bus stops nearest to you.")
+    }
+    
+    func displayNoStopsNearbyMessage() {
+        displayBackgroundErrorMessageWithTitle("No Stops Nearby", errorDetail: "No bus stops were found within 500 metres of your location.")
+    }
+    
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
         if status == .Denied || status == .Restricted {
+            
             nearbyStops.removeAll()
             tableView.reloadData()
             
-            displayNoAuthorisationMessage()
+            if favouriteStops.count == 0 {
+                displayNoAuthorisationMessage()
+            }
+            
         } else {
             tableView.backgroundView = nil
         }
@@ -109,10 +126,9 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        if CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted {
-            displayNoAuthorisationMessage()
-        }
+        
+        favouriteStops = RouteInformationManager.sharedInstance.nearbyStopInformationForStops(Preferences.favouriteStops, location: nil)
+        displayedNumberOfFavouriteStops = favouriteStops.count
         
     }
     
@@ -122,6 +138,55 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         if self.tableView.indexPathForSelectedRow != nil {
             self.tableView.deselectRowAtIndexPath(self.tableView.indexPathForSelectedRow!, animated: true)
+        }
+        
+        dispatch_async(dispatch_get_main_queue()) {
+
+            self.tableView.beginUpdates()
+            self.favouriteStops = RouteInformationManager.sharedInstance.nearbyStopInformationForStops(Preferences.favouriteStops, location: self.lastLocationUpdated)
+            
+            if self.favouriteStops.count > 0 {
+                
+                if self.displayedNumberOfFavouriteStops == 0 {
+                    
+                    self.tableView.insertSections(NSIndexSet(index: 0), withRowAnimation: .Bottom)
+                    
+                } else if self.favouriteStops.count > self.displayedNumberOfFavouriteStops {
+                    
+                    let numberOfFavouritesAdded = self.favouriteStops.count - self.displayedNumberOfFavouriteStops
+                    let startIndex = self.displayedNumberOfFavouriteStops
+                    
+                    let insertedIndexPaths = (startIndex ..< startIndex + numberOfFavouritesAdded).map { row in
+                        return NSIndexPath(forRow: row, inSection: 0)
+                    }
+                    
+                    self.tableView.insertRowsAtIndexPaths(insertedIndexPaths, withRowAnimation: .Bottom)
+                    
+                } else {
+                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .Automatic)
+                }
+
+            } else if self.displayedNumberOfFavouriteStops > 0 {
+                self.tableView.deleteSections(NSIndexSet(index: 0), withRowAnimation: .Bottom)
+            }
+        
+            self.displayedNumberOfFavouriteStops = self.favouriteStops.count
+            self.tableView.endUpdates()
+            
+            let canAccessLocation = !(CLLocationManager.authorizationStatus() == .Denied || CLLocationManager.authorizationStatus() == .Restricted)
+            
+            if canAccessLocation == false && self.displayedNumberOfFavouriteStops == 0 {
+                self.displayNoAuthorisationMessage()
+            }
+            
+            if canAccessLocation && self.nearbyStops.count == 0 && self.displayedNumberOfFavouriteStops == 0 {
+                self.displayNoStopsNearbyMessage()
+            }
+            
+            if self.displayedNumberOfFavouriteStops > 0 {
+                self.tableView.backgroundView = nil
+            }
+            
         }
         
     }
@@ -136,29 +201,61 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
     }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return favouriteStops.count > 0 ? 2 : 1
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if favouriteStops.count == 0 {
+            return nil
+        }
+        
+        if section == 0 {
+            return "Favourite Stops"
+        } else {
+            return hasObtainedInitialLocation && nearbyStops.count > 0 ? "Nearby Stops" : nil
+        }
+        
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return nearbyStops.count
+        
+        if favouriteStops.count == 0 {
+            return nearbyStops.count
+        }
+        
+        if section == 0 {
+            return favouriteStops.count
+        } else {
+            return nearbyStops.count
+        }
+        
     }
         
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("GroupStopCell", forIndexPath: indexPath) as! BusStopTableViewCell
-            
-        let stopInfo = nearbyStops[indexPath.row]
         
-        cell.stopName.text = "\(stopInfo.stop.roadName) near \(stopInfo.stop.name)"
+        var stopInfo: (stop: StopInformation, distance: CLLocationDistance)
+        
+        if favouriteStops.count > 0 && indexPath.section == 0 {
+            stopInfo = favouriteStops[indexPath.row]
+            cell.shouldDisplayLocationInformation = hasObtainedInitialLocation
+        } else {
+            stopInfo = nearbyStops[indexPath.row]
+            cell.shouldDisplayLocationInformation = true
+        }
+        
+        cell.stopName.text = RouteInformationManager.sharedInstance.displayStringForStopNumber(stopInfo.stop.stopNo)
         cell.stopNumber.text = String(stopInfo.stop.stopNo)
-            
+        
         cell.setDistance(stopInfo.distance)
             
         let stopLinesForStop = RouteInformationManager.sharedInstance.linesForStop(stopInfo.stop.stopTag)
         cell.setStopLines(stopLinesForStop)
         
         cell.layoutIfNeeded()
-            
+        
         return cell
         
     }
@@ -178,7 +275,15 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         let destinationController = segue.destinationViewController as! StopInformationTableViewController
         let indexPath = tableView.indexPathForCell(sender! as! UITableViewCell)!
         
-        let stopInfo = nearbyStops[indexPath.row].stop
+        var stopList: NearbyStopInformation
+        
+        if indexPath.section == 0 && favouriteStops.count > 0 {
+            stopList = favouriteStops
+        } else {
+            stopList = nearbyStops
+        }
+        
+        let stopInfo = stopList[indexPath.row].stop
         destinationController.stopNumber = stopInfo.stopNo
         
     }

@@ -12,10 +12,13 @@ import CoreLocation
 
 typealias NearbyStopInformation = [(stop: StopInformation, distance: CLLocationDistance)]
 typealias RoutePolylineCoordinates = (route: BusLineType, points: [[CLLocationCoordinate2D]])
-typealias LineSectionInformation = [(sectionTitle: String, routes: [RouteInformation])]
+typealias LineSectionInformation = [(sectionTitle: String, routes: [RouteRowItem])]
+typealias RouteRowItem = (route: RouteInformation, isChecked: Bool)
 typealias RouteInformation = (lineType: BusLineType, routeName: String)
 typealias TripInformation = (lineType: BusLineType, routeName: String, lineName: String, tripID: String)
 typealias ProjectedMapSpan = (horizontalDistance: Double, verticalDistance: Double)
+typealias StopCoordinate = (stop: StopInformation, (x: Double, y: Double))
+typealias TimetabledTripResult = [(trip: TripInformation, eta: Int)]
 
 extension CLLocationCoordinate2D: Hashable {
     public var hashValue: Int {
@@ -108,4 +111,34 @@ func < (lhs: NSDate, rhs: NSDate) -> Bool {
 
 func > (lhs: NSDate, rhs: NSDate) -> Bool {
     return lhs.timeIntervalSinceDate(rhs) > 0
+}
+
+extension Int {
+    public func minuteDurationStringRepresentation(longStyle: Bool = false) -> String {
+        let hoursAway = Int(floor(Double(self / 60)))
+        var minutesAway = self
+        
+        var hourAbbreviation = longStyle ? "hour" : "hr"
+        let minuteAbbreviation = longStyle ? "minute" : "min"
+        
+        var returnString: String = ""
+        
+        if hoursAway > 0 {
+            minutesAway %= 60
+            
+            if minutesAway == 0 {
+                hourAbbreviation = "hour"
+            }
+            
+            returnString = "\(hoursAway) \(hourAbbreviation)" + (hoursAway > 1 ? "s" : "") + (minutesAway > 0 ? " " : "")
+            
+            if minutesAway == 0 {
+                return returnString
+            }
+        }
+        
+        returnString += "\(minutesAway) \(minuteAbbreviation)" + (minutesAway > 1 ? "s" : "")
+        
+        return returnString
+    }
 }

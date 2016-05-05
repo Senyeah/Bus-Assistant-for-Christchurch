@@ -190,13 +190,11 @@ class MoreInformationTableViewController: UITableViewController {
         }
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+            let cellEnabled = TripPlanner.canAccessServer
             
-            if TripPlanner.canAccessServer == false {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.checkForUpdateCell.isEnabled = false
-                }
+            dispatch_async(dispatch_get_main_queue()) {
+                self.checkForUpdateCell.isEnabled = cellEnabled
             }
-            
         }
         
     }

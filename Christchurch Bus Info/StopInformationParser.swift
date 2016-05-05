@@ -91,39 +91,54 @@ class StopInformationParser: NSObject, NSXMLParserDelegate {
         
         stopInformation = []
         
-        let updateURL = NSURL(string: STOP_ARRIVAL_INFO_URL + stopNumber)!
-        let request = NSURLRequest(URL: updateURL)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
         
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue(), completionHandler: { (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
-                   
-            guard let receivedData = data else {
-                return
+            let updateURL = NSURL(string: STOP_ARRIVAL_INFO_URL + self.stopNumber)!
+            
+            if let data = NSData(contentsOfURL: updateURL) {
+                
+                var xmlContents = NSString(data: data, encoding: NSUTF8StringEncoding)!
+                
+                //Thank you Metro for giving us invalid XML!
+                
+                //We need to ensure if at some point they give us valid
+                //escaped XML, it's not broken by us 'fixing' it
+                
+                //Or else '&amp;' would become '&amp;amp;'
+                
+                xmlContents = xmlContents.stringByReplacingOccurrencesOfString("&amp;", withString: "&")
+                xmlContents = xmlContents.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
+                
+                let data = xmlContents.dataUsingEncoding(NSUTF8StringEncoding)!
+                
+                self.xmlParser = NSXMLParser(data: data)
+                self.xmlParser.delegate = self
+                self.xmlParser.parse()
+                
+            } else {
+            
+                //We need to get the arrving stuff from the database
+                
+                let arrivingTrips = DatabaseManager.sharedInstance.timetabledTripsForStop(self.stopNumber, afterTime: NSDate())
+                
+                for (tripInfo, eta) in arrivingTrips {
+                    
+                    var currentItem: [String: AnyObject] = [:]
+                    
+                    currentItem["route_no"] = tripInfo.lineType.toString
+                    currentItem["eta"] = eta
+                    currentItem["name"] = tripInfo.routeName
+                    currentItem["trip_id"] = tripInfo.tripID
+                    
+                    self.stopInformation.append(currentItem)
+                    
+                }
+                
+                self.delegate?.stopInformationParser(self, didReceiveStopInformation: self.stopInformation)
+         
             }
-        
-            var xmlContents = NSString(data: receivedData, encoding: NSUTF8StringEncoding)!
-        
-            //Uncomment if you're working at 4am when no buses run
             
-      //  let bundledArrivalInfo = NSBundle.mainBundle().pathForResource("info", ofType: "xml")!
-    //var xmlContents = try! NSString(contentsOfFile: bundledArrivalInfo, encoding: NSUTF8StringEncoding)
-        
-            //Thank you Metro for giving us invalid XML!
-            
-            //We need to ensure if at some point they give us valid
-            //escaped XML, it's not broken by us 'fixing' it
-            
-            //Or else '&amp;' would become '&amp;amp;'
-            
-            xmlContents = xmlContents.stringByReplacingOccurrencesOfString("&amp;", withString: "&")
-            xmlContents = xmlContents.stringByReplacingOccurrencesOfString("&", withString: "&amp;")
-            
-            let data = xmlContents.dataUsingEncoding(NSUTF8StringEncoding)!
-            
-            self.xmlParser = NSXMLParser(data: data)
-            self.xmlParser.delegate = self
-            self.xmlParser.parse()
-            
-        })
+        }
         
     }
     

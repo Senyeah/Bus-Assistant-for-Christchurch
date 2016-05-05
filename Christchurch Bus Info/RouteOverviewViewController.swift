@@ -34,10 +34,6 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        notificationsEnabled = false
-    }
-    
     override func viewDidAppear(animated: Bool) {
         layoutLegalAttributionLabel()
     }
@@ -54,7 +50,7 @@ class RouteOverviewViewController: UIViewController, MKMapViewDelegate, RouteDet
         }
         
         if let tripDuration = tripInfo?.duration {
-            tripDurationLabel.text = formattedTimeStringForDuration(tripDuration)
+            tripDurationLabel.text = tripDuration.minuteDurationStringRepresentation(true)
         }
         
         let borderLayer = CALayer()

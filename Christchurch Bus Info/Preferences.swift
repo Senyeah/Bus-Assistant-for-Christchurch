@@ -13,7 +13,7 @@ struct Preferences {
     static var shouldAutomaticallyUpdate: Bool {
         get {
             if NSUserDefaults.standardUserDefaults().objectForKey("shouldAutomaticallyUpdate") == nil {
-                return true
+                return Preferences.defaultPreferences["shouldAutomaticallyUpdate"] as! Bool
             }
         
             return NSUserDefaults.standardUserDefaults().boolForKey("shouldAutomaticallyUpdate")
@@ -40,6 +40,28 @@ struct Preferences {
         }
     }
     
+    static var favouriteStops: [StopInformation] {
+        get {
+            let savedFavourites = (NSUserDefaults.standardUserDefaults().objectForKey("favouriteStops") ?? defaultPreferences["favouriteStops"]) as! [String]
+            
+            return savedFavourites.map { stopNumber in
+                if let information = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber) {
+                    return information
+                }
+                
+                fatalError("info for \(stopNumber) is nil?!")
+            }
+        }
+        
+        set {
+            let favouriteStops = newValue.map { stop in
+                return stop.stopNo
+            }
+
+            NSUserDefaults.standardUserDefaults().setObject(favouriteStops, forKey: "favouriteStops")
+        }
+    }
+    
     static var defaultPreferences: [String: AnyObject] {
         get {
             let routes: [BusLineType] = [.PurpleLine, .OrangeLine, .YellowLine, .BlueLine, .Orbiter(.Clockwise)]
@@ -47,7 +69,7 @@ struct Preferences {
                 return route.toString
             }
             
-            return ["shouldAutomaticallyUpdate": true, "mapRoutes": routePreferences]
+            return ["shouldAutomaticallyUpdate": true, "mapRoutes": routePreferences, "favouriteStops": []]
         }
     }
     

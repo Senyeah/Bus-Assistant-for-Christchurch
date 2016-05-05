@@ -12,6 +12,8 @@
 		040D64201C03A3CD009BF2C8 /* DownloadUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D641F1C03A3CD009BF2C8 /* DownloadUpdateViewController.swift */; };
 		040D64231C03A7E7009BF2C8 /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D64221C03A7E7009BF2C8 /* RootTabBarController.swift */; };
 		0424ED421BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */; };
+		042583AA1CDBDDC70047BA47 /* timetabled_trips_for_stop.sql in Resources */ = {isa = PBXBuildFile; fileRef = 042583A91CDBDDC70047BA47 /* timetabled_trips_for_stop.sql */; };
+		042583AC1CDBEABB0047BA47 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 042583AB1CDBEABB0047BA47 /* database.zip */; };
 		042ED5A61BEB2D910093EB77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042ED5A51BEB2D910093EB77 /* AppDelegate.swift */; };
 		042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5A91BEB2D910093EB77 /* Main.storyboard */; };
 		042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 042ED5AC1BEB2D910093EB77 /* Assets.xcassets */; };
@@ -33,7 +35,6 @@
 		0451FC931BF60C6500794D4C /* RouteStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */; };
 		0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0455D0AD1C05FCA700134810 /* MapKit.framework */; };
 		0462C2B21C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0462C2B11C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift */; };
-		04688E8E1BF6339C006A1DFA /* info.xml in Resources */ = {isa = PBXBuildFile; fileRef = 04688E8D1BF6339C006A1DFA /* info.xml */; };
 		046B0E091C254B340051B686 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E081C254B340051B686 /* Podfile */; };
 		046B0E141C254FE00051B686 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E121C254FE00051B686 /* SSZipArchive.m */; };
 		046B0E1F1C254FEF0051B686 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E1B1C254FEF0051B686 /* ioapi.c */; };
@@ -49,15 +50,11 @@
 		046B0E5D1C2550270051B686 /* prng.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E541C2550270051B686 /* prng.c */; };
 		046B0E5E1C2550270051B686 /* pwd2key.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E551C2550270051B686 /* pwd2key.c */; };
 		046B0E5F1C2550270051B686 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E561C2550270051B686 /* sha1.c */; };
-		046B0E641C2562940051B686 /* interchange.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E601C2562940051B686 /* interchange.gpx */; };
-		046B0E651C2562940051B686 /* home.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E611C2562940051B686 /* home.gpx */; };
-		046B0E671C2562940051B686 /* riccarton.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E631C2562940051B686 /* riccarton.gpx */; };
 		046B0E6A1C25BDD30051B686 /* TableViewLoadingBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E691C25BDD30051B686 /* TableViewLoadingBackgroundView.swift */; };
 		046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */; };
 		046B0E6E1C25C8060051B686 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */; };
 		046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */ = {isa = PBXBuildFile; fileRef = 046CA2431BFA32920061F89F /* find_stops_for_trip.sql */; };
 		0479EE011C57D5BA00A2D470 /* about_miyazu.html in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE001C57D5BA00A2D470 /* about_miyazu.html */; };
-		0479EE071C59213400A2D470 /* database.zip in Resources */ = {isa = PBXBuildFile; fileRef = 0479EE061C59213400A2D470 /* database.zip */; };
 		048223821C25ED51004EAF1B /* RouteOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */; };
 		048223871C272160004EAF1B /* RouteDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223861C272160004EAF1B /* RouteDetailTableViewController.swift */; };
 		048223891C27218A004EAF1B /* JourneyStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */; };
@@ -80,7 +77,7 @@
 		04EF5CDC1C51172D004A4DC6 /* RouteInformationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EF5CDB1C51172D004A4DC6 /* RouteInformationManager.swift */; };
 		04F1EF501BF74C9C007AD4F4 /* LineStopIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */; };
 		04FF5B381BECA98300A69C9C /* BusLineLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */; };
-		F8C78015E87987709A1B14EF /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0F7FBDB4B89852FC71D038 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FA98D497254E93C3136133FE /* Pods_Bus_Assistant_for_Christchurch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A4B8164A415740E3C5B93B2 /* Pods_Bus_Assistant_for_Christchurch.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -123,6 +120,8 @@
 		040D641F1C03A3CD009BF2C8 /* DownloadUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadUpdateViewController.swift; sourceTree = "<group>"; };
 		040D64221C03A7E7009BF2C8 /* RootTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		0424ED411BF6514700D7AB1F /* RouteStopIndeterminateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopIndeterminateTableViewCell.swift; sourceTree = "<group>"; };
+		042583A91CDBDDC70047BA47 /* timetabled_trips_for_stop.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = timetabled_trips_for_stop.sql; sourceTree = "<group>"; };
+		042583AB1CDBEABB0047BA47 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
 		042ED5A21BEB2D910093EB77 /* Bus Assistant for Christchurch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bus Assistant for Christchurch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		042ED5A51BEB2D910093EB77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		042ED5AA1BEB2D910093EB77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -146,7 +145,6 @@
 		0451FC921BF60C6500794D4C /* RouteStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteStopTableViewCell.swift; sourceTree = "<group>"; };
 		0455D0AD1C05FCA700134810 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		0462C2B11C4E63FA0074DD06 /* RouteMapLineFilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMapLineFilterTableViewController.swift; sourceTree = "<group>"; };
-		04688E8D1BF6339C006A1DFA /* info.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = info.xml; sourceTree = "<group>"; };
 		046B0E081C254B340051B686 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		046B0E0F1C254FE00051B686 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		046B0E101C254FE00051B686 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
@@ -182,16 +180,12 @@
 		046B0E541C2550270051B686 /* prng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = prng.c; sourceTree = "<group>"; };
 		046B0E551C2550270051B686 /* pwd2key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pwd2key.c; sourceTree = "<group>"; };
 		046B0E561C2550270051B686 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha1.c; sourceTree = "<group>"; };
-		046B0E601C2562940051B686 /* interchange.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = interchange.gpx; sourceTree = "<group>"; };
-		046B0E611C2562940051B686 /* home.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = home.gpx; sourceTree = "<group>"; };
-		046B0E631C2562940051B686 /* riccarton.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = riccarton.gpx; sourceTree = "<group>"; };
 		046B0E691C25BDD30051B686 /* TableViewLoadingBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewLoadingBackgroundView.swift; sourceTree = "<group>"; };
 		046B0E6B1C25BE290051B686 /* TableViewLoadingBackgroundView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableViewLoadingBackgroundView.xib; sourceTree = "<group>"; };
 		046B0E6D1C25C8060051B686 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		046CA2431BFA32920061F89F /* find_stops_for_trip.sql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = find_stops_for_trip.sql; sourceTree = "<group>"; };
 		047981281BFF73C800DB3947 /* Christchurch Bus Info-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christchurch Bus Info-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		0479EE001C57D5BA00A2D470 /* about_miyazu.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about_miyazu.html; sourceTree = "<group>"; };
-		0479EE061C59213400A2D470 /* database.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = database.zip; sourceTree = "<group>"; };
 		048223811C25ED51004EAF1B /* RouteOverviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteOverviewViewController.swift; sourceTree = "<group>"; };
 		048223861C272160004EAF1B /* RouteDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailTableViewController.swift; sourceTree = "<group>"; };
 		048223881C27218A004EAF1B /* JourneyStopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyStopTableViewCell.swift; sourceTree = "<group>"; };
@@ -214,9 +208,9 @@
 		04EF5CDB1C51172D004A4DC6 /* RouteInformationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteInformationManager.swift; sourceTree = "<group>"; };
 		04F1EF4F1BF74C9C007AD4F4 /* LineStopIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineStopIndicator.swift; sourceTree = "<group>"; };
 		04FF5B371BECA98300A69C9C /* BusLineLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusLineLabelView.swift; sourceTree = "<group>"; };
-		346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		6E0F7FBDB4B89852FC71D038 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A4B8164A415740E3C5B93B2 /* Pods_Bus_Assistant_for_Christchurch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bus_Assistant_for_Christchurch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		91CA030CA6DCE3C05140A154 /* Pods-Bus Assistant for Christchurch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bus Assistant for Christchurch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bus Assistant for Christchurch/Pods-Bus Assistant for Christchurch.debug.xcconfig"; sourceTree = "<group>"; };
+		B813A6CFE0ACF3705B8D53EC /* Pods-Bus Assistant for Christchurch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bus Assistant for Christchurch.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bus Assistant for Christchurch/Pods-Bus Assistant for Christchurch.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,7 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0455D0AE1C05FCA700134810 /* MapKit.framework in Frameworks */,
-				F8C78015E87987709A1B14EF /* Pods.framework in Frameworks */,
+				FA98D497254E93C3136133FE /* Pods_Bus_Assistant_for_Christchurch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,17 +269,14 @@
 		042ED5991BEB2D910093EB77 = {
 			isa = PBXGroup;
 			children = (
-				046B0E601C2562940051B686 /* interchange.gpx */,
-				046B0E611C2562940051B686 /* home.gpx */,
-				046B0E631C2562940051B686 /* riccarton.gpx */,
 				046B0E081C254B340051B686 /* Podfile */,
 				0455D0AD1C05FCA700134810 /* MapKit.framework */,
 				040D64181C01C1A6009BF2C8 /* kdtree */,
 				046B0E0E1C254FCE0051B686 /* SSZipArchive */,
 				042ED5A41BEB2D910093EB77 /* Christchurch Bus Info */,
 				042ED5A31BEB2D910093EB77 /* Products */,
-				C3308B84B30E91DBA4E54190 /* Pods */,
 				92AC6A45FD2C0A4DB0E16675 /* Frameworks */,
+				A79E4D704211E720CB27830B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -336,13 +327,13 @@
 		042ED5C21BEB5FF20093EB77 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				04688E8D1BF6339C006A1DFA /* info.xml */,
-				0479EE061C59213400A2D470 /* database.zip */,
+				042583AB1CDBEABB0047BA47 /* database.zip */,
 				044E10C21C5794F900D3AE32 /* attribution.html */,
+				0479EE001C57D5BA00A2D470 /* about_miyazu.html */,
 				046CA2431BFA32920061F89F /* find_stops_for_trip.sql */,
 				04BDA2F61C4BB46300F0D061 /* trip_id_for_route.sql */,
 				04842F4B1C52472E000C9775 /* routes_passing_stop.sql */,
-				0479EE001C57D5BA00A2D470 /* about_miyazu.html */,
+				042583A91CDBDDC70047BA47 /* timetabled_trips_for_stop.sql */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -500,16 +491,16 @@
 		92AC6A45FD2C0A4DB0E16675 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6E0F7FBDB4B89852FC71D038 /* Pods.framework */,
+				3A4B8164A415740E3C5B93B2 /* Pods_Bus_Assistant_for_Christchurch.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C3308B84B30E91DBA4E54190 /* Pods */ = {
+		A79E4D704211E720CB27830B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */,
-				68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */,
+				91CA030CA6DCE3C05140A154 /* Pods-Bus Assistant for Christchurch.debug.xcconfig */,
+				B813A6CFE0ACF3705B8D53EC /* Pods-Bus Assistant for Christchurch.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -521,15 +512,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 042ED5B41BEB2D910093EB77 /* Build configuration list for PBXNativeTarget "Bus Assistant for Christchurch" */;
 			buildPhases = (
-				0C5D3B226A1A35595FA096B8 /* Check Pods Manifest.lock */,
+				BAABEAB4A17A29771208A857 /* 📦 Check Pods Manifest.lock */,
 				042ED59E1BEB2D910093EB77 /* Sources */,
 				042ED59F1BEB2D910093EB77 /* Frameworks */,
 				042ED5A01BEB2D910093EB77 /* Resources */,
 				04D6FB2A1BF88E16001BFC49 /* Embed Frameworks */,
-				545BF141FC714CA217B10591 /* Copy Pods Resources */,
-				7591021681E280ADE3FD82A7 /* Embed Pods Frameworks */,
 				04EBE0D81C354D750041C1F7 /* Embed Watch Content */,
 				04C151F31C562D08007C4DF4 /* Embed App Extensions */,
+				DFF86764DEF53C9B85151E6F /* 📦 Embed Pods Frameworks */,
+				6927601FDA69E26C07ABC31D /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -584,36 +575,48 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04688E8E1BF6339C006A1DFA /* info.xml in Resources */,
 				044E10C31C5794F900D3AE32 /* attribution.html in Resources */,
-				0479EE071C59213400A2D470 /* database.zip in Resources */,
 				04842F4C1C52472E000C9775 /* routes_passing_stop.sql in Resources */,
 				046B0E6C1C25BE290051B686 /* TableViewLoadingBackgroundView.xib in Resources */,
 				042ED5B01BEB2D910093EB77 /* LaunchScreen.storyboard in Resources */,
 				04BF2AFE1C1F53D7003D5699 /* TableViewErrorBackgroundView.xib in Resources */,
+				042583AC1CDBEABB0047BA47 /* database.zip in Resources */,
 				04BDA2F71C4BB46300F0D061 /* trip_id_for_route.sql in Resources */,
+				042583AA1CDBDDC70047BA47 /* timetabled_trips_for_stop.sql in Resources */,
 				042ED5AD1BEB2D910093EB77 /* Assets.xcassets in Resources */,
-				046B0E671C2562940051B686 /* riccarton.gpx in Resources */,
 				046CA2441BFA32920061F89F /* find_stops_for_trip.sql in Resources */,
 				046B0E091C254B340051B686 /* Podfile in Resources */,
-				046B0E641C2562940051B686 /* interchange.gpx in Resources */,
 				0479EE011C57D5BA00A2D470 /* about_miyazu.html in Resources */,
 				042ED5AB1BEB2D910093EB77 /* Main.storyboard in Resources */,
-				046B0E651C2562940051B686 /* home.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C5D3B226A1A35595FA096B8 /* Check Pods Manifest.lock */ = {
+		6927601FDA69E26C07ABC31D /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bus Assistant for Christchurch/Pods-Bus Assistant for Christchurch-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAABEAB4A17A29771208A857 /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,34 +624,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		545BF141FC714CA217B10591 /* Copy Pods Resources */ = {
+		DFF86764DEF53C9B85151E6F /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7591021681E280ADE3FD82A7 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bus Assistant for Christchurch/Pods-Bus Assistant for Christchurch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -822,7 +810,7 @@
 		};
 		042ED5B51BEB2D910093EB77 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 346B7EC9E9577978AD095124 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 91CA030CA6DCE3C05140A154 /* Pods-Bus Assistant for Christchurch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -842,7 +830,7 @@
 		};
 		042ED5B61BEB2D910093EB77 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68A9BA25843C1188E7ACD755 /* Pods.release.xcconfig */;
+			baseConfigurationReference = B813A6CFE0ACF3705B8D53EC /* Pods-Bus Assistant for Christchurch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

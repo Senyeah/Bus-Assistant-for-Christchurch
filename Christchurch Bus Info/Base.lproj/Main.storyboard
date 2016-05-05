@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="z6t-8U-N5F">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="z6t-8U-N5F">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
     </dependencies>
@@ -52,8 +52,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BK9-Fh-H6s">
-                                <rect key="frame" x="0.0" y="-44" width="600" height="688"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BK9-Fh-H6s">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="595"/>
                                 <connections>
                                     <outlet property="delegate" destination="qmT-tq-XCk" id="F3y-sS-dXW"/>
                                 </connections>
@@ -246,6 +246,7 @@
                                                 <constraint firstItem="cM5-hI-6Dv" firstAttribute="leading" secondItem="D44-AR-TaZ" secondAttribute="trailing" constant="20" id="IQ7-f2-2dK"/>
                                                 <constraint firstItem="D44-AR-TaZ" firstAttribute="leading" secondItem="NOC-tl-vOp" secondAttribute="trailing" constant="6" id="JCt-gp-2Yr"/>
                                                 <constraint firstItem="cM5-hI-6Dv" firstAttribute="centerY" secondItem="xm1-lQ-J1p" secondAttribute="centerY" id="NCR-X1-wdk"/>
+                                                <constraint firstAttribute="height" priority="250" id="Wey-Dh-VAF"/>
                                                 <constraint firstItem="NOC-tl-vOp" firstAttribute="centerY" secondItem="xm1-lQ-J1p" secondAttribute="centerY" id="xO0-nm-wCT"/>
                                                 <constraint firstItem="pdZ-3n-Hed" firstAttribute="leading" secondItem="cM5-hI-6Dv" secondAttribute="trailing" constant="6" id="zeK-f5-Kde"/>
                                             </constraints>
@@ -269,6 +270,9 @@
                                 <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="lineThumbnailView" destination="vTW-gs-73u" id="JUP-az-VSw"/>
+                                    <outlet property="locationInformationView" destination="xm1-lQ-J1p" id="UlF-CM-8rv"/>
+                                    <outlet property="locationInformationViewHeightConstraint" destination="Wey-Dh-VAF" id="O1O-6f-NVs"/>
+                                    <outlet property="locationInformationViewTopConstraint" destination="MTa-fn-O0e" id="kuU-Ps-vpt"/>
                                     <outlet property="stopDistance" destination="D44-AR-TaZ" id="Vgm-bm-0MM"/>
                                     <outlet property="stopName" destination="RaO-Xz-fn6" id="IwB-3a-Hwd"/>
                                     <outlet property="stopNumber" destination="VwR-nI-90H" id="U2B-df-5J1"/>
@@ -287,7 +291,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Nearby" id="RU2-iI-C8j"/>
-                    <navigationItem key="navigationItem" title="Nearby Bus Stops" id="vBC-cc-T9e"/>
+                    <navigationItem key="navigationItem" title="Nearby Stops" id="vBC-cc-T9e"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UgE-Gh-BxW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -418,13 +422,20 @@
                             <outlet property="delegate" destination="Aft-Di-Ohz" id="Hlb-EO-UZo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Stop Information" id="u35-Ec-dbw"/>
+                    <navigationItem key="navigationItem" title="Stop Information" id="u35-Ec-dbw">
+                        <barButtonItem key="rightBarButtonItem" image="star-hollow" id="fZN-rh-2SS">
+                            <connections>
+                                <action selector="favouriteButtonPressed" destination="Aft-Di-Ohz" id="FcO-ou-s8b"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="favouriteButton" destination="fZN-rh-2SS" id="dsk-Mf-EUg"/>
                         <outlet property="headerMapView" destination="y2K-eW-B1Y" id="Vsr-dG-2ff"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPk-sf-WK3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" id="y2K-eW-B1Y">
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" mapType="standard" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" id="y2K-eW-B1Y">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="180"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
@@ -633,6 +644,8 @@
                                         <constraint firstItem="Yyw-Op-GoN" firstAttribute="top" secondItem="FQa-Vj-Kju" secondAttribute="bottom" constant="5" id="ys5-iM-bZZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="8"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="lineLabel" destination="HiD-Qh-TlR" id="oZ2-AK-PdV"/>
                                     <outlet property="lineNameLabel" destination="FQa-Vj-Kju" id="Rlp-Tp-P02"/>
@@ -655,6 +668,8 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <edgeInsets key="layoutMargins" top="8" left="0.0" bottom="8" right="8"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <segue destination="qmT-tq-XCk" kind="show" identifier="RouteMapViewSegue" id="xrw-0P-jpv">
                                         <segue key="commit" inheritsFrom="parent" id="6oL-rR-eBz"/>
@@ -938,11 +953,11 @@
                                 </constraints>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteOptionsCell" textLabel="7Ia-zZ-KTu" detailTextLabel="l0j-ny-L5m" style="IBUITableViewCellStyleValue1" id="3M8-GT-xrc">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteOptionsCell" textLabel="7Ia-zZ-KTu" detailTextLabel="l0j-ny-L5m" style="IBUITableViewCellStyleValue1" id="3M8-GT-xrc">
                                         <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3M8-GT-xrc" id="XtI-VN-T5k">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Start" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Ia-zZ-KTu">
@@ -953,7 +968,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="25 Gardiners Road" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l0j-ny-L5m">
-                                                    <rect key="frame" x="450" y="12" width="135" height="20"/>
+                                                    <rect key="frame" x="430" y="12" width="135" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -965,11 +980,11 @@
                                             <segue destination="GdO-h7-tFc" kind="presentation" id="MZf-Zk-3JH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RouteTimePickerCell" textLabel="VjO-Qh-qdO" detailTextLabel="OHr-1x-zqs" style="IBUITableViewCellStyleValue1" id="c8b-Ww-7sR">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="RouteTimePickerCell" textLabel="VjO-Qh-qdO" detailTextLabel="OHr-1x-zqs" style="IBUITableViewCellStyleValue1" id="c8b-Ww-7sR">
                                         <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c8b-Ww-7sR" id="cFw-e1-UG6">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Leave After" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VjO-Qh-qdO">
@@ -980,7 +995,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OHr-1x-zqs">
-                                                    <rect key="frame" x="543" y="12" width="42" height="20"/>
+                                                    <rect key="frame" x="523" y="12" width="42" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
@@ -1125,9 +1140,16 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Route Planner" id="QwU-DG-HdE"/>
-                    <navigationItem key="navigationItem" title="Journey Planner" id="u87-f3-GbO"/>
+                    <navigationItem key="navigationItem" title="Journey Planner" id="u87-f3-GbO">
+                        <barButtonItem key="leftBarButtonItem" image="swap" id="Rq1-BU-DSg">
+                            <connections>
+                                <action selector="swapStartEndItemPressed" destination="Dnx-h0-hJn" id="6D2-Hy-Uqa"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="routeOptionsTableView" destination="Yq5-Ah-p6V" id="BsH-lg-Noq"/>
+                        <outlet property="swapStartEndBarButtonItem" destination="Rq1-BU-DSg" id="o9i-om-14N"/>
                         <outlet property="tableView" destination="F3t-tN-cH7" id="7oZ-3B-0g3"/>
                     </connections>
                 </viewController>
@@ -1377,7 +1399,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update Automatically" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymB-bD-eKM">
                                                     <rect key="frame" x="15" y="12" width="156" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mK4-jS-xee">
@@ -1495,7 +1517,7 @@
                                                     <rect key="frame" x="15" y="12" width="47" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="+64 21 309 285" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AVf-La-q9G">
@@ -1519,7 +1541,7 @@
                                                     <rect key="frame" x="15" y="12" width="39" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="contact@miyazudesign.co.nz" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Krg-5X-n0e">
@@ -1765,11 +1787,13 @@
         <image name="MiyazuLogo" width="60" height="60"/>
         <image name="Person" width="9" height="17"/>
         <image name="RouteMap" width="32" height="25"/>
+        <image name="star-hollow" width="22" height="22"/>
+        <image name="swap" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mgN-cp-QeB"/>
-        <segue reference="g4y-Us-3ot"/>
         <segue reference="xrw-0P-jpv"/>
+        <segue reference="g4y-Us-3ot"/>
+        <segue reference="mgN-cp-QeB"/>
         <segue reference="haP-pH-21s"/>
         <segue reference="LD1-hl-Nq9"/>
     </inferredMetricsTieBreakers>

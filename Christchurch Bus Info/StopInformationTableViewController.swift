@@ -17,6 +17,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     
     static let updateFrequencySeconds = 15.0
     
+    @IBOutlet var favouriteButton: UIBarButtonItem!
     @IBOutlet var headerMapView: MKMapView!
     
     var stopNumber: String!
@@ -26,6 +27,29 @@ class StopInformationTableViewController: UITableViewController, StopInformation
     
     var hasReceivedInfo = false
     var infoUpdateTimer: NSTimer!
+    
+    var stopIsInFavourites = false {
+        didSet {
+            let favouriteStopNumbers = Preferences.favouriteStops.map { stop in
+                return stop.stopNo
+            }
+            
+            if stopIsInFavourites {
+                favouriteButton.image = UIImage(named: "star-filled")
+                
+                if favouriteStopNumbers.contains(stopNumber) == false {
+                    Preferences.favouriteStops.append(RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber)!)
+                }
+            } else {
+                favouriteButton.image = UIImage(named: "star-hollow")
+                
+                if favouriteStopNumbers.contains(stopNumber) {
+                    let indexToRemove = favouriteStopNumbers.indexOf(stopNumber)
+                    Preferences.favouriteStops.removeAtIndex(indexToRemove!)
+                }
+            }
+        }
+    }
     
     var busArrivalInfo: [[String: AnyObject]] = [] {
         didSet {
@@ -56,51 +80,28 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         
     }()
     
-    func formattedStringForArrivalTime(minutes: Int) -> String {
-        
-        let hoursAway = Int(floor(Double(minutes / 60)))
-        var minutesAway = minutes
-        
-        var returnString: String = ""
-        
-        if hoursAway > 0 {
-            minutesAway %= 60
-            
-            returnString = "\(hoursAway) hour"
-            
-            if hoursAway > 1 {
-                returnString += "s"
-            }
-            
-            returnString += " "
-        }
-        
-        if minutesAway > 1 {
-            returnString += "\(minutesAway) minutes"
-        } else if minutesAway == 1 {
-            returnString += "1 minute"
-        } else if minutesAway == 0 && hoursAway == 0 {
-            returnString = "Now"
-        }
-        
-        return returnString
-        
+    @IBAction func favouriteButtonPressed() {
+        stopIsInFavourites = !stopIsInFavourites
     }
 
     func stopInformationParser(parser: StopInformationParser, didReceiveStopInformation info: [[String: AnyObject]]) {
         
         //Weird things happen if you don't update the UI on the main thread
         
-        dispatch_async(dispatch_get_main_queue(), { _ -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             
             self.busArrivalInfo = info
-            self.hasReceivedInfo = true
             
-            UIView.performWithoutAnimation {
-                self.tableView.reloadSections(NSIndexSet(index: StopInformationTableViewController.arrivingBusesSection), withRowAnimation: .None)
+            if self.hasReceivedInfo {
+                UIView.performWithoutAnimation {
+                    self.tableView.reloadSections(NSIndexSet(index: StopInformationTableViewController.arrivingBusesSection), withRowAnimation: .Automatic)
+                }
+            } else {
+                self.hasReceivedInfo = true
+                self.tableView.reloadSections(NSIndexSet(index: StopInformationTableViewController.arrivingBusesSection), withRowAnimation: .Automatic)
             }
 
-        })
+        }
         
     }
     
@@ -174,7 +175,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
                 let info = busArrivalInfo[indexPath.row]
                 
                 cell.titleLabel.text = info["name"]! as? String
-                cell.detailLabel.text = formattedStringForArrivalTime(Int(info["eta"]! as! NSNumber))
+                cell.detailLabel.text = Int(info["eta"]! as! NSNumber).minuteDurationStringRepresentation(true)
                 
                 let lineType = BusLineType(lineAbbreviationString: info["route_no"]! as! String)
                 
@@ -292,11 +293,11 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             }
             
         }
-        
-        print("stop number = \(stopNumber)")
-        
+                
         let stopInfo = RouteInformationManager.sharedInstance.stopInformation![stopNumber]!
         let stopAnnotation = BusStopAnnotation(stop: stopInfo)
+        
+        self.navigationItem.title = "Stop \(stopNumber)"
         
         headerMapView.addAnnotation(stopAnnotation)
         
@@ -320,8 +321,14 @@ class StopInformationTableViewController: UITableViewController, StopInformation
         stopInfoParser.updateData()
         
         infoUpdateTimer = NSTimer.scheduledTimerWithTimeInterval(StopInformationTableViewController.updateFrequencySeconds,
-                                                                 target: stopInfoParser, selector: "updateData",
+                                                                 target: stopInfoParser, selector: #selector(StopInformationParser.updateData),
                                                                  userInfo: nil, repeats: true)
+        
+        let favouriteStopNumbers = Preferences.favouriteStops.map { stop in
+            return stop.stopNo
+        }
+        
+        stopIsInFavourites = favouriteStopNumbers.contains(stopNumber)
         
     }
     

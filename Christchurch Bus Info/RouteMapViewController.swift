@@ -33,7 +33,6 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         dispatch_async(dispatch_get_main_queue()) {
             
             self.routesToDisplay = routes
-            Preferences.mapRoutes = routes
             
             self.mapView.removeOverlays(self.overlays)
             self.overlays.removeAll()
@@ -128,9 +127,10 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         polylineRenderer.lineWidth = 8.0
         
         if prioritisedRoute != nil && overlay.subtitle!! != prioritisedRoute!.toString {
-            polylineRenderer.alpha = 0.4
-        } else {
+            polylineRenderer.alpha = 0.3
+        } else if prioritisedRoute != nil {
             polylineRenderer.alpha = 1.0
+            polylineRenderer.lineWidth = 12.0
         }        
         
         return polylineRenderer
@@ -170,6 +170,8 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
                 return
             }
             
+            var boundingRect: MKMapRect?
+            
             for coordinate in prioritisedPolylineCoordinates[0].points {
                 
                 var polylinePoints = coordinate
@@ -181,6 +183,16 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
                 mapView.addOverlay(polyline, level: .AboveRoads)
                 overlays.append(polyline)
                 
+                if boundingRect == nil {
+                    boundingRect = polyline.boundingMapRect
+                } else {
+                    boundingRect = MKMapRectUnion(boundingRect!, polyline.boundingMapRect)
+                }
+                
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.mapView.setVisibleMapRect(boundingRect!, edgePadding: UIEdgeInsetsMake(20.0, 20.0, 140.0, 20.0), animated: false)
             }
             
         }
@@ -226,8 +238,13 @@ class RouteMapViewController: UIViewController, MKMapViewDelegate, RouteMapFilte
         routesToDisplay = Preferences.mapRoutes
         
         dispatch_async(dispatch_get_main_queue()) {
+            
             self.processRoutePolylines()
-            self.mapView.setRegion(INITIAL_REGION, animated: false)
+            
+            if self.prioritisedRoute == nil {
+                self.mapView.setRegion(INITIAL_REGION, animated: false)
+            }
+            
         }
         
         let borderLayer = CALayer()

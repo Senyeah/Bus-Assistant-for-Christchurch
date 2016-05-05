@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Bus Assistant Coverage.geojson">
+   </FileRef>
+   <FileRef
       location = "group:/Users/Jack/Desktop/Christchurch Bus Info/Bus Assistant for Christchurch.xcodeproj">
    </FileRef>
    <FileRef

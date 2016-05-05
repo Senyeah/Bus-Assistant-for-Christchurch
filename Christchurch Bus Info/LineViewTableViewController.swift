@@ -259,6 +259,7 @@ class LineViewTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = lineName
     }
     
     override func viewWillAppear(animated: Bool) {

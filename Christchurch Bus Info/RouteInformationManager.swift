@@ -36,18 +36,14 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     var progressViewController: DownloadUpdateViewController?
     
-    private var relativeCoordinates: [(stop: StopInformation, (x: Double, y: Double))] {
+    private var relativeCoordinates: [StopCoordinate] {
         get {
-            var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
-            
-            for (_, info) in stopInformation! {
+            return stopInformation!.map { _, info in
                 let coordinate = info.location.coordinate
                 let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
                 
-                normalisedCoordinates.append((stop: info, normalisedCoordinate))
+                return (stop: info, normalisedCoordinate)
             }
-            
-            return normalisedCoordinates
         }
     }
     
@@ -115,17 +111,17 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
                 var tag2: Int!
                 
                 switch $0 {
-                case .NumberedRoute(let tag):
-                    tag1 = Int(tag)
-                default:
-                    break
+                    case .NumberedRoute(let tag):
+                        tag1 = Int(tag)
+                    default:
+                        break
                 }
                 
                 switch $1 {
-                case .NumberedRoute(let tag):
-                    tag2 = Int(tag)
-                default:
-                    break
+                    case .NumberedRoute(let tag):
+                        tag2 = Int(tag)
+                    default:
+                        break
                 }
                 
                 return tag1 < tag2
@@ -152,11 +148,9 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
     }
     
-    
     func stopInformationForStopNumber(number: String) -> StopInformation? {
         return stopInformation?[number]
     }
-    
     
     //Convert a latitude, longitude coordinate to a point mapping on a cartesian plane
     
@@ -203,24 +197,18 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     //Converts from latitude-longitude to a relative coordinate based on the stop
     //with the smallest x- and y-coordinate so it can be used in a kd-tree
     
-    private func relativeCoordinatesForStops() -> [(stop: StopInformation, (x: Double, y: Double))] {
+    private func relativeCoordinatesForStops() -> [StopCoordinate] {
         
-        var normalisedCoordinates: [(stop: StopInformation, (x: Double, y: Double))] = []
-        
-        guard stopInformation != nil else {
+        guard let info = stopInformation else {
             fatalError("It's nil, shit! (relativeCoordinatesForStops)")
         }
         
-        for (_, info) in stopInformation! {
-            
+        return info.map { _, info in
             let coordinate = info.location.coordinate
             let normalisedCoordinate = normaliseCoordinate(coordinate, coverage: self.coverageInformation)
             
-            normalisedCoordinates.append((stop: info, normalisedCoordinate))
-            
+            return (stop: info, normalisedCoordinate)
         }
-        
-        return normalisedCoordinates
         
     }
     
@@ -245,6 +233,16 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
     }
     
+    func nearbyStopInformationForStops(stops: [StopInformation], location: CLLocation?) -> NearbyStopInformation {
+        return stops.map { stop in
+            if let currentLocation = location {
+                return (stop: stop, distance: currentLocation.distanceFromLocation(stop.location))
+            } else {
+                return (stop: stop, distance: 0.0)
+            }
+        }
+    }
+    
     func closestStopsForLocation(radiusInMetres: Double, location: CLLocation) -> NearbyStopInformation {
         
         let normalisedCoordinate = self.normaliseCoordinate(location.coordinate, coverage: self.coverageInformation)
@@ -261,7 +259,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         
         while kd_res_end(resultingStops) == 0 {
             
-            let returnedStopPointer = kd_res_item(resultingStops, UnsafeMutablePointer<Double>.init())
+            let returnedStopPointer = kd_res_item(resultingStops, UnsafeMutablePointer<Double>.init(nil))
             let returnedStop = UnsafePointer<StopInformation>(returnedStopPointer).memory
             
             let distanceFromStop = location.distanceFromLocation(returnedStop.location)
@@ -307,7 +305,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         let coordinateRegion = MKCoordinateRegionForMapRect(region)
         let mapSpan = projectedMapSpanForMapRect(region)
         
-        let searchRadius = max(mapSpan.horizontalDistance, mapSpan.verticalDistance)
+        let searchRadius = min(mapSpan.horizontalDistance, mapSpan.verticalDistance)
         
         let centrePoint = MKMapPointForCoordinate(coordinateRegion.center)
         let stopsInRadius = self.closestStopsForLocation(searchRadius, location: CLLocation(latitude: coordinateRegion.center.latitude, longitude: coordinateRegion.center.longitude))
@@ -342,7 +340,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
             let rootViewController = appDelegate.window!.rootViewController as! RootTabBarController
             rootViewController.progressViewControllerDelegate = manager
             
-            dispatch_async(dispatch_get_main_queue()) { _ -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
                 rootViewController.performSegueWithIdentifier("ShowUpdateViewSegue", sender: self)
             }
             
@@ -352,7 +350,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     
     func updateManagerIsDownloadingFileWithProgress(manager: UpdateManager, progress: Double, currentSize: Int64, maxSize: Int64) {
         
-        dispatch_async(dispatch_get_main_queue()) { _ -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             
             let currentSizeFormatted = NSByteCountFormatter.stringFromByteCount(currentSize, countStyle: .File)
             let totalSizeFormatted = NSByteCountFormatter.stringFromByteCount(maxSize, countStyle: .File)
@@ -367,7 +365,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
     func updateManagerDidCompleteDownload(manager: UpdateManager, error: NSError?) {
         print("completed download! yay!")
         
-        dispatch_async(dispatch_get_main_queue()) { _ -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             self.delegate?.managerReceivedUpdatedInformation(self)
         }
     }
@@ -380,7 +378,7 @@ class RouteInformationManager: NSObject, UpdateManagerDelegate, DatabaseManagerD
         print("extracted update with failure = \(extractionFailed)")
         
         if extractionFailed == false {
-            dispatch_async(dispatch_get_main_queue()) { _ -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
                 self.progressViewController?.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
         }

@@ -18,6 +18,25 @@ class BusStopTableViewCell: UITableViewCell {
     @IBOutlet var stopDistance: UILabel!
     @IBOutlet var walkTimeLabel: UILabel!
     
+    @IBOutlet var locationInformationView: UIView!
+    
+    @IBOutlet var locationInformationViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var locationInformationViewTopConstraint: NSLayoutConstraint!
+    
+    var shouldDisplayLocationInformation: Bool = true {
+        didSet {
+            locationInformationView.hidden = !shouldDisplayLocationInformation
+            
+            if shouldDisplayLocationInformation {
+                locationInformationViewTopConstraint.constant = 10.0
+                locationInformationViewHeightConstraint.priority = 250
+            } else {
+                locationInformationViewTopConstraint.constant = 4.0
+                locationInformationViewHeightConstraint.priority = 999
+            }
+        }
+    }
+    
     var lineThumbnailLabels: [BusLineLabelView] = []
     var existingConstraints: [NSLayoutConstraint] = []
     
@@ -37,7 +56,7 @@ class BusStopTableViewCell: UITableViewCell {
         //Walk time calculation
         
         let walkTime = max(1, Int(ceil(distance / 1.389) / 60))
-        walkTimeLabel.text = String(walkTime) + " min" + (walkTime > 1 ? "s" : "")
+        walkTimeLabel.text = walkTime.minuteDurationStringRepresentation()
         
         stopDistance.text = distanceString
         

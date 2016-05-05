@@ -23,7 +23,7 @@ class LineStopIndicator: UIView {
         }
     }
     
-    var strokeColour: UIColor = UIColor.blackColor()
+    var strokeColour = UIColor.blackColor()
     let lineWidth = CGFloat(3.0)
     
     required init?(coder aDecoder: NSCoder) {

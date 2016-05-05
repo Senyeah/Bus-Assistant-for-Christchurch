@@ -28,9 +28,10 @@ class DatabaseManager: NSObject {
     static let sharedInstance = DatabaseManager()
     static let databasePath = APPLICATION_SUPPORT_DIRECTORY + "/database.sqlite3"
     
-    private var routesPassingStopQuery: NSString
-    private var stopsForTripQuery: NSString
-    private var tripIDForRouteQuery: NSString
+    private var routesPassingStopQuery: String
+    private var stopsForTripQuery: String
+    private var tripIDForRouteQuery: String
+    private var timetabledTripsForStopQuery: String
     
     private var stopUpdateURLs: [String: NSURL] = [:]
     
@@ -45,17 +46,14 @@ class DatabaseManager: NSObject {
             return nil
         }
         
-        let results = self.database?.prepare("SELECT route_id, route_long_name FROM routes")
-        var routes: [RouteInformation] = []
-            
-        for row in results! {
+        let results = try! self.database?.prepare("SELECT route_id, route_long_name FROM routes")
+        
+        return results!.map { row in
             let routeNumber = row[0] as! String
             let routeName = row[1] as! String
             
-            routes.append((lineType: BusLineType(lineAbbreviationString: routeNumber), routeName: routeName))
+            return (lineType: BusLineType(lineAbbreviationString: routeNumber), routeName: routeName)
         }
-        
-        return routes
         
     }()
     
@@ -65,25 +63,15 @@ class DatabaseManager: NSObject {
             return nil
         }
         
-        guard let statement = self.database?.prepare("SELECT * FROM stops") else {
+        guard let statement = try! self.database?.prepare("SELECT * FROM stops") else {
             return nil
         }
-        
-        var returnedColumns: [[String]] = []
-        
-        for row in statement {
-            
-            var temp: [String] = []
-            
-            for column in row {
-                let columnValue = column as! String? ?? ""
-                temp.append(columnValue)
+
+        return statement.map { row in
+            return row.map { column in
+                return column as! String? ?? ""
             }
-            
-            returnedColumns.append(temp)
         }
-        
-        return returnedColumns
         
     }()
     
@@ -140,7 +128,7 @@ class DatabaseManager: NSObject {
         
         var routeTag: String?
         
-        for row in (database?.prepare("SELECT shape_id FROM trips WHERE trip_id='\(tripID)'"))! {
+        for row in (try! database?.prepare("SELECT shape_id FROM trips WHERE trip_id='\(tripID)'"))! {
             routeTag = row[0] as? String
         }
         
@@ -148,27 +136,24 @@ class DatabaseManager: NSObject {
             return nil
         }
         
-        guard let statement = database?.prepare("SELECT latitude, longitude FROM polyline_points WHERE route_tag='\(routeTag!)'") else {
+        guard let statement = try! database?.prepare("SELECT latitude, longitude FROM polyline_points WHERE route_tag='\(routeTag!)'") else {
             return nil
         }
         
-        var lineCoordinates: [CLLocationCoordinate2D] = []
+        var points: [CLLocationCoordinate2D] = []
         
         for point in statement {
-            
             if point.count < 2 {
                 continue
             }
             
             let latitude = (point[0] as! NSString).doubleValue
             let longitude = (point[1] as! NSString).doubleValue
-                
-            let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-            lineCoordinates.append(coordinate)
             
+            points.append(CLLocationCoordinate2DMake(latitude, longitude))
         }
         
-        return lineCoordinates
+        return points
         
     }
     
@@ -178,13 +163,19 @@ class DatabaseManager: NSObject {
             return nil
         }
         
-        guard let statement = database?.prepare("SELECT trips.route_id, trip_headsign, route_long_name FROM trips, routes WHERE trips.route_id=routes.route_id AND trip_id='\(tripID)'") else {
+        guard let statement = try! database?.prepare("SELECT trips.route_id, trip_headsign, route_long_name FROM trips, routes WHERE trips.route_id=routes.route_id AND trip_id='\(tripID)'") else {
             return nil
         }
+        
+        guard Array(statement).count > 0 else {
+            return nil
+        }
+        
+        let tripInfoObject = Array(statement)[0]
 
-        let line = Array(statement)[0][2] as! String
-        let routeName = Array(statement)[0][1] as! String
-        let lineType = BusLineType(lineAbbreviationString: Array(statement)[0][0] as! String)
+        let line = tripInfoObject[2] as! String
+        let routeName = tripInfoObject[1] as! String
+        let lineType = BusLineType(lineAbbreviationString: tripInfoObject[0] as! String)
         
         return (lineName: line, routeName: routeName, lineType: lineType, tripID: tripID)
         
@@ -203,24 +194,18 @@ class DatabaseManager: NSObject {
         
         let routesPassingStopQuery = self.routesPassingStopQuery.stringByReplacingOccurrencesOfString("[stopTag]", withString: stopTag)
         
-        guard let statement = database?.prepare(routesPassingStopQuery as String) else {
+        guard let statement = try! database?.prepare(routesPassingStopQuery as String) else {
             return nil
         }
         
-        var result: [TripInformation] = []
-        
-        for row in statement {
-            
+        return statement.map { row in
             let tripID = row[0] as! String
             let routeID = row[1] as! String
             let lineName = row[2] as! String
             let routeName = row[3] as! String
             
-            result.append((lineType: BusLineType(lineAbbreviationString: routeID), lineName: lineName, routeName: routeName, tripID: tripID))
-            
+            return (lineType: BusLineType(lineAbbreviationString: routeID), lineName: lineName, routeName: routeName, tripID: tripID)
         }
-        
-        return result
         
     }
     
@@ -234,23 +219,66 @@ class DatabaseManager: NSObject {
         
         let query = self.stopsForTripQuery.stringByReplacingOccurrencesOfString("[tripID]", withString: tripID)
         
-        guard let statement = database?.prepare(query as String) else {
+        guard let statement = try! database?.prepare(query as String) else {
             return nil
         }
         
-        var result: [StopOnRoute] = []
-        
-        for rows in statement {
+        return statement.map { row in
             
-            let number = rows[0] as! String
-            let name = rows[1] as! String
-            let isMajorStop = rows[2] as! String == "1"
+            let number = row[0] as! String
+            let name = row[1] as! String
+            let isMajorStop = row[2] as! String == "1"
             
-            result.append(StopOnRoute(stopName: name, stopNumber: number, shouldDisplay: isMajorStop, isIntermediate: false))
+            return StopOnRoute(stopName: name, stopNumber: number, shouldDisplay: isMajorStop, isIntermediate: false)
             
         }
         
-        return result
+    }
+    
+    func timetabledTripsForStop(stopNumber: String, afterTime: NSDate) -> TimetabledTripResult {
+        
+        let components = NSCalendar.currentCalendar().components([.Hour, .Minute, .Second], fromDate: afterTime)
+        let secondsFromMidnight = 3600 * components.hour + 60 * components.minute + components.second
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "YYYYMMdd"
+        
+        let dateString = formatter.stringFromDate(afterTime)
+        
+        formatter.dateFormat = "EEEE"
+        let dayOfWeek = formatter.stringFromDate(afterTime).lowercaseString
+        
+        var query = timetabledTripsForStopQuery.stringByReplacingOccurrencesOfString("[stopNumber]", withString: stopNumber)
+        
+        query = query.stringByReplacingOccurrencesOfString("[date]", withString: dateString)
+        query = query.stringByReplacingOccurrencesOfString("[dayOfWeek]", withString: dayOfWeek)
+        query = query.stringByReplacingOccurrencesOfString("[secondsSinceMidnight]", withString: String(secondsFromMidnight))
+        
+        guard let trips = try! database?.prepare(query) else {
+            return []
+        }
+        
+        var result: TimetabledTripResult = []
+        
+        for trip in trips {
+            
+            let tripID = trip[0] as! String
+            let arrivalTime = Int(trip[1] as! Int64)
+            
+            let tripInformation = infoForTripIdentifier(tripID)!
+            let eta = Int(ceil(Double(arrivalTime - secondsFromMidnight) / 60.0))
+                        
+            if eta > 60 {
+                break
+            }
+            
+            result.append((trip: tripInformation, eta: eta))
+            
+        }
+        
+        return result.sort {
+            return $0.0.eta < $0.1.eta
+        }
         
     }
     
@@ -267,7 +295,7 @@ class DatabaseManager: NSObject {
         
         var values: [RoutePolylineCoordinates] = []
         
-        guard let routes = database?.prepare("SELECT route_id FROM routes") else {
+        guard let routes = try! database?.prepare("SELECT route_id FROM routes") else {
             return nil
         }
 
@@ -282,15 +310,14 @@ class DatabaseManager: NSObject {
             }
             
             let lineType = BusLineType(lineAbbreviationString: routeName)
-            var points: [[CLLocationCoordinate2D]] = []
             
             for direction in [0, 1] {
                 let query = self.tripIDForRouteQuery.stringByReplacingOccurrencesOfString("[routeID]", withString: routeName)
                 try! database?.execute(query.stringByReplacingOccurrencesOfString("[direction]", withString: String(direction)))
             }
 
-            for tripRow in (database?.prepare("SELECT * FROM results"))! {
-                points.append(routeCoordinatesForTripIdentifier(tripRow[0] as! String)!)
+            let points = (try! database?.prepare("SELECT * FROM results"))!.map { tripRow in
+                return routeCoordinatesForTripIdentifier(tripRow[0] as! String)!
             }
             
             values.append((route: lineType, points: points))
@@ -306,7 +333,7 @@ class DatabaseManager: NSObject {
     
     func lineColourForRoute(route: BusLineType) -> (text: UIColor?, background: UIColor?) {
         
-        guard let statement = database?.prepare("SELECT background, text FROM route_colours WHERE route='\(route.toString)'") else {
+        guard let statement = try! database?.prepare("SELECT background, text FROM route_colours WHERE route='\(route.toString)'") else {
             return (text: nil, background: nil)
         }
         
@@ -334,17 +361,13 @@ class DatabaseManager: NSObject {
         }
         
         //Good thing SQL injection here is impossible and useless
-        guard let statement = database?.prepare("SELECT route_no FROM stop_lines WHERE stop_id='\(stopTag)'") else {
+        guard let statement = try! database?.prepare("SELECT route_no FROM stop_lines WHERE stop_id='\(stopTag)'") else {
             return nil
         }
         
-        var toReturn: [String] = []
-        
-        for lines in statement {
-            toReturn.append(lines[0] as! String)
+        return statement.map { lines in
+            return lines[0] as! String
         }
-        
-        return toReturn
         
     }
     
@@ -353,7 +376,7 @@ class DatabaseManager: NSObject {
             return
         }
         
-        guard let statement = database?.prepare(sqlQuery) else {
+        guard let statement = try! database?.prepare(sqlQuery) else {
             return
         }
         
@@ -382,9 +405,10 @@ class DatabaseManager: NSObject {
     
     override init() {
         
-        routesPassingStopQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("routes_passing_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
-        stopsForTripQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
-        tripIDForRouteQuery = try! NSString(contentsOfFile: NSBundle.mainBundle().pathForResource("trip_id_for_route", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        routesPassingStopQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("routes_passing_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        stopsForTripQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        tripIDForRouteQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("trip_id_for_route", ofType: "sql")!, encoding: NSUTF8StringEncoding)
+        timetabledTripsForStopQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("timetabled_trips_for_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
         
         super.init()
         
