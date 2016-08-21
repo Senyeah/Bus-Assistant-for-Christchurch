@@ -44,7 +44,7 @@ class LineStopIndicator: UIView {
         var lineEndY = rect.height
         
         if stopType == .LineEnd {
-            lineEndY = rect.height / 2
+            lineEndY /= 2
         }
         
         let lineFrame = CGRectMake(lineStartX, lineStartY, lineWidth, lineEndY)

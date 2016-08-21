@@ -30,7 +30,6 @@ class DatabaseManager: NSObject {
     
     private var routesPassingStopQuery: String
     private var stopsForTripQuery: String
-    private var tripIDForRouteQuery: String
     private var timetabledTripsForStopQuery: String
     
     private var stopUpdateURLs: [String: NSURL] = [:]
@@ -152,6 +151,7 @@ class DatabaseManager: NSObject {
             
             points.append(CLLocationCoordinate2DMake(latitude, longitude))
         }
+        
         
         return points
         
@@ -299,8 +299,6 @@ class DatabaseManager: NSObject {
             return nil
         }
 
-        try! database?.execute("CREATE TEMPORARY TABLE IF NOT EXISTS results (trip_id)")
-        
         for route in routes {
             
             let routeName = route[0] as! String
@@ -310,19 +308,12 @@ class DatabaseManager: NSObject {
             }
             
             let lineType = BusLineType(lineAbbreviationString: routeName)
-            
-            for direction in [0, 1] {
-                let query = self.tripIDForRouteQuery.stringByReplacingOccurrencesOfString("[routeID]", withString: routeName)
-                try! database?.execute(query.stringByReplacingOccurrencesOfString("[direction]", withString: String(direction)))
-            }
 
-            let points = (try! database?.prepare("SELECT * FROM results"))!.map { tripRow in
+            let points = (try! database?.prepare("SELECT trip_id FROM trips WHERE route_id='\(routeName)' GROUP BY direction_id"))!.map { tripRow in
                 return routeCoordinatesForTripIdentifier(tripRow[0] as! String)!
             }
             
             values.append((route: lineType, points: points))
-            
-            try! database?.execute("DELETE FROM results")
             
         }
         
@@ -407,7 +398,6 @@ class DatabaseManager: NSObject {
         
         routesPassingStopQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("routes_passing_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
         stopsForTripQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("find_stops_for_trip", ofType: "sql")!, encoding: NSUTF8StringEncoding)
-        tripIDForRouteQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("trip_id_for_route", ofType: "sql")!, encoding: NSUTF8StringEncoding)
         timetabledTripsForStopQuery = try! String(contentsOfFile: NSBundle.mainBundle().pathForResource("timetabled_trips_for_stop", ofType: "sql")!, encoding: NSUTF8StringEncoding)
         
         super.init()

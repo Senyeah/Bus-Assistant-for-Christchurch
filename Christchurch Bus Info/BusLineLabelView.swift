@@ -122,14 +122,9 @@ class BusLineLabelView: UIView {
     }
     
     override func intrinsicContentSize() -> CGSize {
-        if widthConstraint == nil || heightConstraint == nil {
-            return CGSizeMake(40.0, 30.0)
-        } else {
-            return CGSizeMake(widthConstraint!.constant, heightConstraint!.constant)
-        }
+        return CGSizeMake(widthConstraint?.constant ?? 40.0, heightConstraint?.constant ?? 30.0)
     }
     
-
     func initView() {
         
         self.setContentCompressionResistancePriority(1000, forAxis: .Vertical)

@@ -205,6 +205,7 @@ class StopInformationTableViewController: UITableViewController, StopInformation
             
             cell.tripID = tripInformation.tripID
             
+            
             return cell
             
         }
@@ -286,8 +287,8 @@ class StopInformationTableViewController: UITableViewController, StopInformation
                 self.tableView.beginUpdates()
                 
                 self.tripsPassingStop = tripsThroughStop
-                self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
                 
+                self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
                 self.tableView.endUpdates()
                 
             }

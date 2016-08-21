@@ -66,6 +66,8 @@ class BusStopTableViewCell: UITableViewCell {
         
         super.layoutSubviews()
        
+        //self.contentView.preservesSuperviewLayoutMargins = true
+        
         lineThumbnailView.setNeedsLayout()
         lineThumbnailView.layoutIfNeeded()
         

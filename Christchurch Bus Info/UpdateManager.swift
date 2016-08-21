@@ -8,8 +8,8 @@
 
 import UIKit
 
-let UPDATE_URL = "https://metro.miyazudesign.co.nz/latest.php"
-let VERSION_URL = "https://metro.miyazudesign.co.nz/version.php"
+let UPDATE_URL = "https://busassistant.xyz/latest.php"
+let VERSION_URL = "https://busassistant.xyz/version.php"
 
 protocol UpdateManagerDelegate {
     func updateManagerWillDownloadFile(manager: UpdateManager, displayModalController: Bool)

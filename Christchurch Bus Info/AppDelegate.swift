@@ -17,10 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(application: UIApplication, willFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+        
         NSUserDefaults.standardUserDefaults().registerDefaults(Preferences.defaultPreferences)
         GMSServices.provideAPIKey("AIzaSyBjlI9L_fLK0ezqdoK3ley__Qfyb8zsYdw")
         
         return true
+        
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {

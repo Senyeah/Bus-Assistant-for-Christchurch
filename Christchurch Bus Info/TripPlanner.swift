@@ -214,11 +214,11 @@ class TripPlanner: NSObject {
         let (dateString, timeString) = self.startTime.toDateTimeString()
         let (startPosString, endPosString) = (self.startPosition.coordinate.stringValue, self.endPosition.coordinate.stringValue)
 
-        return NSURL(string: "https://metro.miyazudesign.co.nz/trip_planner.php?from=\(startPosString)&to=\(endPosString)&date=\(dateString)&time=\(timeString)")!
+        return NSURL(string: "https://busassistant.xyz/trip_planner.php?from=\(startPosString)&to=\(endPosString)&date=\(dateString)&time=\(timeString)")!
     }()
     
     static var canAccessServer: Bool {
-        guard let _ = NSData(contentsOfURL: NSURL(string: "https://metro.miyazudesign.co.nz/")!) else {
+        guard let _ = NSData(contentsOfURL: NSURL(string: "https://busassistant.xyz/")!) else {
             return false
         }
         

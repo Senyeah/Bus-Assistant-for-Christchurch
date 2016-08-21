@@ -138,15 +138,15 @@ class MoreInformationTableViewController: UITableViewController {
             if indexPath.row == 0 {
                 self.performSegueWithIdentifier("ShowInformationWebViewSegue", sender: nil)
             } else {
-                let webViewController = SFSafariViewController(URL: NSURL(string: "http://miyazudesign.co.nz")!)
+                let webViewController = SFSafariViewController(URL: NSURL(string: "http://miyazu.design")!)
                 self.presentViewController(webViewController, animated: true, completion: nil)
             }
-            
+        
         } else if indexPath.section == MoreInformationTableViewController.contactMiyazuSection {
         
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
             
-            var url = NSURL(string: "tel:+6421309285")!
+            var url = NSURL(string: "tel:+64223523467")!
             
             if indexPath.row == 1 {
                 url = NSURL(string: "mailto:contact@miyazudesign.co.nz")!

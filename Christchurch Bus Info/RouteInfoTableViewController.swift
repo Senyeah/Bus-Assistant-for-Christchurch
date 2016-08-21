@@ -32,9 +32,13 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         nearbyStops.removeAll()
         
-        guard let currentLocation = locationManager.location else {
-            return
-        }
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            let currentLocation = CLLocation(latitude: -43.525659, longitude: 172.575630)
+        #else
+            guard let currentLocation = locationManager.location else {
+                return
+            }
+        #endif
 
         nearbyStops = RouteInformationManager.sharedInstance.closestStopsForLocation(STOPS_TO_LOAD_RADIUS, location: currentLocation)
         favouriteStops = RouteInformationManager.sharedInstance.nearbyStopInformationForStops(Preferences.favouriteStops, location: currentLocation)
@@ -107,7 +111,17 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
     }
     
+    func handleRefresh() {
+        
+        hasObtainedInitialLocation = false
+        processLocationUpdate()
+        
+        self.refreshControl?.endRefreshing()
+        
+    }
+    
     override func awakeFromNib() {
+        
         super.awakeFromNib()
         
         //Do initialisation stuff
@@ -121,6 +135,9 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         RouteInformationManager.sharedInstance.delegate = self
         RouteInformationManager.sharedInstance.initialise()
+        
+        self.refreshControl?.addTarget(self, action: #selector(handleRefresh), forControlEvents: .ValueChanged)
+        
     }
     
     override func viewDidLoad() {
@@ -129,6 +146,10 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
         
         favouriteStops = RouteInformationManager.sharedInstance.nearbyStopInformationForStops(Preferences.favouriteStops, location: nil)
         displayedNumberOfFavouriteStops = favouriteStops.count
+        
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            processLocationUpdate()
+        #endif
         
     }
     
@@ -224,11 +245,7 @@ class RouteInfoTableViewController: UITableViewController, CLLocationManagerDele
             return nearbyStops.count
         }
         
-        if section == 0 {
-            return favouriteStops.count
-        } else {
-            return nearbyStops.count
-        }
+        return section == 0 ? favouriteStops.count : nearbyStops.count
         
     }
         

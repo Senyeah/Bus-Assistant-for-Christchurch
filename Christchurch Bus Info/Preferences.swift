@@ -43,14 +43,15 @@ struct Preferences {
     static var favouriteStops: [StopInformation] {
         get {
             let savedFavourites = (NSUserDefaults.standardUserDefaults().objectForKey("favouriteStops") ?? defaultPreferences["favouriteStops"]) as! [String]
+            var decodedFavourites: [StopInformation] = []
             
-            return savedFavourites.map { stopNumber in
+            for stopNumber in savedFavourites {
                 if let information = RouteInformationManager.sharedInstance.stopInformationForStopNumber(stopNumber) {
-                    return information
+                    decodedFavourites.append(information)
                 }
-                
-                fatalError("info for \(stopNumber) is nil?!")
             }
+            
+            return decodedFavourites
         }
         
         set {

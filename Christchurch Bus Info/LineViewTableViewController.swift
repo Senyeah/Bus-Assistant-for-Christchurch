@@ -18,7 +18,7 @@ class LineViewTableViewController: UITableViewController {
     
     var lineType: BusLineType = .NumberedRoute("") {
         didSet {
-            lineColour = lineType.colours().background
+            lineColour = lineType.colours().background ?? self.view.tintColor
         }
     }
     
